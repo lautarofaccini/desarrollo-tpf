@@ -6,13 +6,14 @@ export const getEventos = async (req, res) => {
 };
 
 export const getEvento = async (req, res) => {
-  const [result] = await pool.query('SELECT * FROM eventos WHERE id = ?', [req.params.id])
+  const [result] = await pool.query("SELECT * FROM eventos WHERE id = ?", [
+    req.params.id,
+  ]);
 
-  if (result.length === 0){
-    return res.status(404).json({message: "Evento not found"})
-  }
+  if (result.length === 0)
+    return res.status(404).json({ message: "Evento not found" });
 
-  res.json(result[0])
+  res.json(result[0]);
 };
 
 export const createEvento = async (req, res) => {
@@ -35,6 +36,13 @@ export const updateEvento = (req, res) => {
   res.send("updateEvento");
 };
 
-export const deleteEvento = (req, res) => {
-  res.send("deleteEvento");
+export const deleteEvento = async (req, res) => {
+  const [result] = await pool.query("DELETE FROM eventos WHERE id = ?", [
+    req.params.id,
+  ]);
+
+  if (result.affectedRows === 0)
+    return res.status(404).json({ message: "Evento not found" });
+
+  return res.sendStatus(204);
 };
