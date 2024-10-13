@@ -1,4 +1,3 @@
-import { response } from "express";
 import { pool } from "../db.js";
 
 export const getEventos = async (req, res) => {
