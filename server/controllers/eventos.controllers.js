@@ -1,11 +1,18 @@
 import { pool } from "../db.js";
 
-export const getEventos = (req, res) => {
-  res.send("getEventos");
+export const getEventos = async (req, res) => {
+  const [result] = await pool.query("SELECT * FROM eventos");
+  res.json(result);
 };
 
-export const getEvento = (req, res) => {
-  res.send("getEvento");
+export const getEvento = async (req, res) => {
+  const [result] = await pool.query('SELECT * FROM eventos WHERE id = ?', [req.params.id])
+
+  if (result.length === 0){
+    return res.status(404).json({message: "Evento not found"})
+  }
+
+  res.json(result[0])
 };
 
 export const createEvento = async (req, res) => {
