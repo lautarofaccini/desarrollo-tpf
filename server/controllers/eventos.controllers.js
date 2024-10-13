@@ -32,10 +32,6 @@ export const createEvento = async (req, res) => {
   });
 };
 
-export const updateEvento = (req, res) => {
-  res.send("updateEvento");
-};
-
 export const deleteEvento = async (req, res) => {
   const [result] = await pool.query("DELETE FROM eventos WHERE id = ?", [
     req.params.id,
@@ -45,4 +41,15 @@ export const deleteEvento = async (req, res) => {
     return res.status(404).json({ message: "Evento not found" });
 
   return res.sendStatus(204);
+};
+
+export const updateEvento = async (req, res) => {
+  const [result] = await pool.query("UPDATE eventos SET ? WHERE id = ?", [
+    req.body,
+    req.params.id,
+  ]);
+  if (result.affectedRows === 0)
+    return res.status(404).json({ message: "Evento not found" });
+  const [updEvento] = await pool.query("SELECT * FROM eventos WHERE id = ?", [req.params.id])
+  res.json(updEvento);
 };
