@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react";
-import { getEventosRequest } from "../api/eventos.api";
+import { useEffect } from "react";
 import EventoCard from "../components/EventoCard";
+import {useEventos} from '../context/EventoContext'
 
 function EventosPage() {
-  const [eventos, setEventos] = useState([]);
+  const {eventos, loadEventos} = useEventos()
 
   useEffect(() => {
     console.log("EventosPage");
-    async function loadEventos() {
-      const response = await getEventosRequest();
-      setEventos(response.data);
-    }
+    
     loadEventos();
   }, []);
 

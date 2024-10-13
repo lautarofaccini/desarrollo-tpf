@@ -1,14 +1,11 @@
-import { deleteEventoRequest } from "../api/eventos.api";
+import { useEventos } from "../context/EventoContext";
+
 
 function EventoCard({ evento }) {
-  const handleDelete = async (id) => {
-    try {
-      const response = await deleteEventoRequest(id);
-      console.log(response)
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
+const {deleteEvento} = useEventos()
+
+  
   return (
     <div>
       <h2>{evento.fecha_inicio}</h2>
@@ -16,7 +13,7 @@ function EventoCard({ evento }) {
       <p>{evento.lugar}</p>
       <p>{evento.descripcion}</p>
       <p>{evento.tematica}</p>
-      <button onClick={() => handleDelete(evento.id)}>Eliminar</button>
+      <button onClick={() => deleteEvento(evento.id)}>Eliminar</button>
       <button>Editar</button>
     </div>
   );

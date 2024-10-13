@@ -1,7 +1,9 @@
 import { Form, Formik } from "formik";
-import { createEventoRequest } from "../api/eventos.api";
+import { useEventos } from "../context/EventoContext";
 
 function EventosForm() {
+  const { createEvento } = useEventos();
+
   return (
     <div>
       <Formik
@@ -28,14 +30,8 @@ function EventosForm() {
           if (evento.lugar === "") delete evento.lugar;
           if (evento.descripcion === "") delete evento.descripcion;
           if (evento.tematica === "") delete evento.tematica;
-
-          try {
-            const response = await createEventoRequest(evento);
-            console.log(response);
-            actions.resetForm();
-          } catch (error) {
-            console.error(error);
-          }
+          createEvento(evento);
+          actions.resetForm();
         }}
       >
         {({ handleChange, handleSubmit, values, isSubmitting }) => (
