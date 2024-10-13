@@ -8,3 +8,9 @@ export const createEventoRequest = async (evento) =>
 
 export const deleteEventoRequest = async (id) => 
     await axios.delete(`http://localhost:4000/eventos/${id}`)
+
+export const getEventoRequest = async (id) =>
+    await axios.get(`http://localhost:4000/eventos/${id}`);
+
+export const updateEventoRequest = async (id, newFields) =>
+    await axios.put(`http://localhost:4000/eventos/${id}`, newFields);

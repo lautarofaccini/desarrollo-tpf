@@ -1,11 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { useEventos } from "../context/EventoContext";
 
-
 function EventoCard({ evento }) {
+  const { deleteEvento } = useEventos();
+  const navigate = useNavigate();
 
-const {deleteEvento} = useEventos()
-
-  
   return (
     <div>
       <h2>{evento.fecha_inicio}</h2>
@@ -14,7 +13,9 @@ const {deleteEvento} = useEventos()
       <p>{evento.descripcion}</p>
       <p>{evento.tematica}</p>
       <button onClick={() => deleteEvento(evento.id)}>Eliminar</button>
-      <button>Editar</button>
+      <button onClick={() => navigate("/eventos/edit/" + evento.id)}>
+        Editar
+      </button>
     </div>
   );
 }

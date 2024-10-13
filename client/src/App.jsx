@@ -16,6 +16,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/eventos" element={<EventosPage />} />
             <Route path="/eventos/new" element={<EventosForm />} />
+            <Route path="/eventos/edit/:id" element={<EventosForm />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </EventoContextProvider>

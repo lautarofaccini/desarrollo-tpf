@@ -1,5 +1,11 @@
 import { createContext, useState } from "react";
-import { createEventoRequest, deleteEventoRequest, getEventosRequest } from "../api/eventos.api";
+import {
+  createEventoRequest,
+  deleteEventoRequest,
+  getEventosRequest,
+  getEventoRequest,
+  updateEventoRequest,
+} from "../api/eventos.api";
 
 export const EventoContext = createContext();
 
@@ -20,6 +26,7 @@ export const EventoContextProvider = ({ children }) => {
       console.error(error);
     }
   };
+
   const createEvento = async (evento) => {
     try {
       await createEventoRequest(evento);
@@ -31,8 +38,28 @@ export const EventoContextProvider = ({ children }) => {
     }
   };
 
+  const getEvento = async (id) => {
+    try {
+      const response = await getEventoRequest(id);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateEvento = async (id, newFields) => {
+    try {
+      const response = await updateEventoRequest(id, newFields);
+      console.log(response)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <EventoContext.Provider value={{ eventos, loadEventos, deleteEvento, createEvento }}>
+    <EventoContext.Provider
+      value={{ eventos, loadEventos, deleteEvento, createEvento, getEvento, updateEvento }}
+    >
       {children}
     </EventoContext.Provider>
   );
