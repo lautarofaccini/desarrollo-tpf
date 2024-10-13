@@ -6,16 +6,18 @@ function EventoCard({ evento }) {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <h2>{evento.fecha_inicio}</h2>
-      <h2>{evento.fecha_fin}</h2>
-      <p>{evento.lugar}</p>
-      <p>{evento.descripcion}</p>
-      <p>{evento.tematica}</p>
-      <button onClick={() => deleteEvento(evento.id)}>Eliminar</button>
-      <button onClick={() => navigate("/eventos/edit/" + evento.id)}>
-        Editar
-      </button>
+    <div className="bg-zinc-700 text-white rounded-md p-4">
+      <p className="text-xl font-bold">{evento.lugar}</p>
+      <p className="text-sm">{evento.descripcion}</p>
+      <p className="text-sm">{evento.tematica}</p>
+      <p className="text-xs">{evento.fecha_inicio}</p>
+      <p className="text-xs">{evento.fecha_fin}</p>
+      <div className="flex gap-x-2">
+        <button className="bg-red-500 px-2 py-1 text-white rounded-md" onClick={() => deleteEvento(evento.id)}>Eliminar</button>
+        <button className="bg-slate-500 px-2 py-1 text-white rounded-md" onClick={() => navigate("/eventos/edit/" + evento.id)}>
+          Editar
+        </button>
+      </div>
     </div>
   );
 }

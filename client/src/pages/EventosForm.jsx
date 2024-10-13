@@ -48,11 +48,10 @@ function EventosForm() {
 
   return (
     <div>
-      <h1>{params.id ? "Actualizar Evento" : "Crear Evento"}</h1>
       <Formik
         initialValues={evento}
         enableReinitialize={true}
-        onSubmit={async (values, actions) => {
+        onSubmit={async (values) => {
           // Combinar fecha y hora en un solo valor de tipo datetime
           const evento = {
             fecha_inicio: `${values.fecha_inicio} ${values.tiempo_inicio}`,
@@ -69,73 +68,81 @@ function EventosForm() {
 
           if (params.id) {
             await updateEvento(params.id, evento);
-            navigate('/');
           } else {
             await createEvento(evento);
           }
-          actions.resetForm();
+          navigate("/");
         }}
       >
         {({ handleChange, handleSubmit, values, isSubmitting }) => (
-          <Form onSubmit={handleSubmit}>
-            <label>Fecha de Inicio</label>
+          <Form
+            onSubmit={handleSubmit}
+            className="bg-slate-300 max-w-sm rounded-md p-4 mx-auto mt-10"
+          >
+            <h1 className="text-xl font-bold uppercase text-center">
+              {params.id ? "Actualizar Evento" : "Crear Evento"}
+            </h1>
+            <label className="block">Fecha de Inicio</label>
             <input
-              className="text-slate-950"
+              className="mr-4"
               type="date"
               name="fecha_inicio"
               onChange={handleChange}
               value={values.fecha_inicio}
             />
             <input
-              className="text-slate-950"
               type="time"
               name="tiempo_inicio"
               onChange={handleChange}
               value={values.tiempo_inicio}
             ></input>
-            <label>Fecha de Fin</label>
+            <label className="block">Fecha de Fin</label>
             <input
-              className="text-slate-950"
+              className="mr-4"
               type="date"
               name="fecha_fin"
               onChange={handleChange}
               value={values.fecha_fin}
             ></input>
             <input
-              className="text-slate-950"
+              className=""
               type="time"
               name="tiempo_fin"
               onChange={handleChange}
               value={values.tiempo_fin}
             ></input>
-            <label>Lugar</label>
+            <label className="block">Lugar</label>
             <input
-              className="text-slate-950"
+              className="px-2 py-1 rounded-sm w-full"
               type="text"
               name="lugar"
               placeholder="Escribe un lugar"
               onChange={handleChange}
               value={values.lugar}
             />
-            <label>Descripción</label>
+            <label className="block">Descripción</label>
             <textarea
-              className="text-slate-950"
+              className="px-2 py-1 rounded-sm w-full"
               name="descripcion"
               rows="3"
               placeholder="Escribe una descripción"
               onChange={handleChange}
               value={values.descripcion}
             ></textarea>
-            <label>Temática</label>
+            <label className="block">Temática</label>
             <input
-              className="text-slate-950"
+              className="px-2 py-1 rounded-sm w-full"
               type="text"
               name="tematica"
               placeholder="Escribe una temática"
               onChange={handleChange}
               value={values.tematica}
             />
-            <button type="submit" disabled={isSubmitting}>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="block bg-indigo-500 px-2 py-1 mt-2 text-white w-full rounded-md"
+            >
               {isSubmitting ? "Guardando..." : "Guardar"}
             </button>
           </Form>

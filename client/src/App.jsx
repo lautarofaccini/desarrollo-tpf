@@ -8,10 +8,10 @@ import { EventoContextProvider } from "./context/EventoProvider";
 
 function App() {
   return (
-    <div className="bg-zinc-900 h-screen text-white">
-      <div className="container mx-auto">
+    <div className="bg-zinc-900 h-screen">
+      <Navbar />
+      <div className="container mx-auto py-4 px-20">
         <EventoContextProvider>
-          <Navbar />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/eventos" element={<EventosPage />} />
