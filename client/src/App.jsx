@@ -4,7 +4,7 @@ import HomePage from "./pages/HomePage";
 import EventosForm from "./pages/EventosForm";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
-import { EventoContextProvider } from "./context/EventoContext";
+import { EventoContextProvider } from "./context/EventoProvider";
 
 function App() {
   return (
