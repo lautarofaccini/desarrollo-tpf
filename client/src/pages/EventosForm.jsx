@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import { createEventoRequest } from "../api/eventos.api.js";
+import { createEventoRequest } from "../api/eventos.api";
 
 function EventosForm() {
   return (
@@ -17,14 +17,17 @@ function EventosForm() {
         onSubmit={async (values, actions) => {
           // Combinar fecha y hora en un solo valor de tipo datetime
           const evento = {
-            ...values,
             fecha_inicio: `${values.fecha_inicio} ${values.tiempo_inicio}`,
             fecha_fin: `${values.fecha_fin} ${values.tiempo_fin}`,
+            lugar: values.lugar,
+            descripcion: values.descripcion,
+            tematica: values.tematica,
           };
 
-          // Eliminar los campos tiempo_inicio y tiempo_fin del objeto
-          delete evento.tiempo_inicio;
-          delete evento.tiempo_fin;
+          // Filtrar campos opcionales
+          if (evento.lugar === "") delete evento.lugar;
+          if (evento.descripcion === "") delete evento.descripcion;
+          if (evento.tematica === "") delete evento.tematica;
 
           try {
             const response = await createEventoRequest(evento);
