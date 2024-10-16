@@ -11,7 +11,7 @@ export const getEventos = async (req, res) => {
 
 export const getEvento = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM eventos WHERE id = ?", [
+    const [result] = await pool.query("SELECT * FROM eventos WHERE id_evento = ?", [
       req.params.id,
     ]);
 
@@ -32,7 +32,7 @@ export const createEvento = async (req, res) => {
       [fecha_inicio, fecha_fin, lugar, descripcion, tematica]
     );
     res.json({
-      id: result.insertId,
+      id_evento: result.insertId,
       fecha_inicio,
       fecha_fin,
       lugar,
@@ -46,7 +46,7 @@ export const createEvento = async (req, res) => {
 
 export const deleteEvento = async (req, res) => {
   try {
-    const [result] = await pool.query("DELETE FROM eventos WHERE id = ?", [
+    const [result] = await pool.query("DELETE FROM eventos WHERE id_evento = ?", [
       req.params.id,
     ]);
 
@@ -61,13 +61,13 @@ export const deleteEvento = async (req, res) => {
 
 export const updateEvento = async (req, res) => {
   try {
-    const [result] = await pool.query("UPDATE eventos SET ? WHERE id = ?", [
+    const [result] = await pool.query("UPDATE eventos SET ? WHERE id_evento = ?", [
       req.body,
       req.params.id,
     ]);
     if (result.affectedRows === 0)
       return res.status(404).json({ message: "Evento not found" });
-    const [updEvento] = await pool.query("SELECT * FROM eventos WHERE id = ?", [
+    const [updEvento] = await pool.query("SELECT * FROM eventos WHERE id_evento = ?", [
       req.params.id,
     ]);
     res.json(updEvento);
