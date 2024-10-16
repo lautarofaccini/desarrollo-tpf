@@ -43,7 +43,7 @@ CREATE TABLE obras (
 	id_evento INT UNSIGNED NOT NULL,
 	id_escultor INT UNSIGNED NOT NULL,
 	CONSTRAINT fk_obras_eventos FOREIGN KEY (id_evento) REFERENCES eventos(id_evento),
-	CONSTRAINT fk_obras_escultores FOREIGN KEY (id_obra) REFERENCES escultores(id_escultor),
+	CONSTRAINT fk_obras_escultores FOREIGN KEY (id_obra) REFERENCES escultores(id_escultor)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -55,7 +55,7 @@ CREATE TABLE imagenes (
 	id_imagen INT UNSIGNED AUTO_INCREMENT,
 	fotografia BLOB NOT NULL,
 	id_obra INT UNSIGNED,
-	PRIMARY KEY(id_obra, id_imagen),
+	PRIMARY KEY(id_imagen, id_obra),
 	CONSTRAINT fk_imagenes_obras FOREIGN KEY (id_obra) REFERENCES obras(id_obra) ON DELETE CASCADE ON UPDATE CASCADE
 )
 ENGINE=InnoDB
