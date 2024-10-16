@@ -12,7 +12,7 @@ function EventosPage() {
   function renderMain() {
     if (eventos.length === 0) return <h1>No hay eventos aún</h1>;
     return eventos.map((evento) => (
-      <EventoCard evento={evento} key={evento.id} />
+      <EventoCard evento={evento} key={evento.id_evento} />
     ));
   }
 
