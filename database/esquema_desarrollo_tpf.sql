@@ -106,7 +106,19 @@ CREATE TRIGGER calcular_edad_al_insertar
 BEFORE INSERT ON escultores
 FOR EACH ROW
 BEGIN
-  SET NEW.edad = TIMESTAMPDIFF(YEAR, NEW.fecha_nacimiento, CURDATE());
+	SET NEW.edad = TIMESTAMPDIFF(YEAR, NEW.fecha_nacimiento, CURDATE());
+END $$
+DELIMITER ;
+
+/* Trigger que calcula la edad de un escultor cada vez que se actualice la fecha de nacimiento de uno en la base de datos. */ 
+DELIMITER $$
+CREATE TRIGGER calcular_edad_al_actualizar
+BEFORE UPDATE ON escultores
+FOR EACH ROW
+BEGIN
+	IF NEW.fecha_nacimiento <> OLD.fecha_nacimiento THEN
+		SET NEW.edad = TIMESTAMPDIFF(YEAR, NEW.fecha_nacimiento, CURDATE());
+	END IF;
 END $$
 DELIMITER ;
 
@@ -115,5 +127,5 @@ CREATE EVENT IF NOT EXISTS actualizar_edad_escultores
 ON SCHEDULE EVERY 1 YEAR
 STARTS NOW()
 DO
-  UPDATE escultores
-  SET edad = TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE());
+	UPDATE escultores
+	SET edad = TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE());
