@@ -34,12 +34,12 @@ COLLATE=utf8mb4_unicode_ci;
 
 -- Tabla obras
 CREATE TABLE obras (
-    id_obra INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    fecha_creacion DATE,
-    descripcion TEXT,
-    material VARCHAR(100),
-    estilo VARCHAR(100),
-    calificacion DECIMAL(3, 2),
+  id_obra INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  fecha_creacion DATE,
+  descripcion TEXT,
+  material VARCHAR(100),
+  estilo VARCHAR(100),
+  calificacion DECIMAL(3, 2),
 	id_evento INT UNSIGNED NOT NULL,
 	id_escultor INT UNSIGNED NOT NULL,
 	CONSTRAINT fk_obras_eventos FOREIGN KEY (id_evento) REFERENCES eventos(id_evento),
