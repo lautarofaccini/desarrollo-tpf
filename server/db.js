@@ -1,9 +1,13 @@
-import {createPool} from 'mysql2/promise'
+import { createPool } from 'mysql2/promise';
+import dotenv from 'dotenv';
 
-export const pool = new createPool({
-    host: "localhost",
-    port: 3306,
-    user: 'root',
-    password: '1234',
-    database: 'desarrollo_tpf'
-})
+// Cargar las variables de entorno del archivo .env
+dotenv.config();
+
+export const pool = createPool({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE
+});
