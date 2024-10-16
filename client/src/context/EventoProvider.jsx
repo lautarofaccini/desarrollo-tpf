@@ -21,7 +21,7 @@ export const EventoContextProvider = ({ children }) => {
     try {
       const response = await deleteEventoRequest(id);
       console.log(response);
-      setEventos(eventos.filter((evento) => evento.id !== id));
+      setEventos(eventos.filter((evento) => evento.id_evento !== id));
     } catch (error) {
       console.error(error);
     }

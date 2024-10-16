@@ -71,7 +71,7 @@ function EventosForm() {
           } else {
             await createEvento(evento);
           }
-          navigate("/");
+          navigate("/eventos");
         }}
       >
         {({ handleChange, handleSubmit, values, isSubmitting }) => (
