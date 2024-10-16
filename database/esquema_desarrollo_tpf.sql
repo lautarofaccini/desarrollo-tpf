@@ -100,6 +100,18 @@ ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_unicode_ci;
 
+/* Trigger que calcula la edad de un escultor cada vez que se registre uno en la base de datos. */ 
+DELIMITER $$
+CREATE TRIGGER calcular_edad_al_insertar
+AFTER INSERT ON escultores
+FOR EACH ROW
+BEGIN
+  UPDATE escultores
+  SET edad = TIMESTAMPDIFF(YEAR, NEW.fecha_nacimiento, CURDATE())
+  WHERE id_escultor = NEW.id_escultor;
+END $$
+DELIMITER ;
+
 /* Evento para calcular la edad. */
 CREATE EVENT IF NOT EXISTS actualizar_edad_escultores
 ON SCHEDULE EVERY 1 YEAR
