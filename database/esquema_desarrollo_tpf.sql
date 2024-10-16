@@ -100,3 +100,10 @@ ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_unicode_ci;
 
+/* Evento para calcular la edad. */
+CREATE EVENT IF NOT EXISTS actualizar_edad_escultores
+ON SCHEDULE EVERY 1 YEAR
+STARTS NOW()
+DO
+  UPDATE escultores
+  SET edad = TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE());
