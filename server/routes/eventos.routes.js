@@ -6,18 +6,23 @@ import {
   updateEvento,
   deleteEvento,
 } from "../controllers/eventos.controllers.js";
-import { authRequired } from "../middlewares/validateToken.js";
+import { authRequired } from "../middlewares/validateToken.js"; 
+/* 
+Agregar authRequired para asegurar la ruta
+Ejemplo: 
+router.get("/ejemplo", authRequired, getEjemplo);
+ */
 
 const router = Router();
 
-router.get("/eventos", authRequired, getEventos);
+router.get("/eventos", getEventos);
 
-router.get("/eventos/:id", authRequired, getEvento);
+router.get("/eventos/:id", getEvento);
 
-router.post("/eventos", authRequired, createEvento);
+router.post("/eventos", createEvento);
 
-router.put("/eventos/:id", authRequired, updateEvento);
+router.put("/eventos/:id", updateEvento);
 
-router.delete("/eventos/:id", authRequired, deleteEvento);
+router.delete("/eventos/:id", deleteEvento);
 
 export default router;
