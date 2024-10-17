@@ -32,7 +32,7 @@ export const createUsuario = async (req, res) => {
       [email, password, nickname, rol]
     );
     res.json({
-			id_usuario: result.InsertId, 
+			id_usuario: result.insertId, 
 			email, 
 			password, 
 			nickname, 
