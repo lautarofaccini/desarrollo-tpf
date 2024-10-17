@@ -4,7 +4,7 @@ function Navbar() {
   return (
     <div className="bg-neutral-800 flex justify-between px-20 py-4">
       <Link to="/" className="text-white font-bold text-3xl">
-        La Bienal
+        <img src="../../public/Logo.png" />
       </Link>
       <ul className="flex gap-x-2">
         <li>
