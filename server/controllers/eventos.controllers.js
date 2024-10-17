@@ -32,7 +32,7 @@ export const createEvento = async (req, res) => {
       [fecha_inicio, fecha_fin, lugar, descripcion, tematica]
     );
     res.json({
-      id_evento: result.InsertId,
+      id_evento: result.insertId,
       fecha_inicio,
       fecha_fin,
       lugar,
