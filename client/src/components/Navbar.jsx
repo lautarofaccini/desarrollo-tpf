@@ -8,6 +8,9 @@ function Navbar() {
       </Link>
       <ul className="flex gap-x-2">
         <li>
+          <Link to="/esculturas" className="text-white px-2 py-1 text-2xl">Esculturas</Link>
+        </li>
+        <li>
           <Link to="/eventos" className="text-white px-2 py-1 text-2xl">Eventos</Link>
         </li>
         <li>
