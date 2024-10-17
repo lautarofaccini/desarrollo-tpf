@@ -5,7 +5,7 @@
 - Mauricio Nicolás Schefer
 - Fabricio Víctor Kinweiler
 - Facundo Nahuel Fernández
-- Yamil Apas "El Turco" Moselli
+- Yamil Apas Moselli
 - Agustín Juan Luis Arduña Zago
 - Juan Ignacio Velazco Gez Schegtel
 
