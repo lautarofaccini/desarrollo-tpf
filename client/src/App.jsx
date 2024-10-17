@@ -5,6 +5,8 @@ import EventosForm from "./pages/EventosForm";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import { EventoContextProvider } from "./context/EventoProvider";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <EventoContextProvider>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/eventos" element={<EventosPage />} />
             <Route path="/eventos/new" element={<EventosForm />} />
             <Route path="/eventos/edit/:id" element={<EventosForm />} />
