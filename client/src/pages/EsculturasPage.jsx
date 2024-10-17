@@ -10,7 +10,7 @@ return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {esculturas.map((escultura) => (
             <div key={escultura.id} className="border rounded-lg overflow-hidden shadow-lg flex flex-col h-full min-h-[400px]">
-                <img src={escultura.imagen} alt={escultura.nombre} className="w-full h-64 object-contain" />
+                <img src={escultura.imagen} alt={escultura.nombre} className="w-full h-64 object-cover" />
                 <div className="p-2 flex-grow">
                     <h2 className="text-xl font-semibold text-white">{escultura.nombre}</h2>
                     <p className="text-gray-400">{escultura.descripcion}</p>
