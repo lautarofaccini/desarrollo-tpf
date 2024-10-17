@@ -1,4 +1,5 @@
 import express from "express";
+import morgan from "morgan";
 import cors from "cors";
 import { PORT } from "./config.js";
 
@@ -7,7 +8,7 @@ import eventosRoutes from "./routes/eventos.routes.js";
 import escultoresRoutes from "./routes/escultores.routes.js";
 
 const app = express();
-
+app.use(morgan("dev"));
 app.use(
   cors({
     origin: "http://localhost:5173",
