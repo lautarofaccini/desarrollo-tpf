@@ -4,6 +4,8 @@ import HomePage from "./pages/HomePage";
 import EventosForm from "./pages/EventosForm";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
+import EsculturasPage from "./pages/EsculturasPage";
+import EsculturaDetail from './pages/Escultura_deta';
 import { EventoContextProvider } from "./context/EventoProvider";
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
             <Route path="/eventos" element={<EventosPage />} />
             <Route path="/eventos/new" element={<EventosForm />} />
             <Route path="/eventos/edit/:id" element={<EventosForm />} />
+            <Route path="/esculturas" element={<EsculturasPage/>} />
+            <Route path="/escultura/:id" element={<EsculturaDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </EventoContextProvider>
