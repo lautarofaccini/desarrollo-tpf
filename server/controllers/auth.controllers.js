@@ -64,3 +64,27 @@ export const logout = (req, res) => {
   });
   return res.sendStatus(200);
 };
+
+export const profile = async (req, res) => {
+    try {
+        const { id } = req.user;
+        const [result] = await pool.query(
+          "SELECT * FROM usuarios WHERE id_usuario = ?",
+          [id]
+        );
+        
+        if (result.length === 0)
+          return res.status(404).json({ message: "Usuario not found" });
+    
+        const user = result[0];
+    
+        res.json({
+          id_usuario: user.id_usuario,
+          email: user.email,
+          nickname: user.nickname,
+          rol: user.rol,
+        });
+      } catch (error) {
+        return res.status(500).json({ message: error.message });
+      }
+};

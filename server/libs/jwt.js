@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-// Cargar las variables de entorno del archivo .env
+
 dotenv.config();
 
 export function createAccessToken(payload) {

@@ -1,5 +1,6 @@
 import express from "express";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import { PORT } from "./config.js";
 
@@ -17,6 +18,7 @@ app.use(
   })
 );
 app.use(morgan("dev"));
+app.use(cookieParser());
 app.use(express.json());
 
 app.use(indexRoutes);
