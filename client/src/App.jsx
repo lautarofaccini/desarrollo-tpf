@@ -14,7 +14,7 @@ function App() {
   return (
     <div className=" ">
       <Navbar />
-      <div className="container mx-auto py-4 px-20">
+      <div className="">
         <EventoContextProvider>
           <Routes>
             <Route path="/" element={<HomePage />} />

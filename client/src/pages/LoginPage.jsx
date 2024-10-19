@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-
+import Background from '../components/ImagenFondo';
 function LoginPage() {
   const {
     register,
@@ -20,8 +20,9 @@ function LoginPage() {
     signin(values);
   });
   return (
-    <div className="flex items-center justify-center h-[calc(100vh-100px)]">
-      <div className=" bg-zinc-800 max-w-md p-10 rounded-md w-full">
+    <Background>
+    <div className="flex items-center justify-center h-screen w-full">
+      <div className=" bg-zinc-800 max-w-md p-10 rounded-md w-full ">
         <h1 className="text-2xl font-bold text-white">Iniciar Sesión</h1>
         {loginErrors.map((error, i) => (
           <div key={i} className="bg-red-500 p-2 text-white">
@@ -54,6 +55,7 @@ function LoginPage() {
         </Link>
       </div>
     </div>
+    </Background>
   );
 }
 
