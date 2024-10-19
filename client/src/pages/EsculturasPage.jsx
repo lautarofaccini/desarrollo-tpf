@@ -3,7 +3,7 @@ import { esculturas } from './esculturas';
 
 const EsculturaList = () => {
 return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto py-4 px-20">
         <h1 className="text-2xl font-bold mb-8 hc-blue text-white text-center">Esculturas del escultor</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {esculturas.map((escultura) => (
