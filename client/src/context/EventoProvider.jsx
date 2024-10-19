@@ -50,7 +50,7 @@ export const EventoContextProvider = ({ children }) => {
   const updateEvento = async (id, newFields) => {
     try {
       const response = await updateEventoRequest(id, newFields);
-      console.log(response)
+      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -58,7 +58,14 @@ export const EventoContextProvider = ({ children }) => {
 
   return (
     <EventoContext.Provider
-      value={{ eventos, loadEventos, deleteEvento, createEvento, getEvento, updateEvento }}
+      value={{
+        eventos,
+        loadEventos,
+        deleteEvento,
+        createEvento,
+        getEvento,
+        updateEvento,
+      }}
     >
       {children}
     </EventoContext.Provider>
