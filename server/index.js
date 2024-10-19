@@ -21,11 +21,11 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
 
-app.use(indexRoutes);
-app.use(eventosRoutes);
-app.use(escultoresRoutes);
-app.use(obrasRoutes);
-app.use(usuariosRoutes);
 app.use(authRoutes);
+app.use("/escultores/", escultoresRoutes);
+app.use("/eventos/", eventosRoutes);
+app.use(indexRoutes);
+app.use("/obras", obrasRoutes);
+app.use("/usuarios", usuariosRoutes);
 
 app.listen(PORT);

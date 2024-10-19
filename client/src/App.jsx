@@ -5,14 +5,14 @@ import EventosForm from "./pages/EventosForm";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import EsculturasPage from "./pages/EsculturasPage";
-import EsculturaDetail from './pages/Escultura_deta';
+import EsculturaDetail from "./pages/Escultura_deta";
 import { EventoContextProvider } from "./context/EventoProvider";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
-    <div className="bg-zinc-900 h-screen">
+    <div className=" ">
       <Navbar />
       <div className="container mx-auto py-4 px-20">
         <EventoContextProvider>
@@ -23,7 +23,7 @@ function App() {
             <Route path="/eventos" element={<EventosPage />} />
             <Route path="/eventos/new" element={<EventosForm />} />
             <Route path="/eventos/edit/:id" element={<EventosForm />} />
-            <Route path="/esculturas" element={<EsculturasPage/>} />
+            <Route path="/esculturas" element={<EsculturasPage />} />
             <Route path="/escultura/:id" element={<EsculturaDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
