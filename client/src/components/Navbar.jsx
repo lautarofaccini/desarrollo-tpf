@@ -2,14 +2,11 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <div className="bg-neutral-800 flex justify-between px-20 py-4">
+    <div className="fixed bg-neutral-800 flex justify-between px-20 py-4 top-0 left-0 w-full shadow-md">
       <Link to="/" className="text-white font-bold text-3xl">
         <img src="/Logo.png" />
       </Link>
-      <ul className="flex gap-x-2">
-      <li>
-          <Link to="/login" className="text-white px-2 py-1 text-2xl">Login</Link>
-        </li>
+      <ul className="flex gap-x-2 items-center">
         <li>
           <Link to="/esculturas" className="text-white px-2 py-1 text-2xl">
             Esculturas
