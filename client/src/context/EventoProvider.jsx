@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useCallback } from "react";
 import {
   createEventoRequest,
   deleteEventoRequest,
@@ -12,10 +12,10 @@ export const EventoContext = createContext();
 export const EventoContextProvider = ({ children }) => {
   const [eventos, setEventos] = useState([]);
 
-  async function loadEventos() {
+  const loadEventos = useCallback(async () => {
     const response = await getEventosRequest();
     setEventos(response.data);
-  }
+  }, []);
 
   const deleteEvento = async (id) => {
     try {

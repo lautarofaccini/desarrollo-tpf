@@ -7,7 +7,7 @@ function EventosPage() {
 
   useEffect(() => {
     loadEventos();
-  }, []);
+  }, [loadEventos]);
 
   function renderMain() {
     if (eventos.length === 0) return <h1>No hay eventos aún</h1>;
