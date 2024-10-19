@@ -7,6 +7,9 @@ function Navbar() {
         <img src="../../public/Logo.png" />
       </Link>
       <ul className="flex gap-x-2">
+      <li>
+          <Link to="/login" className="text-white px-2 py-1 text-2xl">Login</Link>
+        </li>
         <li>
           <Link to="/esculturas" className="text-white px-2 py-1 text-2xl">Esculturas</Link>
         </li>
