@@ -10,6 +10,7 @@ import { EventoProvider } from "./context/EventoProvider";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./ProtectedRoute";
+import EventoPage from "./pages/EventoPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
 
             <Route path="/eventos" element={<EventosPage />} />
+            <Route path="/eventos/:id" element={<EventoPage />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/eventos/new" element={<EventosForm />} />
               <Route path="/eventos/edit/:id" element={<EventosForm />} />
