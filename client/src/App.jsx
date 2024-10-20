@@ -6,7 +6,7 @@ import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import EsculturasPage from "./pages/EsculturasPage";
 import EsculturaCard from "./pages/EsculturaCard";
-import { EventoContextProvider } from "./context/EventoProvider";
+import { EventoProvider } from "./context/EventoProvider";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./ProtectedRoute";
@@ -14,9 +14,9 @@ import ProtectedRoute from "./ProtectedRoute";
 function App() {
   return (
     <div>
-      <Navbar />
-      <div className="pt-20">
-        <EventoContextProvider>
+      <EventoProvider>
+        <Navbar />
+        <main className="pt-20">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/register" element={<RegisterPage />} />
@@ -32,8 +32,8 @@ function App() {
             <Route path="/esculturas" element={<EsculturasPage />} />
             <Route path="/escultura/:id" element={<EsculturaCard />} />
           </Routes>
-        </EventoContextProvider>
-      </div>
+        </main>
+      </EventoProvider>
     </div>
   );
 }

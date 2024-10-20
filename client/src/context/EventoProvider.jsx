@@ -9,7 +9,7 @@ import {
 
 export const EventoContext = createContext();
 
-export const EventoContextProvider = ({ children }) => {
+export const EventoProvider = ({ children }) => {
   const [eventos, setEventos] = useState([]);
 
   const loadEventos = useCallback(async () => {
