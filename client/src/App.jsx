@@ -5,7 +5,7 @@ import EventosForm from "./pages/EventosForm";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import EsculturasPage from "./pages/EsculturasPage";
-import EsculturaCard from "./pages/EsculturaCard";
+import EsculturaCard from "./components/EsculturaCard";
 import { EventoProvider } from "./context/EventoProvider";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
