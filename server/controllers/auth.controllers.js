@@ -1,6 +1,10 @@
 import { pool } from "../db.js";
 import bcrypt from "bcrypt";
 import { createAccessToken } from "../libs/jwt.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const register = async (req, res) => {
   try {
@@ -57,8 +61,7 @@ export const login = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!isMatch)
-      return res.status(404).json(["Contraseña incorrecta"]);
+    if (!isMatch) return res.status(404).json(["Contraseña incorrecta"]);
     const token = await createAccessToken({ id: user.id_usuario });
 
     res.cookie("token", token);
@@ -102,4 +105,31 @@ export const profile = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
+};
+
+export const verifyToken = async (req, res) => {
+  const { token } = req.cookies;
+
+  if (!token) return res.status(401).json({ message: "No autorizado" });
+
+  jwt.verify(token, process.env.TOKEN_SECRET, async (err, user) => {
+    if (err) return res.status(403).json({ message: "Token invalido" });
+
+    const [result] = await pool.query(
+      "SELECT * FROM usuarios WHERE id_usuario = ?",
+      [user.id]
+    );
+
+    if (result.length === 0)
+      return res.status(403).json({ message: "No autorizado" });
+
+    const userFound = result[0];
+
+    return res.json({
+      id_usuario: userFound.id_usuario,
+      nickname: userFound.nickname,
+      email: userFound.email,
+      rol: userFound.rol,
+    });
+  });
 };

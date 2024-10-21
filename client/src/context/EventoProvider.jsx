@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useCallback } from "react";
 import {
   createEventoRequest,
   deleteEventoRequest,
@@ -9,13 +9,13 @@ import {
 
 export const EventoContext = createContext();
 
-export const EventoContextProvider = ({ children }) => {
+export const EventoProvider = ({ children }) => {
   const [eventos, setEventos] = useState([]);
 
-  async function loadEventos() {
+  const loadEventos = useCallback(async () => {
     const response = await getEventosRequest();
     setEventos(response.data);
-  }
+  }, []);
 
   const deleteEvento = async (id) => {
     try {
@@ -50,7 +50,7 @@ export const EventoContextProvider = ({ children }) => {
   const updateEvento = async (id, newFields) => {
     try {
       const response = await updateEventoRequest(id, newFields);
-      console.log(response)
+      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -58,7 +58,14 @@ export const EventoContextProvider = ({ children }) => {
 
   return (
     <EventoContext.Provider
-      value={{ eventos, loadEventos, deleteEvento, createEvento, getEvento, updateEvento }}
+      value={{
+        eventos,
+        loadEventos,
+        deleteEvento,
+        createEvento,
+        getEvento,
+        updateEvento,
+      }}
     >
       {children}
     </EventoContext.Provider>
