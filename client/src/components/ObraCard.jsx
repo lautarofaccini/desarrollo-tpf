@@ -1,6 +1,6 @@
 // src/components/EsculturaDetail.js
 import { useParams } from "react-router-dom";
-import { esculturas } from "../api/esculturas";
+import { esculturas } from "../api/obras.api";
 
 function EsculturaCard() {
   const { id } = useParams();

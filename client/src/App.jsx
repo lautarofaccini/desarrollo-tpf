@@ -4,13 +4,15 @@ import HomePage from "./pages/HomePage";
 import EventosForm from "./pages/EventosForm";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
-import EsculturasPage from "./pages/EsculturasPage";
-import EsculturaCard from "./components/EsculturaCard";
+import ObrasPage from "./pages/ObrasPage";
+import ObraCard from "./components/ObraCard";
 import { EventoProvider } from "./context/EventoProvider";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./ProtectedRoute";
 import EventoPage from "./pages/EventoPage";
+import ObraQRPage from "./pages/ObraQRPage";
+import ObraVotacionPage from "./pages/ObraVotacionPage";
 
 function App() {
   return (
@@ -29,10 +31,12 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/eventos/new" element={<EventosForm />} />
               <Route path="/eventos/edit/:id" element={<EventosForm />} />
+              <Route path="/obras/votar/:id" element={<ObraVotacionPage />} />
             </Route>
 
-            <Route path="/esculturas" element={<EsculturasPage />} />
-            <Route path="/escultura/:id" element={<EsculturaCard />} />
+            <Route path="/obras" element={<ObrasPage />} />
+            <Route path="/obras/:id" element={<ObraCard />} />
+            <Route path="/obras/qr/:id" element={<ObraQRPage />} />
           </Routes>
         </main>
       </EventoProvider>
