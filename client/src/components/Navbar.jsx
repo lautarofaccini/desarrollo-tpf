@@ -11,7 +11,7 @@ function Navbar() {
       </Link>
       <ul className="flex gap-x-2 items-center">
         <li>
-          <Link to="/esculturas" className="text-white px-2 py-1 text-2xl">
+          <Link to="/obras" className="text-white px-2 py-1 text-2xl">
             Esculturas
           </Link>
         </li>
