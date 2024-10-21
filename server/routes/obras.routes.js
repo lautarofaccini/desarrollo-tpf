@@ -5,18 +5,24 @@ import {
   createObra,
   updateObra,
   deleteObra,
+  getObraQR,
+  verifyObrasToken,
 } from "../controllers/obras.controllers.js";
 
 const router = Router();
 
-router.get("/obras", getObras);
+router.get("/verify", verifyObrasToken);
 
-router.get("/obras/:id", getObra);
+router.get("/", getObras);
 
-router.post("/obras", createObra);
+router.get("/:id", getObra);
 
-router.put("/obras/:id", updateObra);
+router.post("/", createObra);
 
-router.delete("/obras/:id", deleteObra);
+router.put("/:id", updateObra);
+
+router.delete("/:id", deleteObra);
+
+router.get("/:id/qr", getObraQR);
 
 export default router;

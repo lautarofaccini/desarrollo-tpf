@@ -1,23 +1,19 @@
-import { Form, Formik } from "formik";
+import { useForm } from "react-hook-form";
 import { useEventos } from "../context/EventoContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 function EventosForm() {
+  const { register, handleSubmit, setValue } = useForm();
+
   const { createEvento, getEvento, updateEvento } = useEventos();
-  const [evento, setEvento] = useState({
-    fecha_inicio: "",
-    tiempo_inicio: "",
-    fecha_fin: "",
-    tiempo_fin: "",
-    lugar: "",
-    descripcion: "",
-    tematica: "",
-  });
-  const params = useParams();
+
   const navigate = useNavigate();
+
+  const params = useParams();
+
   useEffect(() => {
-    const loadEvento = async () => {
+    async function loadEvento() {
       if (params.id) {
         const eventoData = await getEvento(params.id);
 
@@ -30,124 +26,105 @@ function EventosForm() {
         const tiempoFinFormatted = tiempoFin.slice(0, 5);
 
         // Actualizar el estado del evento con las fechas y horas separadas
-        setEvento({
-          fecha_inicio: fechaInicio,
-          tiempo_inicio: tiempoInicioFormatted,
-          fecha_fin: fechaFin,
-          tiempo_fin: tiempoFinFormatted,
-          lugar: eventoData.lugar || "",
-          descripcion: eventoData.descripcion || "",
-          tematica: eventoData.tematica || "",
-        });
+
+        setValue("fecha_inicio", fechaInicio);
+        setValue("tiempo_inicio", tiempoInicioFormatted);
+        setValue("fecha_fin", fechaFin);
+        setValue("tiempo_fin", tiempoFinFormatted);
+        setValue("lugar", eventoData.lugar || "");
+        setValue("descripcion", eventoData.descripcion || "");
+        setValue("tematica", eventoData.tematica || "");
+
         //Separar la fecha antes de mandarla
         //setEvento(evento);
+      } else {
+        setValue("fecha_inicio", "");
+        setValue("tiempo_inicio", "");
+        setValue("fecha_fin", "");
+        setValue("tiempo_fin", "");
+        setValue("lugar", "");
+        setValue("descripcion", "");
+        setValue("tematica", "");
       }
-    };
+    }
     loadEvento();
-  }, [getEvento, params.id]);
+  }, [getEvento, params.id, setValue]);
+
+  const onSubmit = handleSubmit(async (values) => {
+    // Combinar fecha y hora en un solo valor de tipo datetime
+    const evento = {
+      fecha_inicio: `${values.fecha_inicio} ${values.tiempo_inicio}`,
+      fecha_fin: `${values.fecha_fin} ${values.tiempo_fin}`,
+      lugar: values.lugar,
+      descripcion: values.descripcion,
+      tematica: values.tematica,
+    };
+
+    // Filtrar campos opcionales
+    if (evento.lugar === "") delete evento.lugar;
+    if (evento.descripcion === "") delete evento.descripcion;
+    if (evento.tematica === "") delete evento.tematica;
+
+    if (params.id) {
+      await updateEvento(params.id, evento);
+    } else {
+      await createEvento(evento);
+    }
+    navigate("/eventos");
+  });
 
   return (
-    <div>
-      <Formik
-        initialValues={evento}
-        enableReinitialize={true}
-        onSubmit={async (values) => {
-          // Combinar fecha y hora en un solo valor de tipo datetime
-          const evento = {
-            fecha_inicio: `${values.fecha_inicio} ${values.tiempo_inicio}`,
-            fecha_fin: `${values.fecha_fin} ${values.tiempo_fin}`,
-            lugar: values.lugar,
-            descripcion: values.descripcion,
-            tematica: values.tematica,
-          };
+    <div className="flex items-center justify-center h-screen w-full">
+      <div className="bg-zinc-800 max-w-md  w-full p-10 rounded-md">
+        <form onSubmit={onSubmit}>
+          <h1 className="text-white text-xl font-bold uppercase text-center">
+            {params.id ? "Actualizar Evento" : "Crear Evento"}
+          </h1>
 
-          // Filtrar campos opcionales
-          if (evento.lugar === "") delete evento.lugar;
-          if (evento.descripcion === "") delete evento.descripcion;
-          if (evento.tematica === "") delete evento.tematica;
+          <label className="text-gray-400 block">Fecha de Inicio</label>
+          <div className="flex gap-x-2">
+            <input
+              type="date"
+              {...register("fecha_inicio")}
+              className=" text-black"
+            />
+            <input type="time" {...register("tiempo_inicio")} />
+          </div>
+          <label className="text-gray-400 block">Fecha de Fin</label>
+          <div className="flex gap-x-2">
+            <input type="date" {...register("fecha_fin")} />
+            <input type="time" {...register("tiempo_fin")} />
+          </div>
+          <label className="text-gray-400 block">Lugar</label>
+          <input
+            type="text"
+            placeholder="Escribe un lugar"
+            {...register("lugar")}
+            className="px-2 py-1 rounded-sm w-full"
+          />
+          <label className="text-gray-400 block">Descripción</label>
+          <textarea
+            rows="3"
+            placeholder="Escribe una descripción"
+            {...register("descripcion")}
+            className="px-2 py-1 rounded-sm w-full"
+          ></textarea>
+          <label className="text-gray-400 block">Temática</label>
+          <input
+            type="text"
+            placeholder="Escribe una temática"
+            {...register("tematica")}
+            className="px-2 py-1 rounded-sm w-full"
+          />
 
-          if (params.id) {
-            await updateEvento(params.id, evento);
-          } else {
-            await createEvento(evento);
-          }
-          navigate("/eventos");
-        }}
-      >
-        {({ handleChange, handleSubmit, values, isSubmitting }) => (
-          <Form
-            onSubmit={handleSubmit}
-            className="bg-slate-300 max-w-sm rounded-md p-4 mx-auto mt-10"
+          <button
+            type="submit"
+            className="block bg-indigo-500 px-2 py-1 mt-2 text-white w-full rounded-md"
           >
-            <h1 className="text-xl font-bold uppercase text-center">
-              {params.id ? "Actualizar Evento" : "Crear Evento"}
-            </h1>
-            <label className="block">Fecha de Inicio</label>
-            <input
-              className="mr-4"
-              type="date"
-              name="fecha_inicio"
-              onChange={handleChange}
-              value={values.fecha_inicio}
-            />
-            <input
-              type="time"
-              name="tiempo_inicio"
-              onChange={handleChange}
-              value={values.tiempo_inicio}
-            ></input>
-            <label className="block">Fecha de Fin</label>
-            <input
-              className="mr-4"
-              type="date"
-              name="fecha_fin"
-              onChange={handleChange}
-              value={values.fecha_fin}
-            ></input>
-            <input
-              className=""
-              type="time"
-              name="tiempo_fin"
-              onChange={handleChange}
-              value={values.tiempo_fin}
-            ></input>
-            <label className="block">Lugar</label>
-            <input
-              className="px-2 py-1 rounded-sm w-full"
-              type="text"
-              name="lugar"
-              placeholder="Escribe un lugar"
-              onChange={handleChange}
-              value={values.lugar}
-            />
-            <label className="block">Descripción</label>
-            <textarea
-              className="px-2 py-1 rounded-sm w-full"
-              name="descripcion"
-              rows="3"
-              placeholder="Escribe una descripción"
-              onChange={handleChange}
-              value={values.descripcion}
-            ></textarea>
-            <label className="block">Temática</label>
-            <input
-              className="px-2 py-1 rounded-sm w-full"
-              type="text"
-              name="tematica"
-              placeholder="Escribe una temática"
-              onChange={handleChange}
-              value={values.tematica}
-            />
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="block bg-indigo-500 px-2 py-1 mt-2 text-white w-full rounded-md"
-            >
-              {isSubmitting ? "Guardando..." : "Guardar"}
-            </button>
-          </Form>
-        )}
-      </Formik>
+            Guardar
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

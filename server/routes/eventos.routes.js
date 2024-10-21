@@ -15,14 +15,14 @@ router.get("/ejemplo", authRequired, getEjemplo);
 
 const router = Router();
 
-router.get("/eventos", getEventos);
+router.get("/", getEventos);
 
-router.get("/eventos/:id", getEvento);
+router.get("/:id", getEvento);
 
-router.post("/eventos", createEvento);
+router.post("/", createEvento);
 
-router.put("/eventos/:id", updateEvento);
+router.put("/:id", updateEvento);
 
-router.delete("/eventos/:id", deleteEvento);
+router.delete("/:id", deleteEvento);
 
 export default router;
