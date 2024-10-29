@@ -13,11 +13,14 @@ import ProtectedRoute from "./ProtectedRoute";
 import EventoPage from "./pages/EventoPage";
 import ObraQRPage from "./pages/ObraQRPage";
 import ObraVotacionPage from "./pages/ObraVotacionPage";
+import ObrasForm from "./pages/ObrasForm";
+import { ObraProvider } from "./context/ObraProvider";
 
 function App() {
   return (
     <div>
       <EventoProvider>
+        <ObraProvider>
         <Navbar />
         <main className="pt-20">
           <Routes>
@@ -32,13 +35,15 @@ function App() {
               <Route path="/eventos/new" element={<EventosForm />} />
               <Route path="/eventos/edit/:id" element={<EventosForm />} />
               <Route path="/obras/votar/:id" element={<ObraVotacionPage />} />
+              <Route path="/obras/new" element={<ObrasForm />} />
             </Route>
 
-            <Route path="/obras" element={<ObrasPage />} />
+            <Route path="/obras" element={<ObrasPage />} />      
             <Route path="/obras/:id" element={<ObraCard />} />
             <Route path="/obras/qr/:id" element={<ObraQRPage />} />
           </Routes>
         </main>
+        </ObraProvider>
       </EventoProvider>
     </div>
   );

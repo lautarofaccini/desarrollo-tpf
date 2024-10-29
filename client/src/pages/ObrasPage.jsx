@@ -3,10 +3,15 @@ import { esculturas } from "../api/obras.api";
 
 function EsculturasPage() {
   return (
-    <div className="container mx-auto py-4 px-20">
-      <h1 className="text-2xl font-bold mb-8 hc-blue text-white text-center">
-        Esculturas del escultor
-      </h1>
+    <div className="bg-neutral-800 flex flex-col justify-between px-20 py-4">
+      <div className="flex justify-between items-center">
+      <h1 className="text-2xl font-bold mb-8 hc-blue text-white text-center"> Esculturas del escultor </h1>
+        
+        {/* Botón para redirigir a la página de "Subir una Obra" */}
+        <Link to="/obras/new" className="bg-gray-700 text-white px-4 py-2 rounded-md shadow-md hover:bg-gray-600">
+          Subir una Obra
+        </Link>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {esculturas.map((escultura) => (
           <div
@@ -32,6 +37,7 @@ function EsculturasPage() {
                 Ver más
               </Link>
             </div>
+            
           </div>
         ))}
       </div>
