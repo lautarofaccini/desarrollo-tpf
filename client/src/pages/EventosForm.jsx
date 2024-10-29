@@ -31,7 +31,7 @@ function EventosForm() {
         setValue("tiempo_inicio", tiempoInicioFormatted);
         setValue("fecha_fin", fechaFin);
         setValue("tiempo_fin", tiempoFinFormatted);
-        setValue("lugar", eventoData.lugar || "");
+        setValue("lugar", eventoData.lugar);
         setValue("descripcion", eventoData.descripcion || "");
         setValue("tematica", eventoData.tematica || "");
 
