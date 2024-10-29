@@ -40,6 +40,7 @@ export const createObra = async (req, res) => {
       id_evento,
       id_escultor,
     } = req.body;
+    console.log(req.body);
     const [result] = await pool.query(
       "INSERT INTO obras(fecha_creacion, descripcion, material, estilo, calificacion, id_evento, id_escultor) VALUES (?, ?, ?, ?, ?, ?, ?)",
       [
