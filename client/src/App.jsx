@@ -11,6 +11,12 @@ import EventosForm from "./pages/eventos/EventosForm";
 
 import { EventoProvider } from "./context/EventoProvider";
 
+import EscultoresPage from "./pages/escultores/EscultoresPage";
+import EscultorPage from "./pages/escultores/EscultorPage";
+/* import EscultoresForm from "./pages/escultores/EscultoresForm"; */
+
+import { EscultorProvider } from "./context/EscultorProvider";
+
 import ObrasPage from "./pages/obras/ObrasPage";
 import ObraPage from "./pages/obras/ObraPage";
 import ObrasForm from "./pages/obras/ObrasForm";
@@ -26,35 +32,43 @@ function App() {
   return (
     <div>
       <EventoProvider>
-        <ObraProvider>
-          <Navbar />
-          <main className="pt-20">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="*" element={<NotFound />} />
+        <EscultorProvider>
+          <ObraProvider>
+            <Navbar />
+            <main className="pt-20">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="*" element={<NotFound />} />
 
-              <Route path="/eventos" element={<EventosPage />} />
-              <Route path="/eventos/:id" element={<EventoPage />} />
+                <Route path="/eventos" element={<EventosPage />} />
+                <Route path="/eventos/:id" element={<EventoPage />} />
 
-              <Route path="/obras" element={<ObrasPage />} />
-              <Route path="/obras/:id" element={<ObraPage />} />
-              <Route path="/obras/qr/:id" element={<ObraQRPage />} />
+                <Route path="/escultores" element={<EscultoresPage />} />
+                <Route path="/escultores/:id" element={<EscultorPage />} />
 
-              <Route element={<ProtectedRoute />}>
-                <Route path="/eventos/new" element={<EventosForm />} />
-                <Route path="/eventos/edit/:id" element={<EventosForm />} />
+                <Route path="/obras" element={<ObrasPage />} />
+                <Route path="/obras/:id" element={<ObraPage />} />
+                <Route path="/obras/qr/:id" element={<ObraQRPage />} />
 
-                <Route path="/obras/new" element={<ObrasForm />} />
-                <Route path="/obras/edit/:id" element={<ObrasForm />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/eventos/new" element={<EventosForm />} />
+                  <Route path="/eventos/edit/:id" element={<EventosForm />} />
 
-                <Route path="/obras/votar/:id" element={<ObraVotacionPage />} />
-              </Route>
+                  <Route path="/obras/new" element={<ObrasForm />} />
+                  <Route path="/obras/edit/:id" element={<ObrasForm />} />
 
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/login" element={<LoginPage />} />
-            </Routes>
-          </main>
-        </ObraProvider>
+                  <Route
+                    path="/obras/votar/:id"
+                    element={<ObraVotacionPage />}
+                  />
+                </Route>
+
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/login" element={<LoginPage />} />
+              </Routes>
+            </main>
+          </ObraProvider>
+        </EscultorProvider>
       </EventoProvider>
     </div>
   );

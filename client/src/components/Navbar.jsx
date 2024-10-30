@@ -28,6 +28,12 @@ function Navbar() {
           </Link>
         </li>
 
+        <li>
+          <Link to="/escultores" className="text-white px-2 py-1 text-2xl">
+            Escultores
+          </Link>
+        </li>
+
         {isAuthenticated ? (
           <>
             <li>
