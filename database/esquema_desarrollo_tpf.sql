@@ -42,7 +42,7 @@ CREATE TABLE obras (
   calificacion DECIMAL(3, 2),
 	id_evento INT UNSIGNED,
 	id_escultor INT UNSIGNED NOT NULL,
-	CONSTRAINT fk_obras_eventos FOREIGN KEY (id_evento) REFERENCES eventos(id_evento),
+	CONSTRAINT fk_obras_eventos FOREIGN KEY (id_evento) REFERENCES eventos(id_evento) ON DELETE SET NULL,
 	CONSTRAINT fk_obras_escultores FOREIGN KEY (id_escultor) REFERENCES escultores(id_escultor)
 )
 ENGINE=InnoDB
