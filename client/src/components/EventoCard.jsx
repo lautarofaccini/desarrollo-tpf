@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import EventoButtons from "./EventoButtons";
+import EdDelButtons from "./EdDelButtons";
 
 function EventoCard({ evento }) {
   return (
@@ -18,7 +18,7 @@ function EventoCard({ evento }) {
           new Date(evento.fecha_fin).toLocaleDateString()
         }
       </p>
-      <EventoButtons id_evento={evento.id_evento} />
+      <EdDelButtons id={evento.id_evento} />
     </div>
   );
 }

@@ -12,9 +12,16 @@ function Navbar() {
       <ul className="flex gap-x-2 items-center">
         <li>
           <Link to="/obras" className="text-white px-2 py-1 text-2xl">
-            Esculturas
+            Obras
           </Link>
         </li>
+        {isAuthenticated && (
+          <li>
+            <Link to="/obras/new" className="text-white px-2 py-1 text-2xl">
+              Crear Obra
+            </Link>
+          </li>
+        )}
         <li>
           <Link to="/eventos" className="text-white px-2 py-1 text-2xl">
             Eventos
