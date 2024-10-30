@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useEventos } from "../context/EventoContext";
+import { useEventos } from "@/context/EventoContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 

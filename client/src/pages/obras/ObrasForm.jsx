@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
-import { useObra } from "../context/ObraContext";
+import { useObras } from "@/context/ObraContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 
 function ObrasForm() {
   const { register, handleSubmit, setValue } = useForm();
 
-  const { createObra, getObra, updateObra } = useObra();
+  const { createObra, getObra, updateObra } = useObras();
 
   const navigate = useNavigate();
 
@@ -16,8 +16,14 @@ function ObrasForm() {
     async function loadObra() {
       if (params.id) {
         const obraData = await getObra(params.id);
+        console.log(obraData)
 
-        setValue("fecha_creacion", obraData.fecha_creacion);
+        // Convertir la fecha al formato "yyyy-MM-dd"
+        const fecha_creacion = obraData.fecha_creacion
+          ? new Date(obraData.fecha_creacion).toISOString().split("T")[0]
+          : "";
+
+        setValue("fecha_creacion", fecha_creacion);
         setValue("descripcion", obraData.descripcion || "");
         setValue("material", obraData.material || "");
         setValue("estilo", obraData.material || "");
