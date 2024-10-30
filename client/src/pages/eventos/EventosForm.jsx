@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useEventos } from "../context/EventoContext";
+import { useEventos } from "@/context/EventoContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -31,7 +31,7 @@ function EventosForm() {
         setValue("tiempo_inicio", tiempoInicioFormatted);
         setValue("fecha_fin", fechaFin);
         setValue("tiempo_fin", tiempoFinFormatted);
-        setValue("lugar", eventoData.lugar || "");
+        setValue("lugar", eventoData.lugar);
         setValue("descripcion", eventoData.descripcion || "");
         setValue("tematica", eventoData.tematica || "");
 

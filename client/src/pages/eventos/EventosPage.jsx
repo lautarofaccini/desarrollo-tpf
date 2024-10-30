@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import EventoCard from "../components/EventoCard";
-import { useEventos } from "../context/EventoContext";
+import EventoCard from "@/components/EventoCard";
+import { useEventos } from "@/context/EventoContext";
 
 function EventosPage() {
   const { eventos, loadEventos } = useEventos();

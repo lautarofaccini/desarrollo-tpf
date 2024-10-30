@@ -21,7 +21,7 @@ export const ObraProvider = ({ children }) => {
     try {
       const response = await deleteObraRequest(id);
       console.log(response);
-      setObras(obras.filter((obra) => obra.id_evento !== id));
+      setObras(obras.filter((obra) => obra.id_obra !== id));
     } catch (error) {
       console.error(error);
     }
@@ -33,8 +33,8 @@ export const ObraProvider = ({ children }) => {
       await createObraRequest(obra);
       
       /* 
-      TODO: Ver forma de no pedir todos los eventos cada vez que se carga la pagina, si asi fuera se podria usar ->
-      setEventos([...eventos, response.data]) */
+      TODO: Ver forma de no pedir todos los obras cada vez que se carga la pagina, si asi fuera se podria usar ->
+      setObras([...obras, response.data]) */
     } catch (error) {
       console.error(error);
     }

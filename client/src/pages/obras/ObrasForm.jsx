@@ -1,30 +1,35 @@
 import { useForm } from "react-hook-form";
-import { useObra } from "../context/ObraContext";
+import { useObras } from "@/context/ObraContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 
 function ObrasForm() {
   const { register, handleSubmit, setValue } = useForm();
 
-  const { createObra, getObra, updateObra } = useObra();
+  const { createObra, getObra, updateObra } = useObras();
 
   const navigate = useNavigate();
 
   const params = useParams();
-
+  //Solicitar imagenes en el formulario
   useEffect(() => {
     async function loadObra() {
       if (params.id) {
         const obraData = await getObra(params.id);
+        console.log(obraData)
 
-        setValue("fecha_creacion", obraData.fecha_creacion);
+        // Convertir la fecha al formato "yyyy-MM-dd"
+        const fecha_creacion = obraData.fecha_creacion
+          ? new Date(obraData.fecha_creacion).toISOString().split("T")[0]
+          : "";
+
+        setValue("fecha_creacion", fecha_creacion);
         setValue("descripcion", obraData.descripcion || "");
-        setValue("material", obraData.material);
-        setValue("estilo", obraData.material);
-        setValue("calificacion", obraData.calificacion);
+        setValue("material", obraData.material || "");
+        setValue("estilo", obraData.material || "");
+        setValue("calificacion", obraData.calificacion || "");
         setValue("id_evento", obraData.id_evento);
         setValue("id_escultor", obraData.id_escultor);
-
       } else {
         setValue("fecha_creacion", "");
         setValue("descripcion", "");
@@ -41,16 +46,17 @@ function ObrasForm() {
   const onSubmit = handleSubmit(async (values) => {
     // Combinar fecha y hora en un solo valor de tipo datetime
     const obra = {
-        fecha_creacion: values.fecha_creacion,
-        descripcion: values.descripcion,
-        material: values.material,
-        estilo: values.estilo,
-        calificacion: 0.0,
-        id_evento: values.id_evento,
-        id_escultor: values.id_escultor
+      fecha_creacion: values.fecha_creacion,
+      descripcion: values.descripcion,
+      material: values.material,
+      estilo: values.estilo,
+      calificacion: 0.0,
+      id_evento: values.id_evento,
+      id_escultor: values.id_escultor,
     };
 
     // Filtrar campos opcionales
+    if (obra.fecha_creacion === "") delete obra.fecha_creacion;
     if (obra.material === "") delete obra.material;
     if (obra.descripcion === "") delete obra.descripcion;
     if (obra.estilo === "") delete obra.estilo;
@@ -100,15 +106,19 @@ function ObrasForm() {
             {...register("estilo")}
             className="px-2 py-1 rounded-sm w-full"
           />
+          <label className="text-gray-400 block">ID del Evento</label>
           <input
-            type="text"
-            placeholder="Escribe el evento del que participo la obra"
+            type="number"
+            min="1"
+            placeholder="ID del evento de la obra"
             {...register("id_evento")}
             className="px-2 py-1 rounded-sm w-full"
           />
+          <label className="text-gray-400 block">ID del Escultor</label>
           <input
-            type="text"
-            placeholder="Escribe el escultor que compuso la obra"
+            type="number"
+            min="1"
+            placeholder="ID del escultor de la obra"
             {...register("id_escultor")}
             className="px-2 py-1 rounded-sm w-full"
           />
