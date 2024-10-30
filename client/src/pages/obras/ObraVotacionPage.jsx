@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { verifyObrasTokenRequest } from "../api/obras.api";
+import { verifyObrasTokenRequest } from "@/api/obras.api";
 
 function ObraVotacionPage() {
   const location = useLocation();

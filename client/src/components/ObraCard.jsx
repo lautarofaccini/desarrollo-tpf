@@ -1,30 +1,31 @@
-// src/components/EsculturaDetail.js
-import { useParams } from "react-router-dom";
-import { esculturas } from "../api/obras.api";
+import { Link } from "react-router-dom";
 
-function EsculturaCard() {
-  const { id } = useParams();
-  const escultura = esculturas.find((e) => e.id === parseInt(id));
-
-  if (!escultura) {
-    return <div>Escultura no encontrada</div>;
-  }
+function ObraCard({ obra }) {
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex flex-col items-center">
-        <img
-          src={escultura.imagen}
-          alt={escultura.nombre}
-          className="w-full max-w-md object-cover"
-        />
-        <h1 className="text-3xl font-bold mt-4 text-white">
-          {escultura.nombre}
-        </h1>
-        <p className="mt-2 text-gray-700">{escultura.descripcion}</p>
-        {/* aca hay que agregar para que se puedan ver las otras imagenes cuando entra a la escultura*/}
+    <div
+      key={obra.id_obra}
+      className="border rounded-lg overflow-hidden shadow-lg flex flex-col h-full min-h-[400px]"
+    >
+      <img
+        src={obra.imagen || "images.jpg"}
+        alt={obra.nombre}
+        className="w-full h-64 object-cover"
+      />
+      <div className="p-2 flex-grow">
+        <h2 className="text-xl font-semibold text-white">{obra.estilo}</h2>
+        <p className="text-gray-400">{obra.descripcion}</p>
+        <p className="text-gray-400">Material: {obra.material || "none"}</p>
+      </div>
+      <div className="p-2 mt-auto">
+        <Link
+          to={`/obras/${obra.id_obra}`}
+          className="mt-2 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full text-center"
+        >
+          Ver más
+        </Link>
       </div>
     </div>
   );
 }
 
-export default EsculturaCard;
+export default ObraCard;

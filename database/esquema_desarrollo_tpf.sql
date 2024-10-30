@@ -40,7 +40,7 @@ CREATE TABLE obras (
   material VARCHAR(100),
   estilo VARCHAR(100),
   calificacion DECIMAL(3, 2),
-	id_evento INT UNSIGNED NOT NULL,
+	id_evento INT UNSIGNED,
 	id_escultor INT UNSIGNED NOT NULL,
 	CONSTRAINT fk_obras_eventos FOREIGN KEY (id_evento) REFERENCES eventos(id_evento),
 	CONSTRAINT fk_obras_escultores FOREIGN KEY (id_escultor) REFERENCES escultores(id_escultor)

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getObrasQRRequest } from "../api/obras.api";
+import { getObrasQRRequest } from "@/api/obras.api";
 import { Link, useParams } from "react-router-dom";
 import QRCode from "qrcode-decoder";
 

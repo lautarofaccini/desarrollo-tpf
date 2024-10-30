@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useEventos } from "../context/EventoContext";
+import { useEventos } from "@/context/EventoContext";
 import { useParams } from "react-router-dom";
-import EventoButtons from "../components/EventoButtons";
+import EdDelButtons from "@/components/EdDelButtons";
 
 function EventoPage() {
   const [evento, setEvento] = useState();
@@ -39,7 +39,7 @@ function EventoPage() {
             new Date(evento.fecha_fin).toLocaleDateString()
           }
         </p>
-        <EventoButtons id_evento={evento.id_evento} />
+        <EdDelButtons id={evento.id_evento} />
       </div>
     </section>
   );
