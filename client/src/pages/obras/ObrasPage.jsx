@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useObras } from "@/context/ObraContext";
 import ObraCard from "@/components/ObraCard";
