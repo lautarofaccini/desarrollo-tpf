@@ -80,21 +80,34 @@ function EventosForm() {
           <h1 className="text-white text-xl font-bold uppercase text-center">
             {params.id ? "Actualizar Evento" : "Crear Evento"}
           </h1>
-
           <label className="text-gray-400 block">Fecha de Inicio</label>
           <div className="flex gap-x-2">
             <input
               type="date"
               {...register("fecha_inicio")}
-              className=" text-black"
+              className=" px-2 py-1 rounded-sm w-full"
             />
-            <input type="time" {...register("tiempo_inicio")} />
+            <input
+              type="time"
+              {...register("tiempo_inicio")}
+              className="px-2 py-1 rounded-sm"
+            />
           </div>
+
           <label className="text-gray-400 block">Fecha de Fin</label>
           <div className="flex gap-x-2">
-            <input type="date" {...register("fecha_fin")} />
-            <input type="time" {...register("tiempo_fin")} />
+            <input
+              type="date"
+              {...register("fecha_fin")}
+              className=" px-2 py-1 rounded-sm w-full"
+            />
+            <input
+              type="time"
+              {...register("tiempo_fin")}
+              className="px-2 py-1 rounded-sm"
+            />
           </div>
+
           <label className="text-gray-400 block">Lugar</label>
           <input
             type="text"
@@ -102,6 +115,7 @@ function EventosForm() {
             {...register("lugar")}
             className="px-2 py-1 rounded-sm w-full"
           />
+
           <label className="text-gray-400 block">Descripción</label>
           <textarea
             rows="3"
@@ -109,6 +123,7 @@ function EventosForm() {
             {...register("descripcion")}
             className="px-2 py-1 rounded-sm w-full"
           ></textarea>
+          
           <label className="text-gray-400 block">Temática</label>
           <input
             type="text"
