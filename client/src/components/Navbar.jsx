@@ -22,15 +22,24 @@ function Navbar() {
             </Link>
           </li>
         )}
-        <li>
-          <Link to="/eventos" className="text-white px-2 py-1 text-2xl">
-            Eventos
-          </Link>
-        </li>
 
         <li>
           <Link to="/escultores" className="text-white px-2 py-1 text-2xl">
             Escultores
+          </Link>
+        </li>
+
+        {isAuthenticated && (
+          <li>
+            <Link to="/escultores/new" className="text-white px-2 py-1 text-2xl">
+              Crear Escultor
+            </Link>
+          </li>
+        )}
+
+        <li>
+          <Link to="/eventos" className="text-white px-2 py-1 text-2xl">
+            Eventos
           </Link>
         </li>
 

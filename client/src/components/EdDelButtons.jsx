@@ -2,17 +2,20 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useEventos } from "../context/EventoContext";
 import { useObras } from "../context/ObraContext";
+import { useEscultores } from "@/context/EscultorContext";
 
 function EdDelButtons({ id }) {
   const { isAuthenticated } = useAuth();
   const { deleteEvento } = useEventos();
   const { deleteObra } = useObras();
+  const { deleteEscultor } = useEscultores();
   const navigate = useNavigate();
   const location = useLocation();
 
   // Detecta si estamos en "eventos" o en "obras" en base a la URL
-  const isEvento = location.pathname.includes("/eventos")
+  const isEvento = location.pathname.includes("/eventos");
   const isObra = location.pathname.includes("/obras");
+  const isEscultor = location.pathname.includes("/escultores");
 
   // Definimos las acciones de eliminar y editar en función del tipo de entidad
   const handleDelete = () => {
@@ -22,6 +25,9 @@ function EdDelButtons({ id }) {
     } else if (isObra) {
       deleteObra(id);
       navigate("/obras");
+    } else if (isEscultor) {
+      deleteEscultor(id);
+      navigate("/escultores");
     }
   };
 
@@ -30,6 +36,8 @@ function EdDelButtons({ id }) {
       navigate(`/eventos/edit/${id}`);
     } else if (isObra) {
       navigate(`/obras/edit/${id}`);
+    } else if (isEscultor) {
+      navigate(`/escultores/edit/${id}`);
     }
   };
 

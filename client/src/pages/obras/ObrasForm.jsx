@@ -16,7 +16,7 @@ function ObrasForm() {
     async function loadObra() {
       if (params.id) {
         const obraData = await getObra(params.id);
-        console.log(obraData)
+        console.log(obraData);
 
         // Convertir la fecha al formato "yyyy-MM-dd"
         const fecha_creacion = obraData.fecha_creacion
@@ -82,7 +82,7 @@ function ObrasForm() {
             <input
               type="date"
               {...register("fecha_creacion")}
-              className=" text-black"
+              className="px-2 py-1 rounded-sm w-full"
             />
           </div>
           <label className="text-gray-400 block">Material</label>
