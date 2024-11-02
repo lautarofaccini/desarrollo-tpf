@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import EventoCard from "@/components/EventoCard";
 import { useEventos } from "@/context/EventoContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-export default function EventosPage() {
+function EventosPage() {
   const { eventos, loadEventos } = useEventos();
   const [categorizedEvents, setCategorizedEvents] = useState({
     past: [],
@@ -12,6 +13,8 @@ export default function EventosPage() {
   });
   const [activeEventIndex, setActiveEventIndex] = useState(0);
   const containerRef = useRef(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadEventos();
@@ -42,12 +45,17 @@ export default function EventosPage() {
 
     setCategorizedEvents(categorized);
 
-    // Set the active event to the first current event, or the last past event, or the first future event
     if (categorized.current.length > 0) {
+      // Si hay eventos en curso, selecciona el primero de ellos
       setActiveEventIndex(categorized.past.length);
+    } else if (categorized.future.length > 0) {
+      // Si no hay eventos en curso pero hay eventos futuros, selecciona el primero futuro
+      setActiveEventIndex(categorized.past.length + categorized.current.length);
     } else if (categorized.past.length > 0) {
+      // Si no hay eventos en curso ni futuros, selecciona el último evento pasado
       setActiveEventIndex(categorized.past.length - 1);
     } else {
+      // Si no hay eventos en absoluto, establece el índice en 0
       setActiveEventIndex(0);
     }
   }, [eventos]);
@@ -82,14 +90,25 @@ export default function EventosPage() {
     };
   }, [allEvents.length]);
 
+  // Manejo de clic en un evento
+  const handleEventClick = (index, eventoId) => {
+    if (index === activeEventIndex) {
+      // Si el evento ya está seleccionado, redirige a la página de detalles
+      navigate(`/eventos/${eventoId}`);
+    } else {
+      // Si no está seleccionado, establece el índice activo en el evento clicado
+      setActiveEventIndex(index);
+    }
+  };
+  
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4" ref={containerRef}>
+    <div className="min-h-screen text-white py-8 px-4" ref={containerRef}>
       <div className="max-w-4xl mx-auto">
         <AnimatePresence>
           <motion.div
             className="space-y-8"
             initial={{ y: 0 }}
-            animate={{ y: -activeEventIndex * 120 }} // Adjust this value based on your card height
+            animate={{ y: -activeEventIndex * 120 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
             {allEvents.map((evento, index) => (
@@ -97,6 +116,7 @@ export default function EventosPage() {
                 key={evento.id_evento}
                 evento={evento}
                 isActive={index === activeEventIndex}
+                onClick={() => handleEventClick(index, evento.id_evento)}
               />
             ))}
           </motion.div>
@@ -105,3 +125,5 @@ export default function EventosPage() {
     </div>
   );
 }
+
+export default EventosPage;
