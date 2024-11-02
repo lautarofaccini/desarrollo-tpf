@@ -13,7 +13,7 @@ import { EventoProvider } from "./context/EventoProvider";
 
 import EscultoresPage from "./pages/escultores/EscultoresPage";
 import EscultorPage from "./pages/escultores/EscultorPage";
-/* import EscultoresForm from "./pages/escultores/EscultoresForm"; */
+import EscultoresForm from "./pages/escultores/EscultoresForm";
 
 import { EscultorProvider } from "./context/EscultorProvider";
 
@@ -53,6 +53,9 @@ function App() {
                 <Route element={<ProtectedRoute />}>
                   <Route path="/eventos/new" element={<EventosForm />} />
                   <Route path="/eventos/edit/:id" element={<EventosForm />} />
+
+                  <Route path="/escultores/new" element={<EscultoresForm />} />
+                  <Route path="/escultores/edit/:id" element={<EscultoresForm />} />
 
                   <Route path="/obras/new" element={<ObrasForm />} />
                   <Route path="/obras/edit/:id" element={<ObrasForm />} />
