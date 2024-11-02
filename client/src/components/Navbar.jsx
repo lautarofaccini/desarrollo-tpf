@@ -5,7 +5,7 @@ function Navbar() {
   const { isAuthenticated, logout } = useAuth();
 
   return (
-    <div className="fixed bg-neutral-800 flex justify-between px-20 py-4 top-0 left-0 w-full shadow-md">
+    <div className="z-10 fixed bg-neutral-800 flex justify-between px-20 py-4 top-0 left-0 w-full shadow-md">
       <Link to="/" className="text-white font-bold text-3xl">
         <img src="/Logo.png" alt="Logo" />
       </Link>
@@ -22,15 +22,24 @@ function Navbar() {
             </Link>
           </li>
         )}
-        <li>
-          <Link to="/eventos" className="text-white px-2 py-1 text-2xl">
-            Eventos
-          </Link>
-        </li>
 
         <li>
           <Link to="/escultores" className="text-white px-2 py-1 text-2xl">
             Escultores
+          </Link>
+        </li>
+
+        {isAuthenticated && (
+          <li>
+            <Link to="/escultores/new" className="text-white px-2 py-1 text-2xl">
+              Crear Escultor
+            </Link>
+          </li>
+        )}
+
+        <li>
+          <Link to="/eventos" className="text-white px-2 py-1 text-2xl">
+            Eventos
           </Link>
         </li>
 
