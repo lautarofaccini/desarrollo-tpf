@@ -6,7 +6,7 @@ USE desarrollo_tpf;
 -- Insertar datos en la tabla eventos
 INSERT INTO eventos (fecha_inicio, fecha_fin, lugar, descripcion, tematica) VALUES
 ('2024-11-01 10:00:00', '2024-11-01 18:00:00', 'Museo de Arte Moderno', 'Exposición de esculturas modernas', 'Arte Moderno'),
-('2024-12-15 09:00:00', '2024-12-15 17:00:00', 'Centro Cultural', 'Encuentro de escultores emergentes', 'Escultura Contemporánea');
+('2025-12-15 09:00:00', '2025-12-15 17:00:00', 'Centro Cultural', 'Encuentro de escultores emergentes', 'Escultura Contemporánea');
 
 -- Insertar datos en la tabla escultores
 INSERT INTO escultores (nombre, apellido, nacionalidad, fecha_nacimiento, biografia, email, telefono) VALUES
