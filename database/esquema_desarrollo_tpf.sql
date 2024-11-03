@@ -1,4 +1,4 @@
-
+DROP DATABASE IF EXISTS desarrollo_tpf;
 CREATE DATABASE IF NOT EXISTS desarrollo_tpf;
 USE desarrollo_tpf;
 
@@ -9,7 +9,8 @@ CREATE TABLE eventos (
     fecha_fin DATETIME NOT NULL,
     lugar VARCHAR(255) NOT NULL,
     descripcion TEXT,
-    tematica VARCHAR(255)
+    tematica VARCHAR(255),
+		CONSTRAINT chk_fecha_valida CHECK (fecha_inicio < fecha_fin)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -128,3 +129,65 @@ STARTS NOW()
 DO
 	UPDATE escultores
 	SET edad = TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE());
+
+/* Trigger para controlar que no se repita la fecha de inicio en la inserción. */ 
+DELIMITER $$ 
+CREATE TRIGGER fecha_inicio_unica_in
+BEFORE INSERT ON eventos
+FOR EACH ROW 
+BEGIN 
+	IF (SELECT COUNT(*) FROM eventos WHERE YEAR(fecha_inicio) = YEAR(NEW.fecha_inicio)) > 0 THEN 
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El año de inicio debe ser único.';
+	END IF;
+END $$ 
+DELIMITER ;
+
+/* Trigger para controlar que nose repita la fecha de fin del evento inserción. */ 
+DELIMITER $$ 
+CREATE TRIGGER fecha_fin_unica_in
+BEFORE INSERT ON eventos
+FOR EACH ROW 
+BEGIN 
+	IF (SELECT COUNT(*) FROM eventos WHERE YEAR(fecha_fin) = YEAR(NEW.fecha_fin)) > 0 THEN 
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El año de fin debe ser único.';
+	END IF;
+END $$ 
+DELIMITER ; 
+
+/* Trigger que controla la fecha de inicio y de fin en la actualización. */
+DELIMITER $$
+
+CREATE TRIGGER check_fecha_actualizacion
+BEFORE UPDATE ON eventos
+FOR EACH ROW
+BEGIN
+    DECLARE msg VARCHAR(255);
+
+    -- Verificar si la nueva fecha de inicio coincide con alguna otra fecha de inicio en la tabla
+    IF EXISTS (
+        SELECT 1
+        FROM eventos
+        WHERE YEAR(fecha_inicio) = YEAR(NEW.fecha_inicio)
+        AND id_evento != NEW.id_evento
+    ) THEN
+        SET msg = 'El nuevo año de inicio coincide con uno existente.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+    END IF;
+
+    -- Verificar si la nueva fecha de fin coincide con alguna otra fecha de fin en la tabla
+    IF EXISTS (
+        SELECT 1
+        FROM eventos
+        WHERE YEAR(fecha_fin) = YEAR(NEW.fecha_fin)
+        AND id_evento != NEW.id_evento
+    ) THEN
+        SET msg = 'El nuevo año de fin coincide con uno existente.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+    END IF;
+
+END $$
+
+DELIMITER ;
+
+/* Vista para ver las fechas ordenadas por la fecha de inicio de mayor a menor. */ 
+CREATE VIEW vista_fechas AS SELECT fecha_inicio, fecha_fin FROM eventos ORDER BY (fecha_inicio) DESC;
