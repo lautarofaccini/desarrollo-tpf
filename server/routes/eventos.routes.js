@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   getEventos,
+  getEventosOrdenados,
   getEvento,
   createEvento,
   updateEvento,
@@ -15,14 +16,16 @@ router.get("/ejemplo", authRequired, getEjemplo);
 
 const router = Router();
 
-router.get("/", getEventos);
+router.get("/eventos", getEventos);
 
-router.get("/:id", getEvento);
+router.get("/eventosOrd", getEventosOrdenados);
 
-router.post("/", createEvento);
+router.get("/eventos/:id", getEvento);
 
-router.put("/:id", updateEvento);
+router.post("/eventos", createEvento);
 
-router.delete("/:id", deleteEvento);
+router.put("/eventos/:id", updateEvento);
+
+router.delete("/eventos/:id", deleteEvento);
 
 export default router;
