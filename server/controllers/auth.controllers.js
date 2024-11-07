@@ -55,7 +55,7 @@ export const login = async (req, res) => {
     //WARN: Cambiar los mensajes a uno genérico, no es bueno mostrar donde falló
     //Credenciales inválidas
     if (result.length === 0)
-      return res.status(404).json({ message: "Usuario not found" });
+      return res.status(404).json(["Usuario no encontrado"]);
 
     const user = result[0];
 

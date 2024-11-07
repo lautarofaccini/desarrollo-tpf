@@ -10,10 +10,9 @@ function ObraCard({ obra }) {
   useEffect(() => {
     async function loadImagenes() {
       const data = await getImagenesByObra(obra.id_obra);
-      console.log(data[0].url);
       setImagenes(data[0].url);
     }
-    //    loadImagenes();
+    loadImagenes();
   }, [obra, getImagenesByObra]);
 
   return (
