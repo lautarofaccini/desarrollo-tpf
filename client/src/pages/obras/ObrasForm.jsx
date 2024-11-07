@@ -77,6 +77,16 @@ function ObrasForm() {
             {params.id ? "Actualizar Obra" : "Crear Obra"}
           </h1>
 
+          <label className="text-gray-400 block">Imagen</label>
+          <input
+            type="file"
+            {
+              ...register("imagen")
+              //La imagen se guarda en una tabla aparte
+            }
+            className="px-2 py-1 rounded-sm w-full"
+          />
+
           <label className="text-gray-400 block">Fecha de Creacion</label>
           <div className="flex gap-x-2">
             <input
