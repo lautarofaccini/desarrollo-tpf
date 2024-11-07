@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 function EventosPage() {
-  const { eventos, loadEventos } = useEventos();
+  const { eventos, loadEventosOrdenados } = useEventos();
   const [categorizedEvents, setCategorizedEvents] = useState({
     past: [],
     current: [],
@@ -17,14 +17,12 @@ function EventosPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    loadEventos();
-  }, [loadEventos]);
+    loadEventosOrdenados();
+  }, [loadEventosOrdenados]);
 
   useEffect(() => {
     const currentDate = new Date();
-    const sortedEvents = [...eventos].sort(
-      (a, b) => new Date(a.fecha_inicio) - new Date(b.fecha_inicio)
-    );
+    const sortedEvents = eventos;
 
     const categorized = sortedEvents.reduce(
       (acc, evento) => {
@@ -40,7 +38,7 @@ function EventosPage() {
         }
         return acc;
       },
-      { past: [], current: [], future: [] }
+      { past: [], current: [], future: [] },
     );
 
     setCategorizedEvents(categorized);
@@ -100,7 +98,7 @@ function EventosPage() {
       setActiveEventIndex(index);
     }
   };
-  
+
   return (
     <div className="min-h-screen text-white py-8 px-4" ref={containerRef}>
       <div className="max-w-4xl mx-auto">

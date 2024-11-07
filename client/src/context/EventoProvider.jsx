@@ -3,6 +3,7 @@ import {
   createEventoRequest,
   deleteEventoRequest,
   getEventosRequest,
+  getEventosOrdenadosRequest,
   getEventoRequest,
   updateEventoRequest,
 } from "../api/eventos.api";
@@ -14,6 +15,11 @@ export const EventoProvider = ({ children }) => {
 
   const loadEventos = useCallback(async () => {
     const response = await getEventosRequest();
+    setEventos(response.data);
+  }, []);
+
+  const loadEventosOrdenados = useCallback(async () => {
+    const response = await getEventosOrdenadosRequest();
     setEventos(response.data);
   }, []);
 
@@ -61,6 +67,7 @@ export const EventoProvider = ({ children }) => {
       value={{
         eventos,
         loadEventos,
+        loadEventosOrdenados,
         deleteEvento,
         createEvento,
         getEvento,
