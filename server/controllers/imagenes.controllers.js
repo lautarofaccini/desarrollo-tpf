@@ -28,7 +28,6 @@ export const getImagenesByObra = async (req, res) => {
 
 export const createImagen = async (req, res) => {
   try {
-    console.log(req)
     // Verificar si existe un archivo en el request
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
@@ -49,7 +48,7 @@ export const createImagen = async (req, res) => {
         const url = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
 
         // Insertar la URL y el ID de la obra en la base de datos
-        const id_obra = 3;
+        const id_obra = parseInt(req.file.originalname.split("_")[0], 10);
         const [result] = await pool.query(
           "INSERT INTO imagenes(url, id_obra) VALUES (?, ?)",
           [url, id_obra]
