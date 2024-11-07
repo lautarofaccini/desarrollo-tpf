@@ -155,6 +155,7 @@ END $$
 DELIMITER ; 
 
 /* Trigger que controla la fecha de inicio y de fin en la actualización. */
+DROP TRIGGER check_fecha_actualizacion;
 DELIMITER $$
 
 CREATE TRIGGER check_fecha_actualizacion
@@ -184,10 +185,22 @@ BEGIN
         SET msg = 'El nuevo año de fin coincide con uno existente.';
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
     END IF;
+    
+     -- Verificar que la nueva fecha de fin no sea anterior a la fecha de inicio
+    IF EXISTS (
+        SELECT 1
+        FROM eventos
+        -- WHERE YEAR(fecha_fin) < YEAR(NEW.fecha_fin)
+        WHERE timestampdiff(day,fecha_fin,NEW.fecha_fin) < 0
+        AND id_evento = NEW.id_evento
+    ) THEN
+        SET msg = 'El nuevo año de fin es anterior a la fecha de inicio.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+    END IF;
 
-END $$
+END $$
 
-DELIMITER ;
+DELIMITER ;
 
 /* Vista para ver las fechas ordenadas por la fecha de inicio de mayor a menor. */ 
 CREATE VIEW vista_fechas AS SELECT fecha_inicio, fecha_fin FROM eventos ORDER BY (fecha_inicio) DESC;
