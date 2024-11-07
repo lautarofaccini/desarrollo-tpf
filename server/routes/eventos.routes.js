@@ -6,7 +6,7 @@ import {
   updateEvento,
   deleteEvento,
 } from "../controllers/eventos.controllers.js";
-import { authRequired } from "../middlewares/validateToken.js"; 
+import { authRequired } from "../middlewares/validateToken.js";
 /* 
 Agregar authRequired para asegurar la ruta
 Ejemplo: 
