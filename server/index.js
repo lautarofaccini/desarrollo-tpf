@@ -16,7 +16,7 @@ app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 app.use(morgan("dev"));
 app.use(cookieParser());
@@ -24,7 +24,7 @@ app.use(express.json());
 
 app.use(authRoutes);
 app.use("/escultores/", escultoresRoutes);
-app.use("/eventos/", eventosRoutes);
+app.use("/", eventosRoutes);
 app.use(indexRoutes);
 app.use("/obras", obrasRoutes);
 app.use("/imagenes", imagenesRoutes);

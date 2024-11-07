@@ -10,7 +10,7 @@ CREATE TABLE eventos (
     lugar VARCHAR(255) NOT NULL,
     descripcion TEXT,
     tematica VARCHAR(255),
-		CONSTRAINT chk_fecha_valida CHECK (fecha_inicio <= fecha_fin)
+		CONSTRAINT chk_fecha_valida CHECK (fecha_inicio < fecha_fin)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
