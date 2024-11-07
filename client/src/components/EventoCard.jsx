@@ -7,28 +7,27 @@ function EventoCard({ evento, isActive, onClick }) {
     const startDate = new Date(evento.fecha_inicio);
     const endDate = new Date(evento.fecha_fin);
 
-    if (endDate < currentDate) return "Pasado";
+    if (endDate < currentDate) return "Finalizado";
     if (startDate <= currentDate && currentDate <= endDate) return "En curso";
-    return "Futuro";
+    return "Próximamente";
   };
 
   // Obtener el color de fondo en función del estado
   const getBackgroundColor = () => {
     const status = getStatus();
 
-        return "bg-zinc-800"; // Color por defecto en caso de error
-
+    return "bg-zinc-800"; // Color por defecto en caso de error
   };
 
   // Obtener el color del label según el estado
   const getLabelColor = () => {
     const status = getStatus();
     switch (status) {
-      case "Pasado":
+      case "Finalizado":
         return "bg-gray-400 text-gray-800"; // Gris claro para eventos pasados
       case "En curso":
-        return "bg-yellow-400 text-yellow-800"; // Amarillo claro para eventos en curso
-      case "Futuro":
+        return "bg-[#00FF00] text-[#006400]"; // Verde Artaud
+      case "Próximamente":
         return "bg-blue-400 text-blue-800"; // Azul claro para eventos futuros
       default:
         return "bg-gray-400 text-gray-800"; // Color por defecto en caso de error
