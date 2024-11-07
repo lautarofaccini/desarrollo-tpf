@@ -5,6 +5,7 @@ import {
   getObrasRequest,
   getObraRequest,
   updateObraRequest,
+  getImagenesByObraRequest,
 } from "../api/obras.api";
 
 export const ObraContext = createContext();
@@ -27,11 +28,9 @@ export const ObraProvider = ({ children }) => {
     }
   };
 
-  const createObra = async (obra) => {
+  const createObra = async (obra, selectedImage) => {
     try {
-        console.log(obra);
-      await createObraRequest(obra);
-      
+      await createObraRequest(obra, selectedImage);
       /* 
       TODO: Ver forma de no pedir todos los obras cada vez que se carga la pagina, si asi fuera se podria usar ->
       setObras([...obras, response.data]) */
@@ -58,6 +57,15 @@ export const ObraProvider = ({ children }) => {
     }
   };
 
+  const getImagenesByObra = async (id) => {
+    try {
+      const response = await getImagenesByObraRequest(id);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <ObraContext.Provider
       value={{
@@ -67,6 +75,7 @@ export const ObraProvider = ({ children }) => {
         createObra,
         getObra,
         updateObra,
+        getImagenesByObra,
       }}
     >
       {children}
