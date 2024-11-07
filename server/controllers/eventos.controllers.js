@@ -11,9 +11,10 @@ export const getEventos = async (req, res) => {
 
 export const getEvento = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM eventos WHERE id_evento = ?", [
-      req.params.id,
-    ]);
+    const [result] = await pool.query(
+      "SELECT * FROM eventos WHERE id_evento = ?",
+      [req.params.id],
+    );
 
     if (result.length === 0)
       return res.status(404).json({ message: "Evento not found" });
@@ -29,7 +30,7 @@ export const createEvento = async (req, res) => {
     const { fecha_inicio, fecha_fin, lugar, descripcion, tematica } = req.body;
     const [result] = await pool.query(
       "INSERT INTO eventos(fecha_inicio, fecha_fin, lugar, descripcion, tematica) VALUES (?, ?, ?, ?, ?)",
-      [fecha_inicio, fecha_fin, lugar, descripcion, tematica]
+      [fecha_inicio, fecha_fin, lugar, descripcion, tematica],
     );
     res.json({
       id_evento: result.insertId,
@@ -46,9 +47,10 @@ export const createEvento = async (req, res) => {
 
 export const deleteEvento = async (req, res) => {
   try {
-    const [result] = await pool.query("DELETE FROM eventos WHERE id_evento = ?", [
-      req.params.id,
-    ]);
+    const [result] = await pool.query(
+      "DELETE FROM eventos WHERE id_evento = ?",
+      [req.params.id],
+    );
 
     if (result.affectedRows === 0)
       return res.status(404).json({ message: "Evento not found" });
@@ -61,15 +63,16 @@ export const deleteEvento = async (req, res) => {
 
 export const updateEvento = async (req, res) => {
   try {
-    const [result] = await pool.query("UPDATE eventos SET ? WHERE id_evento = ?", [
-      req.body,
-      req.params.id,
-    ]);
+    const [result] = await pool.query(
+      "UPDATE eventos SET ? WHERE id_evento = ?",
+      [req.body, req.params.id],
+    );
     if (result.affectedRows === 0)
       return res.status(404).json({ message: "Evento not found" });
-    const [updEvento] = await pool.query("SELECT * FROM eventos WHERE id_evento = ?", [
-      req.params.id,
-    ]);
+    const [updEvento] = await pool.query(
+      "SELECT * FROM eventos WHERE id_evento = ?",
+      [req.params.id],
+    );
     res.json(updEvento);
   } catch (error) {
     return res.status(500).json({ message: error.message });
