@@ -1,9 +1,14 @@
+<<<<<<< HEAD
+=======
+DROP DATABASE IF EXISTS desarrollo_tpf;
+>>>>>>> produccion/main
 CREATE DATABASE IF NOT EXISTS desarrollo_tpf;
 
 USE desarrollo_tpf;
 
 -- Tabla de eventos
 CREATE TABLE eventos (
+<<<<<<< HEAD
 	id_evento INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	fecha_inicio DATETIME NOT NULL,
 	fecha_fin DATETIME NOT NULL,
@@ -11,6 +16,19 @@ CREATE TABLE eventos (
 	descripcion TEXT,
 	tematica VARCHAR(255)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+=======
+    id_evento INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    fecha_inicio DATETIME NOT NULL,
+    fecha_fin DATETIME NOT NULL,
+    lugar VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    tematica VARCHAR(255),
+		CONSTRAINT chk_fecha_valida CHECK (fecha_inicio < fecha_fin)
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci;
+>>>>>>> produccion/main
 
 -- Tabla escultores
 CREATE TABLE escultores (
@@ -104,8 +122,92 @@ END IF;
 END $ $ DELIMITER;
 
 /* Evento para calcular la edad. */
+<<<<<<< HEAD
 CREATE EVENT IF NOT EXISTS actualizar_edad_escultores ON SCHEDULE EVERY 1 YEAR STARTS NOW() DO
 UPDATE
 	escultores
 SET
 	edad = TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE());
+=======
+CREATE EVENT IF NOT EXISTS actualizar_edad_escultores
+ON SCHEDULE EVERY 1 YEAR
+STARTS NOW()
+DO
+	UPDATE escultores
+	SET edad = TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE());
+
+/* Trigger para controlar que no se repita la fecha de inicio en la inserción. */ 
+DELIMITER $$ 
+CREATE TRIGGER fecha_inicio_unica_in
+BEFORE INSERT ON eventos
+FOR EACH ROW 
+BEGIN 
+	IF (SELECT COUNT(*) FROM eventos WHERE YEAR(fecha_inicio) = YEAR(NEW.fecha_inicio)) > 0 THEN 
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El año de inicio debe ser único.';
+	END IF;
+END $$ 
+DELIMITER ;
+
+/* Trigger para controlar que nose repita la fecha de fin del evento inserción. */ 
+DELIMITER $$ 
+CREATE TRIGGER fecha_fin_unica_in
+BEFORE INSERT ON eventos
+FOR EACH ROW 
+BEGIN 
+	IF (SELECT COUNT(*) FROM eventos WHERE YEAR(fecha_fin) = YEAR(NEW.fecha_fin)) > 0 THEN 
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El año de fin debe ser único.';
+	END IF;
+END $$ 
+DELIMITER ; 
+
+/* Trigger que controla la fecha de inicio y de fin en la actualización. */
+DROP TRIGGER check_fecha_actualizacion;
+DELIMITER $$
+
+CREATE TRIGGER check_fecha_actualizacion
+BEFORE UPDATE ON eventos
+FOR EACH ROW
+BEGIN
+    DECLARE msg VARCHAR(255);
+
+    -- Verificar si la nueva fecha de inicio coincide con alguna otra fecha de inicio en la tabla
+    IF EXISTS (
+        SELECT 1
+        FROM eventos
+        WHERE YEAR(fecha_inicio) = YEAR(NEW.fecha_inicio)
+        AND id_evento != NEW.id_evento
+    ) THEN
+        SET msg = 'El nuevo año de inicio coincide con uno existente.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+    END IF;
+
+    -- Verificar si la nueva fecha de fin coincide con alguna otra fecha de fin en la tabla
+    IF EXISTS (
+        SELECT 1
+        FROM eventos
+        WHERE YEAR(fecha_fin) = YEAR(NEW.fecha_fin)
+        AND id_evento != NEW.id_evento
+    ) THEN
+        SET msg = 'El nuevo año de fin coincide con uno existente.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+    END IF;
+    
+     -- Verificar que la nueva fecha de fin no sea anterior a la fecha de inicio
+    IF EXISTS (
+        SELECT 1
+        FROM eventos
+        -- WHERE YEAR(fecha_fin) < YEAR(NEW.fecha_fin)
+        WHERE timestampdiff(day,fecha_fin,NEW.fecha_fin) < 0
+        AND id_evento = NEW.id_evento
+    ) THEN
+        SET msg = 'El nuevo año de fin es anterior a la fecha de inicio.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+    END IF;
+
+END $$
+
+DELIMITER ;
+
+/* Vista para ver las fechas ordenadas por la fecha de inicio de mayor a menor. */ 
+CREATE VIEW vista_fechas AS SELECT fecha_inicio, fecha_fin FROM eventos ORDER BY (fecha_inicio) DESC;
+>>>>>>> produccion/main
