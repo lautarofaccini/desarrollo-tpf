@@ -68,21 +68,6 @@ export const createObra = async (req, res) => {
   }
 };
 
-export const deleteObra = async (req, res) => {
-  try {
-    const [result] = await pool.query("DELETE FROM obras WHERE id_obra = ?", [
-      req.params.id,
-    ]);
-
-    if (result.affectedRows === 0)
-      return res.status(404).json({ message: "Obra not found" });
-
-    return res.sendStatus(204);
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-};
-
 export const updateObra = async (req, res) => {
   try {
     const [result] = await pool.query("UPDATE obras SET ? WHERE id_obra = ?", [
@@ -96,6 +81,21 @@ export const updateObra = async (req, res) => {
       [req.params.id]
     );
     res.json(updObra);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteObra = async (req, res) => {
+  try {
+    const [result] = await pool.query("DELETE FROM obras WHERE id_obra = ?", [
+      req.params.id,
+    ]);
+
+    if (result.affectedRows === 0)
+      return res.status(404).json({ message: "Obra not found" });
+
+    return res.sendStatus(204);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
