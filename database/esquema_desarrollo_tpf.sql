@@ -187,6 +187,3 @@ BEGIN
 END $$
 
 DELIMITER ;
-
-/* Vista para ver las fechas ordenadas por la fecha de inicio de mayor a menor. */ 
-CREATE VIEW vista_fechas AS SELECT fecha_inicio, fecha_fin FROM eventos ORDER BY (fecha_inicio) DESC;
