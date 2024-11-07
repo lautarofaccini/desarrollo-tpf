@@ -14,7 +14,7 @@ function ObrasPage() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold mb-8 hc-blue text-white text-center">
           {" "}
-          Obras del escultor{" "}
+          Obras{" "}
         </h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

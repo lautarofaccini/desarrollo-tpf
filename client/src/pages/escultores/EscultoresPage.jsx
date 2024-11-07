@@ -15,7 +15,7 @@ function EscultoresPage() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold mb-8 hc-blue text-white text-center">
           {" "}
-          Escultores del escultor{" "}
+          Escultores{" "}
         </h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
