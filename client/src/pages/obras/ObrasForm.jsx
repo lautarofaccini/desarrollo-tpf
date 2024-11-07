@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useObras } from "@/context/ObraContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function ObrasForm() {
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const { register, handleSubmit, setValue } = useForm();
 
   const { createObra, getObra, updateObra } = useObras();
@@ -16,7 +18,6 @@ function ObrasForm() {
     async function loadObra() {
       if (params.id) {
         const obraData = await getObra(params.id);
-        console.log(obraData);
 
         // Convertir la fecha al formato "yyyy-MM-dd"
         const fecha_creacion = obraData.fecha_creacion
@@ -64,10 +65,14 @@ function ObrasForm() {
     if (params.id) {
       await updateObra(params.id, obra);
     } else {
-      await createObra(obra);
+      await createObra(obra, selectedImage);
     }
     navigate("/obras");
   });
+
+  const onImageChange = (e) => {
+    setSelectedImage(e.target.files[0]);
+  };
 
   return (
     <div className="flex items-center justify-center h-screen w-full">
@@ -80,10 +85,8 @@ function ObrasForm() {
           <label className="text-gray-400 block">Imagen</label>
           <input
             type="file"
-            {
-              ...register("imagen")
-              //La imagen se guarda en una tabla aparte
-            }
+            accept="image/jpeg"
+            onChange={onImageChange}
             className="px-2 py-1 rounded-sm w-full"
           />
 

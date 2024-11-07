@@ -1,13 +1,28 @@
+import { useObras } from "@/context/ObraContext";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function ObraCard({ obra }) {
+  const [imagenes, setImagenes] = useState(null);
+  // Una sola imagen
+  const { getImagenesByObra } = useObras();
+
+  useEffect(() => {
+    async function loadImagenes() {
+      const data = await getImagenesByObra(obra.id_obra);
+      console.log(data[0].url);
+      setImagenes(data[0].url);
+    }
+    //    loadImagenes();
+  }, [obra, getImagenesByObra]);
+
   return (
     <div
       key={obra.id_obra}
       className="border rounded-lg overflow-hidden shadow-lg flex flex-col h-full min-h-[400px]"
     >
       <img
-        src={obra.imagen || "images.jpg"}
+        src={imagenes || "images.jpg"}
         alt={obra.nombre}
         className="w-full h-64 object-cover"
       />
