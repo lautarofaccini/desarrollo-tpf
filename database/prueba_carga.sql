@@ -1,39 +1,50 @@
-
--- Script para cargar datos de prueba.
-
+-- ¡Atención! Este script funciona para comprobar los triggers definidos a partir de los datos que se cargan en el archivo ./esquema_y_datos_desarrollo_tpf.sql 
 USE desarrollo_tpf;
 
--- Insertar datos en la tabla eventos
-INSERT INTO eventos (fecha_inicio, fecha_fin, lugar, descripcion, tematica) VALUES
-('2024-11-01 10:00:00', '2024-11-01 18:00:00', 'Museo de Arte Moderno', 'Exposición de esculturas modernas', 'Arte Moderno'),
-('2025-12-15 09:00:00', '2025-12-15 17:00:00', 'Centro Cultural', 'Encuentro de escultores emergentes', 'Escultura Contemporánea');
+-- Aviso sobre el event scheduler
+SELECT 'Aviso: Asegúrate de que el programador de eventos esté activado ejecutando: SET GLOBAL event_scheduler = ON;' AS mensaje;
 
--- Insertar datos en la tabla escultores
+-- Prueba del trigger calcular_edad_al_insertar en la tabla escultores
+SELECT 'Prueba: Trigger calcular_edad_al_insertar' AS mensaje;
 INSERT INTO escultores (nombre, apellido, nacionalidad, fecha_nacimiento, biografia, email, telefono) VALUES
-('Pablo', 'Rodríguez', 'Argentina', '1985-05-20', 'Escultor de estilo moderno con enfoque en materiales reciclados.', 'pablo.rodriguez@example.com', '+54 9 11 1234-5678'),
-('Laura', 'Martínez', 'España', '1992-08-15', 'Escultora contemporánea que explora temas de identidad y género.', 'laura.martinez@example.com', '+34 123 456 789');
+('Jay', 'Kay', 'Sudafricano', '1980-08-12', 'Escultor especializado en arte surrealista.', 'jamiroquai@space.cowboy.ar', '+56900000004');
+SELECT 'Resultado: Edad calculada para nuevo escultor' AS mensaje;
+SELECT * FROM escultores WHERE  email = 'jamiroquai@space.cowboy.ar';
 
--- Insertar datos en la tabla obras
-INSERT INTO obras (fecha_creacion, descripcion, material, estilo, calificacion, id_evento, id_escultor) VALUES
-('2022-10-10', 'Escultura abstracta de acero', 'Acero', 'Abstracto', 4.5, 1, 1),
-('2023-01-15', 'Figura de mármol representando la libertad', 'Mármol', 'Clásico', 4.8, 2, 2);
+-- Prueba del trigger calcular_edad_al_actualizar en la tabla escultores
+SELECT 'Prueba: Trigger calcular_edad_al_actualizar' AS mensaje;
+UPDATE escultores SET fecha_nacimiento = '1985-08-12' WHERE email = 'jamiroquai@space.cowboy.ar';
+SELECT 'Resultado: Edad recalculada tras actualización de fecha de nacimiento' AS mensaje;
+SELECT * FROM escultores WHERE email = 'jamiroquai@space.cowboy.ar'; 
 
--- Insertar datos en la tabla imagenes
--- INSERT INTO imagenes (fotografia, id_obra) VALUES
--- (LOAD_FILE('/ruta/al/archivo/imagen1.jpg'), 1),
--- (LOAD_FILE('/ruta/al/archivo/imagen2.jpg'), 2);
+-- Prueba del trigger fecha_inicio_unica_in en la tabla eventos
+-- Este trigger debería lanzar un error si intentamos insertar un evento con el mismo año de fecha de inicio de otro evento ya existente (2024).
+SELECT 'Prueba: Trigger fecha_inicio_unica_in (se espera error de año único en inicio)' AS mensaje;
+INSERT INTO eventos (fecha_inicio, fecha_fin, lugar, descripcion, tematica) VALUES
+('2024-07-15 10:00:00', '2024-07-15 18:00:00', 'Parque Nacional', 'Exposición de esculturas al aire libre', 'Naturaleza');
 
--- Insertar datos en la tabla usuarios
-INSERT INTO usuarios (email, password, nickname, rol) VALUES
-('admin@example.com', 'admin_password', 'admin123', 'admin'),
-('user@example.com', 'user_password', 'user456', 'user');
+-- Prueba del trigger fecha_fin_unica_in en la tabla eventos
+-- Este trigger debería lanzar un error si intentamos insertar un evento con el mismo año de fecha de fin de otro evento ya existente (2025).
+SELECT 'Prueba: Trigger fecha_fin_unica_in (se espera error de año único en fin)' AS mensaje;
+INSERT INTO eventos (fecha_inicio, fecha_fin, lugar, descripcion, tematica) VALUES
+('2023-06-15 10:00:00', '2025-04-20 18:00:00', 'Plaza Central', 'Exposición de esculturas históricas', 'Historia');
 
--- Insertar datos en la tabla vota
--- INSERT INTO vota (id_usuario, id_obra, puntaje) VALUES
--- (1, 1, 5),
--- (2, 2, 4);
+-- Prueba del trigger check_fecha_actualizacion en la tabla eventos
+-- Este trigger debería lanzar un error si intentamos actualizar un evento con una fecha de inicio o fin que coincida en el año con otro evento.
+SELECT 'Prueba: Trigger check_fecha_actualizacion (se espera error de año único en inicio)' AS mensaje;
+UPDATE eventos SET fecha_inicio = '2025-01-01 10:00:00' WHERE id_evento = 3;
 
--- Insertar datos en la tabla participa
--- INSERT INTO participa (id_escultor, id_evento) VALUES
--- (1, 1),
--- (2, 2);
+SELECT 'Prueba: Trigger check_fecha_actualizacion (se espera error de año único en fin)' AS mensaje;
+UPDATE eventos SET fecha_fin = '2025-04-15 18:00:00' WHERE id_evento = 3;
+
+-- Prueba de la CONSTRAINT chk_fecha_valida
+SELECT 'Prueba: Trigger chk_fecha_valida (se espera error de fecha de inicio mayor a la fecha de fin en la inserción)' AS mensaje;
+INSERT INTO eventos (fecha_inicio, fecha_fin, lugar, descripcion, tematica) VALUES 
+('2004-01-01 00:00:00', '2003-01-01 00:00:00', 'Too Cool Queenie', "She's too cool...", "Rock n' Roll"); 
+
+SELECT 'Prueba: Trigger chk_fecha_valida (se espera error de fecha de inicio mayor a la fecha de fin en la actualización)' AS mensaje;
+UPDATE eventos SET fecha_inicio = '2027-01-01' WHERE id_evento = 3;
+
+-- Comprobamos que tenemos los mismos tres registros en nuestra base de datos
+SELECT 'En caso de estar los tres registros iniciales, esta prueba resultó exitosa... ' AS mensaje; 
+SELECT * FROM eventos; 
