@@ -161,29 +161,66 @@ CREATE TRIGGER check_fecha_actualizacion
 BEFORE UPDATE ON eventos
 FOR EACH ROW
 BEGIN
-    DECLARE msg VARCHAR(255);
-
     -- Verificar si la nueva fecha de inicio coincide con alguna otra fecha de inicio en la tabla
     IF EXISTS (
         SELECT 1
         FROM eventos
-        WHERE YEAR(fecha_inicio) = YEAR(NEW.fecha_inicio)
-        AND id_evento != NEW.id_evento
+        WHERE YEAR(fecha_inicio) = YEAR(NEW.fecha_inicio) AND id_evento != NEW.id_evento
     ) THEN
-        SET msg = 'El año de inicio debe ser único.';
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El año de inicio debe ser único.';
     END IF;
 
     -- Verificar si la nueva fecha de fin coincide con alguna otra fecha de fin en la tabla
     IF EXISTS (
         SELECT 1
         FROM eventos
-        WHERE YEAR(fecha_fin) = YEAR(NEW.fecha_fin)
-        AND id_evento != NEW.id_evento
+        WHERE YEAR(fecha_fin) = YEAR(NEW.fecha_fin) AND id_evento != NEW.id_evento
     ) THEN
-        SET msg = 'El año de fin debe ser único.';
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El año de fin debe ser único.';
     END IF;
 END $$
 
 DELIMITER ;
+
+/* Carga de datos de prueba. */
+-- Datos para la tabla eventos
+INSERT INTO eventos (fecha_inicio, fecha_fin, lugar, descripcion, tematica) VALUES
+('2024-01-15 10:00:00', '2024-01-15 18:00:00', 'Museo de Arte Moderno', 'Exposición de esculturas abstractas', 'Abstracto'),
+('2025-02-20 09:00:00', '2025-04-20 17:00:00', 'Galería Nacional', 'Esculturas de temática histórica', 'Historia'),
+('2026-03-10 14:00:00', '2026-06-10 20:00:00', 'Centro Cultural', 'Esculturas contemporáneas de artistas jóvenes', 'Contemporáneo');
+
+-- Datos para la tabla escultores
+INSERT INTO escultores (nombre, apellido, nacionalidad, fecha_nacimiento, biografia, email, telefono) VALUES
+('Pablo', 'García', 'Argentino', '1985-07-23', 'Escultor con 15 años de experiencia en arte moderno.', 'pablo.garcia@example.com', '+541100000001'),
+('María', 'López', 'Mexicana', '1990-03-12', 'Especialista en esculturas de arcilla y cerámica.', 'maria.lopez@example.com', '+525500000002'),
+('Juan', 'Martínez', 'Español', '1978-11-09', 'Artista con enfoque en materiales reciclados.', 'juan.martinez@example.com', '+349100000003');
+
+-- Datos para la tabla obras
+INSERT INTO obras (fecha_creacion, descripcion, material, estilo, calificacion, id_evento, id_escultor) VALUES
+('2023-01-10', 'Escultura abstracta de metal', 'Metal', 'Abstracto', 4.5, 1, 1),
+('2022-05-15', 'Figura histórica en mármol', 'Mármol', 'Histórico', 4.8, 2, 2),
+('2023-11-03', 'Escultura de madera inspirada en la naturaleza', 'Madera', 'Naturalista', 4.2, 3, 3);
+
+-- Datos para la tabla imagenes
+INSERT INTO imagenes (url, id_obra) VALUES
+('https://example.com/image1.jpg', 1),
+('https://example.com/image2.jpg', 2),
+('https://example.com/image3.jpg', 3);
+
+-- Datos para la tabla usuarios
+INSERT INTO usuarios (email, password, nickname, rol) VALUES
+('admin@example.com', 'hashedpassword1', 'admin_user', 'admin'),
+('user1@example.com', 'hashedpassword2', 'user1', 'user'),
+('user2@example.com', 'hashedpassword3', 'user2', 'user');
+
+-- Datos para la tabla vota
+INSERT INTO vota (id_usuario, id_obra, puntaje) VALUES
+(2, 1, 5),
+(3, 2, 4),
+(3, 3, 3);
+
+-- Datos para la tabla participa
+INSERT INTO participa (id_escultor, id_evento) VALUES
+(1, 1),
+(2, 2),
+(3, 3);
