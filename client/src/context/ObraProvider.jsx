@@ -48,9 +48,9 @@ export const ObraProvider = ({ children }) => {
     }
   };
 
-  const updateObra = async (id, newFields) => {
+  const updateObra = async (id, newFields, selectedImages, imagesToDelete) => {
     try {
-      const response = await updateObraRequest(id, newFields);
+      const response = await updateObraRequest(id, newFields, selectedImages, imagesToDelete);
       console.log(response);
     } catch (error) {
       console.error(error);
