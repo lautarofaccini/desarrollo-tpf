@@ -21,7 +21,7 @@ router.get("/", getImagenes);
 
 router.get("/:id", getImagenesByObra);
 
-router.post("/", multer.single("imgfile"), createImagen);
+router.post("/", multer.array("images", 3), createImagen);
 
 router.put("/:id", updateImagen);
 

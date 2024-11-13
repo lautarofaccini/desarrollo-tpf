@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function ObrasForm() {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
 
   const { register, handleSubmit, setValue } = useForm();
 
@@ -13,7 +13,7 @@ function ObrasForm() {
   const navigate = useNavigate();
 
   const params = useParams();
-  //Solicitar imagenes en el formulario
+  // Cargar datos de la obra si se está editando
   useEffect(() => {
     async function loadObra() {
       if (params.id) {
@@ -65,14 +65,16 @@ function ObrasForm() {
     if (params.id) {
       await updateObra(params.id, obra);
     } else {
-      await createObra(obra, selectedImage);
+      await createObra(obra, selectedImages);
     }
     navigate("/obras");
   });
 
   const onImageChange = (e) => {
-    setSelectedImage(e.target.files[0]);
+    const files = Array.from(e.target.files).slice(0, 3); // Limitar a 3 imágenes
+    setSelectedImages(files);
   };
+  
 
   return (
     <div className="flex items-center justify-center h-screen w-full">
@@ -82,12 +84,13 @@ function ObrasForm() {
             {params.id ? "Actualizar Obra" : "Crear Obra"}
           </h1>
 
-          <label className="text-gray-400 block">Imagen</label>
+          <label className="text-gray-400 block">Imágenes</label>
           <input
             type="file"
-            accept="image/jpeg"
+            accept="image/jpeg, image/png"
             onChange={onImageChange}
             className="px-2 py-1 rounded-sm w-full"
+            multiple
           />
 
           <label className="text-gray-400 block">Fecha de Creacion</label>
