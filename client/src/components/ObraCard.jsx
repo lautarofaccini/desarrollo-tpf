@@ -41,7 +41,7 @@ function ObraCard({ obra }) {
                 <button
                   type="button"
                   onClick={onClickHandler}
-                  className="absolute left-0 top-1/2 z-9 -translate-y-1/2 bg-black bg-opacity-50 p-2 rounded-r-md"
+                  className="absolute left-0 top-1/2 z-10 -translate-y-1/2 bg-black bg-opacity-50 p-2 rounded-r-md"
                 >
                   <ChevronLeft className="w-6 h-6 text-white" />
                 </button>
@@ -52,7 +52,7 @@ function ObraCard({ obra }) {
                 <button
                   type="button"
                   onClick={onClickHandler}
-                  className="absolute right-0 top-1/2 z-9 -translate-y-1/2 bg-black bg-opacity-50 p-2 rounded-l-md"
+                  className="absolute right-0 top-1/2 z-10 -translate-y-1/2 bg-black bg-opacity-50 p-2 rounded-l-md"
                 >
                   <ChevronRight className="w-6 h-6 text-white" />
                 </button>

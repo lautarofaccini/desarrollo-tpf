@@ -5,7 +5,7 @@ function Navbar() {
   const { isAuthenticated, logout } = useAuth();
 
   return (
-    <div className="z-10 fixed bg-neutral-800 flex justify-between px-20 py-4 top-0 left-0 w-full shadow-md">
+    <div className="z-20 fixed bg-neutral-800 flex justify-between px-20 py-4 top-0 left-0 w-full shadow-md">
       <Link to="/" className="text-white font-bold text-3xl">
         <img src="/Logo.png" alt="Logo" />
       </Link>
