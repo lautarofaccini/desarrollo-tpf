@@ -2,18 +2,23 @@ import axios from "./axios";
 
 export const getObrasRequest = async () => await axios.get(`/obras`);
 
-export const createObraRequest = async (obra, selectedImage) => {
+export const createObraRequest = async (obra, selectedImages) => {
+  // Enviar primero la información de la obra
   const res = await axios.post(`/obras`, obra);
-  if (selectedImage) {
-    const postid = `${res.data.id_obra}_${Date.now()}`;
-    const blob = selectedImage.slice(0, selectedImage.size, "image/jpeg");
-    const newFile = new File([blob], `${postid}_post.jpeg`, {
-      type: "image/jpeg",
-    });
+  
+  if (selectedImages && selectedImages.length > 0) {
     const formData = new FormData();
-    formData.append("imgfile", newFile);
-    console.log(formData)
-    await axios.post("http://localhost:4000/imagenes", formData);
+    formData.append("id_obra", res.data.id_obra); // Añadir el id_obra al FormData
+
+    // Agregar cada imagen seleccionada al FormData
+    selectedImages.forEach((image) => {
+      formData.append("images", image); // No cambiar el nombre en el frontend
+    });
+
+    // Enviar todas las imágenes y el id_obra en una sola petición
+    await axios.post("http://localhost:4000/imagenes", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
   }
 };
 
