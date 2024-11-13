@@ -2,6 +2,7 @@ import { pool } from "../db.js";
 import { getQRCodeForObra } from "../services/qr.service.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import bucket from "../imgstorage.js";
 
 dotenv.config();
 
@@ -87,16 +88,42 @@ export const updateObra = async (req, res) => {
 };
 
 export const deleteObra = async (req, res) => {
+  const obraId = req.params.id;
+
   try {
+    // Paso 1: Obtener las imágenes asociadas a la obra
+    const [imagenes] = await pool.query(
+      "SELECT url FROM imagenes WHERE id_obra = ?",
+      [obraId]
+    );
+
+    console.log(imagenes);
+
+    if (imagenes.length === 0) {
+      return res.status(404).json({ message: "No images found for this obra" });
+    }
+
+    // Paso 2: Eliminar las imágenes de Google Cloud Storage
+    for (const imagen of imagenes) {
+      const fileName = imagen.url.split("/").pop(); // Extrae el nombre del archivo de la URL
+      const file = bucket.file(fileName);
+
+      // Eliminar la imagen de Google Cloud Storage
+      await file.delete();
+    }
+
+    // Paso 3: Eliminar la obra de la base de datos
     const [result] = await pool.query("DELETE FROM obras WHERE id_obra = ?", [
-      req.params.id,
+      obraId,
     ]);
 
-    if (result.affectedRows === 0)
+    if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Obra not found" });
+    }
 
-    return res.sendStatus(204);
+    return res.sendStatus(204); // Responde con "No Content" indicando que la eliminación fue exitosa
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: error.message });
   }
 };
