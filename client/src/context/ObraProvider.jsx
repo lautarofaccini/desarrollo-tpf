@@ -28,9 +28,9 @@ export const ObraProvider = ({ children }) => {
     }
   };
 
-  const createObra = async (obra, selectedImage) => {
+  const createObra = async (obra, selectedImages) => {
     try {
-      await createObraRequest(obra, selectedImage);
+      await createObraRequest(obra, selectedImages);
       /* 
       TODO: Ver forma de no pedir todos los obras cada vez que se carga la pagina, si asi fuera se podria usar ->
       setObras([...obras, response.data]) */
