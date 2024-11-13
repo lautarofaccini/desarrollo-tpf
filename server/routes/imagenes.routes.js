@@ -5,6 +5,7 @@ import {
   createImagen,
   updateImagen,
   deleteImagen,
+  deleteImagenes,
 } from "../controllers/imagenes.controllers.js";
 import Multer from "multer";
 
@@ -21,10 +22,12 @@ router.get("/", getImagenes);
 
 router.get("/:id", getImagenesByObra);
 
-router.post("/", multer.single("imgfile"), createImagen);
+router.post("/", multer.array("images", 3), createImagen);
 
 router.put("/:id", updateImagen);
 
 router.delete("/:id", deleteImagen);
+
+router.delete("/", deleteImagenes);
 
 export default router;
