@@ -41,7 +41,7 @@ export const createObra = async (req, res) => {
       id_evento,
       id_escultor,
     } = req.body;
-    console.log(req.body);
+    
     const [result] = await pool.query(
       "INSERT INTO obras(fecha_creacion, descripcion, material, estilo, calificacion, id_evento, id_escultor) VALUES (?, ?, ?, ?, ?, ?, ?)",
       [
@@ -97,7 +97,6 @@ export const deleteObra = async (req, res) => {
       [obraId]
     );
 
-    console.log(imagenes);
 
     if (imagenes.length === 0) {
       return res.status(404).json({ message: "No images found for this obra" });

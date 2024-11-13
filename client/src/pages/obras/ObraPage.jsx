@@ -38,6 +38,7 @@ function ObraPage() {
         <div className="container mx-auto">
           <h1 className="text-xl font-bold mt-4">{obra.estilo}</h1>
           <p className="text-sm">{obra.descripcion}</p>
+          <p className="text-sm">{obra.fecha_creacion}</p>
           <p className="text-sm">Material: {obra.material || "none"}</p>
           <EdDelButtons id={obra.id_obra} />
 

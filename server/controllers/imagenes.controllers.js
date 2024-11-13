@@ -96,6 +96,31 @@ export const deleteImagen = async (req, res) => {
   }
 };
 
+export const deleteImagenes = async (req, res) => {
+  try {
+    const { imagesToDelete } = req.body;
+
+    if (!imagesToDelete || imagesToDelete.length === 0) {
+      return res.status(400).json({ message: "No images to delete" });
+    }
+
+    // Eliminar las imágenes de la base de datos y del bucket
+    for (const imageUrl of imagesToDelete) {
+      // Eliminar de la base de datos
+      await pool.query("DELETE FROM imagenes WHERE url = ?", [imageUrl]);
+
+      // Eliminar de Google Cloud Storage
+      const filename = imageUrl.split("/").pop();
+      const blob = bucket.file(filename);
+      await blob.delete();
+    }
+    res.status(200).json({ message: "Images deleted successfully" });
+  } catch (error) {
+    console.error("Error al eliminar las imágenes:", error);
+    res.status(500).json({ message: "Unexpected server error" });
+  }
+};
+
 export const updateImagen = async (req, res) => {
   try {
     const [result] = await pool.query(
