@@ -182,6 +182,62 @@ END $$
 
 DELIMITER ;
 
+/* Procedimiento para ver todas las obras de un evento. */ 
+DELIMITER $$ 
+
+CREATE PROCEDURE obras_del_evento (IN evento_id INT)
+BEGIN 
+	SELECT * FROM obras AS o WHERE o.id_evento = evento_id;
+END $$
+
+DELIMITER ;
+
+/* Procedimiento para calcular las calificaciones de las obras dado un evento. */
+DELIMITER $$
+
+CREATE PROCEDURE calcular_calificacion_evento (IN evento_id INT)
+BEGIN
+    DECLARE promedio_calificacion DECIMAL(10, 2);
+
+    -- Itera sobre cada obra asociada al evento y calcula su calificación promedio
+    DECLARE done INT DEFAULT 0;
+    DECLARE obra_id INT;
+
+    -- Cursor para seleccionar todas las obras asociadas al evento dado
+    DECLARE cur_obras CURSOR FOR
+        SELECT id_obra FROM obras WHERE id_evento = evento_id;
+
+    -- Manejo de finalización del cursor
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    -- Abrir cursor
+    OPEN cur_obras;
+
+    -- Iterar sobre cada obra
+    obra_loop: LOOP
+        FETCH cur_obras INTO obra_id;
+        IF done THEN
+            LEAVE obra_loop;
+        END IF;
+
+        -- Calcular el promedio de puntaje para la obra actual
+        SELECT AVG(puntaje) INTO promedio_calificacion
+        FROM vota
+        WHERE id_obra = obra_id;
+
+        -- Actualizar la calificación de la obra con el promedio calculado
+        UPDATE obras
+        SET calificacion = IFNULL(promedio_calificacion, 0) -- 0 si no hay votos
+        WHERE id_obra = obra_id;
+    END LOOP;
+
+    -- Cerrar cursor
+    CLOSE cur_obras;
+END $$
+
+DELIMITER ;
+
+
 /* Carga de datos de prueba. */
 -- Datos para la tabla eventos
 INSERT INTO eventos (fecha_inicio, fecha_fin, lugar, descripcion, tematica) VALUES
@@ -197,27 +253,47 @@ INSERT INTO escultores (nombre, apellido, nacionalidad, fecha_nacimiento, biogra
 
 -- Datos para la tabla obras
 INSERT INTO obras (fecha_creacion, descripcion, material, estilo, calificacion, id_evento, id_escultor) VALUES
-('2023-01-10', 'Escultura abstracta de metal', 'Metal', 'Abstracto', 4.5, 1, 1),
-('2022-05-15', 'Figura histórica en mármol', 'Mármol', 'Histórico', 4.8, 2, 2),
-('2023-11-03', 'Escultura de madera inspirada en la naturaleza', 'Madera', 'Naturalista', 4.2, 3, 3);
+('2023-01-10', 'Escultura abstracta de metal', 'Metal', 'Abstracto', 0, 1, 1),
+('2022-05-15', 'Figura histórica en mármol', 'Mármol', 'Histórico', 0, 2, 2),
+('2023-11-03', 'Escultura de madera inspirada en la naturaleza', 'Madera', 'Naturalista', 0, 3, 3),
+('2024-04-12', 'Escultura abstracta en vidrio', 'Vidrio', 'Abstracto', 0, 1, 1),
+('2023-07-08', 'Figura histórica en bronce', 'Bronce', 'Histórico', 0, 2, 2),
+('2023-12-01', 'Escultura moderna de hierro', 'Hierro', 'Moderno', 0, 3, 3),
+('2025-10-30', 'Figura geométrica de mármol', 'Mármol', 'Geométrico', 0, 1, 1),
+('2025-11-05', 'Escultura naturalista en madera', 'Madera', 'Naturalista', 0, 2, 2),
+('2024-01-19', 'Escultura abstracta de arcilla', 'Arcilla', 'Abstracto', 0, 3, 3),
+('2026-02-15', 'Figura histórica con detalles dorados', 'Bronce', 'Histórico', 0, 1, 2),
+('2023-06-22', 'Escultura minimalista en piedra', 'Piedra', 'Minimalista', 0, 2, 1);
 
 -- Datos para la tabla imagenes
-INSERT INTO imagenes (url, id_obra) VALUES
-('https://example.com/image1.jpg', 1),
-('https://example.com/image2.jpg', 2),
-('https://example.com/image3.jpg', 3);
+-- INSERT INTO imagenes (url, id_obra) VALUES
+-- ('https://example.com/image1.jpg', 1),
+-- ('https://example.com/image2.jpg', 2),
+-- ('https://example.com/image3.jpg', 3);
 
 -- Datos para la tabla usuarios
 INSERT INTO usuarios (email, password, nickname, rol) VALUES
 ('admin@example.com', 'hashedpassword1', 'admin_user', 'admin'),
 ('user1@example.com', 'hashedpassword2', 'user1', 'user'),
-('user2@example.com', 'hashedpassword3', 'user2', 'user');
+('user2@example.com', 'hashedpassword3', 'user2', 'user'),
+('user3@example.com', 'hashedpassword4', 'user3', 'user'),
+('user4@example.com', 'hashedpassword5', 'user4', 'user'),
+('user5@example.com', 'hashedpassword6', 'user5', 'user'),
+('user6@example.com', 'hashedpassword7', 'user6', 'user'),
+('user7@example.com', 'hashedpassword8', 'user7', 'user'),
+('user8@example.com', 'hashedpassword9', 'user8', 'user'),
+('user9@example.com', 'hashedpassword10', 'user9', 'user'),
+('user10@example.com', 'hashedpassword11', 'user10', 'user');
 
 -- Datos para la tabla vota
 INSERT INTO vota (id_usuario, id_obra, puntaje) VALUES
-(2, 1, 5),
-(3, 2, 4),
-(3, 3, 3);
+(2, 1, 5), (3, 1, 4), (3, 3, 3),
+(2, 4, 5), (3, 4, 4), (4, 4, 5), (5, 4, 4),
+(2, 5, 3), (3, 5, 5), (6, 5, 4), (7, 5, 5),
+(8, 6, 3), (9, 6, 4), (2, 6, 3), (4, 6, 4),
+(2, 7, 5), (5, 7, 5), (6, 7, 4), (7, 7, 3),
+(3, 8, 5), (4, 8, 4), (5, 8, 4), (8, 8, 5),
+(9, 1, 3), (10, 2, 4), (8, 3, 5), (10, 3, 4);
 
 -- Datos para la tabla participa
 INSERT INTO participa (id_escultor, id_evento) VALUES
