@@ -7,7 +7,7 @@ import bucket from "../imgstorage.js";
 dotenv.config();
 
 export const getObras = async (req, res) => {
-  const { idEsc } = req.query; // Obtener el parámetro `esc` del query string
+  const { idEsc, idEve } = req.query; // Obtener el parámetro `esc` del query string
 
   try {
     // Si se pasa el parámetro `esc`, obtener las obras del escultor específico
@@ -15,6 +15,15 @@ export const getObras = async (req, res) => {
       const [result] = await pool.query(
         "SELECT * FROM obras WHERE id_escultor = ?",
         [idEsc]
+      );
+      return res.json(result);
+    }
+
+    // Si se pasa el parámetro `esc`, obtener las obras del evento específico
+    if (idEve) {
+      const [result] = await pool.query(
+        "SELECT * FROM obras WHERE id_evento = ?",
+        [idEve]
       );
       return res.json(result);
     }
