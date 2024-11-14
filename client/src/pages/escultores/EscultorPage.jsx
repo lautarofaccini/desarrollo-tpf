@@ -20,7 +20,6 @@ function EscultorPage() {
       try {
         const escultorData = await getEscultor(params.id);
         const obrasData = await getObrasByEscultor(params.id);
-        console.log(obrasData);
         setEscultor(escultorData);
         setObras(obrasData);
         setLoading(false);
