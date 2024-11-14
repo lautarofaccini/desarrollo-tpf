@@ -118,11 +118,7 @@ export const deleteObra = async (req, res) => {
       [obraId]
     );
 
-    if (imagenes.length === 0) {
-      return res.status(404).json({ message: "No images found for this obra" });
-    }
-
-    // Paso 2: Eliminar las imágenes de Google Cloud Storage
+    // Paso 2: Eliminar las imágenes de Google Cloud Storage, si existen
     for (const imagen of imagenes) {
       const fileName = imagen.url.split("/").pop(); // Extrae el nombre del archivo de la URL
       const file = bucket.file(fileName);
