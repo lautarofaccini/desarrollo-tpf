@@ -1,50 +1,71 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { verifyObrasTokenRequest } from "@/api/obras.api";
+import ObraCard from "@/components/ObraCard";
+import { useEscultores } from "@/context/EscultorContext";
+import EscultorCard from "@/components/EscultorCard";
+import { useAuth } from "@/context/AuthContext";
+import { createVotoRequest } from "@/api/vota.api";
 
 function ObraVotacionPage() {
   const location = useLocation();
-
   // Obtener el token de la URL
   const queryParams = new URLSearchParams(location.search);
   const token = queryParams.get("token");
 
-  const [obra, setObra] = useState({
-    id: 1,
-    nombre: "Escultura Rostro",
-    imagen: "/download.jpg",
-    descripcion: "Esta es una obra inspirada",
-  });
+  const [obra, setObra] = useState();
+  const [escultor, setEscultor] = useState();
   const [rating, setRating] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { getEscultor } = useEscultores();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchObra() {
+    async function fetchData() {
       try {
         console.log(token);
         const response = await verifyObrasTokenRequest(token);
-        console.log(response.data);
         if (response.data) {
-          setObra(response.data);
+          const obraData = response.data;
+          setObra(obraData);
+
+          // Solo buscar el escultor si la obra tiene un id_escultor
+          if (obraData.id_escultor) {
+            const escultorData = await getEscultor(obraData.id_escultor);
+            setEscultor(escultorData);
+          }
         } else {
           setError("Token inválido o expirado.");
         }
       } catch (err) {
         console.error(err);
-        setError(err.response.data.message);
+        setError(err.response?.data?.message || "Error inesperado");
       } finally {
         setLoading(false);
       }
     }
 
-    fetchObra();
-  }, [token]);
+    fetchData();
+  }, [token, getEscultor]);
+
+  const createVoto = async (voto) => {
+    try {
+      await createVotoRequest(voto);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleRatingSubmit = async () => {
     try {
-      //await submitRating(obra.id_obra, rating);
+      const voto = {
+        id_usuario: user.id_usuario,
+        id_obra: obra.id_obra,
+        puntaje: rating,
+      };
+      createVoto(voto);
       alert("Gracias por tu voto!");
       navigate("/"); // Redirigir a la página de inicio u otra página después de votar
     } catch (err) {
@@ -66,11 +87,10 @@ function ObraVotacionPage() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-2xl font-bold mb-4">Vota por la obra</h1>
+      <h1 className="text-2xl font-bold mb-4 text-white">Vota por la obra</h1>
       <h2 className="text-lg">{obra.nombre}</h2>
-      {/* Asi deberia ser
-        <img src={obra.imagen} alt={obra.nombre} className="mb-4" /> */}
-      <img src="/download.jpg" alt={obra.nombre} className="mb-4" />
+      <EscultorCard escultor={escultor} key={escultor.id_escultor} />
+      <ObraCard obra={obra} key={obra.id_obra} />
       <div className="flex mb-4">
         {[1, 2, 3, 4, 5].map((star) => (
           <span
