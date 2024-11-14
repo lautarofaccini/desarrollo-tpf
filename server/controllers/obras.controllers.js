@@ -7,7 +7,19 @@ import bucket from "../imgstorage.js";
 dotenv.config();
 
 export const getObras = async (req, res) => {
+  const { idEsc } = req.query; // Obtener el parámetro `esc` del query string
+
   try {
+    // Si se pasa el parámetro `esc`, obtener las obras del escultor específico
+    if (idEsc) {
+      const [result] = await pool.query(
+        "SELECT * FROM obras WHERE id_escultor = ?",
+        [idEsc]
+      );
+      return res.json(result);
+    }
+
+    // Si no se pasa el parámetro `esc`, devolver todas las obras
     const [result] = await pool.query("SELECT * FROM obras");
     res.json(result);
   } catch (error) {
@@ -41,7 +53,7 @@ export const createObra = async (req, res) => {
       id_evento,
       id_escultor,
     } = req.body;
-    
+
     const [result] = await pool.query(
       "INSERT INTO obras(fecha_creacion, descripcion, material, estilo, calificacion, id_evento, id_escultor) VALUES (?, ?, ?, ?, ?, ?, ?)",
       [
@@ -96,7 +108,6 @@ export const deleteObra = async (req, res) => {
       "SELECT url FROM imagenes WHERE id_obra = ?",
       [obraId]
     );
-
 
     if (imagenes.length === 0) {
       return res.status(404).json({ message: "No images found for this obra" });
