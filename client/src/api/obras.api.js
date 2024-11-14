@@ -27,6 +27,9 @@ export const deleteObraRequest = async (id) =>
 
 export const getObraRequest = async (id) => await axios.get(`/obras/${id}`);
 
+export const getObrasByEscultorRequest = async (id) =>
+  await axios.get(`/obras?idEsc=${id}`);
+
 export const updateObraRequest = async (
   id,
   newFields,
@@ -51,8 +54,8 @@ export const updateObraRequest = async (
       headers: { "Content-Type": "multipart/form-data" },
     });
 
-  // Ahora, actualizar la obra 
-  await axios.put(`/obras/${id}`, newFields); 
+    // Ahora, actualizar la obra
+    await axios.put(`/obras/${id}`, newFields);
   }
 };
 
