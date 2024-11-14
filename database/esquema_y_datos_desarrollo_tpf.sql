@@ -237,66 +237,99 @@ END $$
 
 DELIMITER ;
 
+/* Trigger para controlar que un escultor no participe con más de una obra en un evento. */ 
+DELIMITER $$
 
-/* Carga de datos de prueba. */
--- Datos para la tabla eventos
+CREATE TRIGGER trg_no_duplicar_obra_evento
+BEFORE INSERT ON obras
+FOR EACH ROW
+BEGIN
+    DECLARE contador INT;
+
+    -- Contamos cuántas obras tiene el escultor en el mismo evento
+    SELECT COUNT(*)
+    INTO contador
+    FROM obras
+    WHERE id_evento = NEW.id_evento
+      AND id_escultor = NEW.id_escultor;
+
+    -- Si ya existe al menos una obra en el mismo evento, lanzamos un error
+    IF contador > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: El escultor ya tiene una obra en este evento.';
+    END IF;
+END $$
+
+DELIMITER ;
+
+/* Cargamos datos de prueba en la base de datos. */
+-- Inserción de datos en la tabla `eventos`
 INSERT INTO eventos (fecha_inicio, fecha_fin, lugar, descripcion, tematica) VALUES
-('2024-01-15 10:00:00', '2024-01-15 18:00:00', 'Museo de Arte Moderno', 'Exposición de esculturas abstractas', 'Abstracto'),
-('2025-02-20 09:00:00', '2025-04-20 17:00:00', 'Galería Nacional', 'Esculturas de temática histórica', 'Historia'),
-('2026-03-10 14:00:00', '2026-06-10 20:00:00', 'Centro Cultural', 'Esculturas contemporáneas de artistas jóvenes', 'Contemporáneo');
+('2023-01-15 10:00:00', '2023-01-20 18:00:00', 'Museo de Arte Abstracto', 'Exposición de esculturas abstractas.', 'Abstracto'),
+('2024-01-15 10:00:00', '2024-01-20 18:00:00', 'Museo de Arte Moderno', 'Exposición de esculturas contemporáneas.', 'Contemporáneo'),
+('2025-03-10 09:00:00', '2025-03-15 17:00:00', 'Centro Cultural Nacional', 'Festival de arte y cultura.', 'Arte Urbano');
 
--- Datos para la tabla escultores
-INSERT INTO escultores (nombre, apellido, nacionalidad, fecha_nacimiento, biografia, email, telefono) VALUES
-('Pablo', 'García', 'Argentino', '1985-07-23', 'Escultor con 15 años de experiencia en arte moderno.', 'pablo.garcia@example.com', '+541100000001'),
-('María', 'López', 'Mexicana', '1990-03-12', 'Especialista en esculturas de arcilla y cerámica.', 'maria.lopez@example.com', '+525500000002'),
-('Juan', 'Martínez', 'Español', '1978-11-09', 'Artista con enfoque en materiales reciclados.', 'juan.martinez@example.com', '+349100000003');
+-- Inserción de datos en la tabla `escultores`
+INSERT INTO escultores (nombre, apellido, nacionalidad, fecha_nacimiento, biografia, email, telefono, foto_perfil) VALUES
+('Juan', 'Pérez', 'Argentino', '1980-06-05', 'Escultor contemporáneo con múltiples exposiciones internacionales.', 'juan.perez@example.com', '+54 9 11 1234 5678', NULL),
+('María', 'García', 'Española', '1975-08-22', 'Escultora especializada en obras abstractas.', 'maria.garcia@example.com', '+34 6 789 1234', NULL),
+('Carlos', 'Gomez', 'Mexicano', '1990-02-14', 'Artista emergente en el ámbito de las esculturas de materiales reciclados.', 'carlos.gomez@example.com', '+52 55 8765 4321', NULL),
+('Ana', 'López', 'Chilena', '1985-03-19', 'Escultora que trabaja con arcilla y técnicas de modelado innovadoras.', 'ana.lopez@example.com', '+56 9 8765 4321', NULL),
+('Diego', 'Ramírez', 'Peruano', '1978-11-11', 'Escultor reconocido por su trabajo en mármol.', 'diego.ramirez@example.com', '+51 1 2345 6789', NULL);
 
--- Datos para la tabla obras
-INSERT INTO obras (fecha_creacion, descripcion, material, estilo, calificacion, id_evento, id_escultor) VALUES
-('2023-01-10', 'Escultura abstracta de metal', 'Metal', 'Abstracto', 0, 1, 1),
-('2022-05-15', 'Figura histórica en mármol', 'Mármol', 'Histórico', 0, 2, 2),
-('2023-11-03', 'Escultura de madera inspirada en la naturaleza', 'Madera', 'Naturalista', 0, 3, 3),
-('2024-04-12', 'Escultura abstracta en vidrio', 'Vidrio', 'Abstracto', 0, 1, 1),
-('2023-07-08', 'Figura histórica en bronce', 'Bronce', 'Histórico', 0, 2, 2),
-('2023-12-01', 'Escultura moderna de hierro', 'Hierro', 'Moderno', 0, 3, 3),
-('2025-10-30', 'Figura geométrica de mármol', 'Mármol', 'Geométrico', 0, 1, 1),
-('2025-11-05', 'Escultura naturalista en madera', 'Madera', 'Naturalista', 0, 2, 2),
-('2024-01-19', 'Escultura abstracta de arcilla', 'Arcilla', 'Abstracto', 0, 3, 3),
-('2026-02-15', 'Figura histórica con detalles dorados', 'Bronce', 'Histórico', 0, 1, 2),
-('2023-06-22', 'Escultura minimalista en piedra', 'Piedra', 'Minimalista', 0, 2, 1);
+-- Inserción de datos en la tabla `obras`
+INSERT INTO obras (fecha_creacion, descripcion, material, estilo, id_evento, id_escultor) VALUES
+('2023-05-01', 'Escultura de madera tallada con forma abstracta.', 'Madera', 'Abstracto', 1, 1),
+('2022-11-10', 'Escultura de metal en forma de espiral.', 'Metal', 'Moderno', 1, 2),
+('2023-07-15', 'Escultura hecha con botellas recicladas.', 'Reciclado', 'Sostenible', 1, 3),
+('2024-01-20', 'Escultura en arcilla inspirada en formas naturales.', 'Arcilla', 'Orgánico', 1, 4),
+('2024-01-22', 'Escultura de mármol blanco con diseño minimalista.', 'Mármol', 'Minimalista', 1, 5),
+('2023-03-20', 'Escultura de bronce inspirada en figuras mitológicas.', 'Bronce', 'Clásico', 2, 1),
+('2023-08-14', 'Escultura en vidrio de forma geométrica.', 'Vidrio', 'Geometría', 2, 2),
+('2024-02-01', 'Escultura hecha con materiales reciclados y luces LED.', 'Reciclado', 'Experimental', 2, 3),
+('2023-12-10', 'Escultura en cerámica policromada.', 'Cerámica', 'Colorido', 2, 4),
+('2023-10-05', 'Escultura abstracta en piedra negra.', 'Piedra', 'Abstracto', 2, 5);
 
--- Datos para la tabla imagenes
--- INSERT INTO imagenes (url, id_obra) VALUES
--- ('https://example.com/image1.jpg', 1),
--- ('https://example.com/image2.jpg', 2),
--- ('https://example.com/image3.jpg', 3);
+-- Inserción de datos en la tabla `imagenes`
+INSERT INTO imagenes (url, id_obra) VALUES
+('https://example.com/imagen1.jpg', 1),
+('https://example.com/imagen2.jpg', 2),
+('https://example.com/imagen3.jpg', 3),
+('https://example.com/imagen4.jpg', 4),
+('https://example.com/imagen5.jpg', 5),
+('https://example.com/imagen6.jpg', 6),
+('https://example.com/imagen7.jpg', 7),
+('https://example.com/imagen8.jpg', 8),
+('https://example.com/imagen9.jpg', 9),
+('https://example.com/imagen10.jpg', 10);
 
--- Datos para la tabla usuarios
+-- Inserción de datos en la tabla `usuarios`
 INSERT INTO usuarios (email, password, nickname, rol) VALUES
-('admin@example.com', 'hashedpassword1', 'admin_user', 'admin'),
-('user1@example.com', 'hashedpassword2', 'user1', 'user'),
-('user2@example.com', 'hashedpassword3', 'user2', 'user'),
-('user3@example.com', 'hashedpassword4', 'user3', 'user'),
-('user4@example.com', 'hashedpassword5', 'user4', 'user'),
-('user5@example.com', 'hashedpassword6', 'user5', 'user'),
-('user6@example.com', 'hashedpassword7', 'user6', 'user'),
-('user7@example.com', 'hashedpassword8', 'user7', 'user'),
-('user8@example.com', 'hashedpassword9', 'user8', 'user'),
-('user9@example.com', 'hashedpassword10', 'user9', 'user'),
-('user10@example.com', 'hashedpassword11', 'user10', 'user');
+('admin@example.com', 'hashed_password1', 'admin_user', 'admin'),
+('user1@example.com', 'hashed_password2', 'user1', 'user'),
+('user2@example.com', 'hashed_password3', 'user2', 'user');
 
--- Datos para la tabla vota
+-- Inserción de datos en la tabla `vota`
 INSERT INTO vota (id_usuario, id_obra, puntaje) VALUES
-(2, 1, 5), (3, 1, 4), (3, 3, 3),
-(2, 4, 5), (3, 4, 4), (4, 4, 5), (5, 4, 4),
-(2, 5, 3), (3, 5, 5), (6, 5, 4), (7, 5, 5),
-(8, 6, 3), (9, 6, 4), (2, 6, 3), (4, 6, 4),
-(2, 7, 5), (5, 7, 5), (6, 7, 4), (7, 7, 3),
-(3, 8, 5), (4, 8, 4), (5, 8, 4), (8, 8, 5),
-(9, 1, 3), (10, 2, 4), (8, 3, 5), (10, 3, 4);
+(2, 1, 4),
+(3, 1, 5),
+(2, 2, 3),
+(3, 3, 5),
+(2, 4, 4),
+(3, 5, 5),
+(2, 6, 3),
+(3, 7, 5),
+(2, 8, 4),
+(3, 9, 5);
 
--- Datos para la tabla participa
+-- Inserción de datos en la tabla `participa`
 INSERT INTO participa (id_escultor, id_evento) VALUES
 (1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 1),
+(1, 2),
 (2, 2),
-(3, 3);
+(3, 2),
+(4, 2),
+(5, 2);
