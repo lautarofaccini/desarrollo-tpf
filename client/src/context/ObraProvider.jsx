@@ -4,6 +4,8 @@ import {
   deleteObraRequest,
   getObrasRequest,
   getObraRequest,
+  getObrasByEscultorRequest,
+  getObrasByEventoRequest,
   updateObraRequest,
   getImagenesByObraRequest,
 } from "../api/obras.api";
@@ -48,10 +50,33 @@ export const ObraProvider = ({ children }) => {
     }
   };
 
+  const getObrasByEscultor = async (id) => {
+    try {
+      const response = await getObrasByEscultorRequest(id);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getObrasByEvento = async (id) => {
+    try {
+      const response = await getObrasByEventoRequest(id);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const updateObra = async (id, newFields, selectedImages, imagesToDelete) => {
     try {
-      const response = await updateObraRequest(id, newFields, selectedImages, imagesToDelete);
-      console.log(response);
+      const response = await updateObraRequest(
+        id,
+        newFields,
+        selectedImages,
+        imagesToDelete
+      );
+      console.log(response)
     } catch (error) {
       console.error(error);
     }
@@ -74,6 +99,8 @@ export const ObraProvider = ({ children }) => {
         deleteObra,
         createObra,
         getObra,
+        getObrasByEscultor,
+        getObrasByEvento,
         updateObra,
         getImagenesByObra,
       }}
