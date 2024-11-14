@@ -22,6 +22,7 @@ export const ObraProvider = ({ children }) => {
 
   const deleteObra = async (id) => {
     try {
+      console.log(id)
       const response = await deleteObraRequest(id);
       console.log(response);
       setObras(obras.filter((obra) => obra.id_obra !== id));

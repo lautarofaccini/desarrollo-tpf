@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useObras } from "@/context/ObraContext";
 import EdDelButtons from "@/components/EdDelButtons";
+import { useAuth } from "@/context/AuthContext";
 
 function ObraPage() {
   const [obra, setObra] = useState();
   const [imagenes, setImagenes] = useState([]);
   const [loading, setLoading] = useState(true);
   const { getObra, getImagenesByObra } = useObras();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const params = useParams();
 
   useEffect(() => {
@@ -41,6 +44,14 @@ function ObraPage() {
           <p className="text-sm">{obra.fecha_creacion}</p>
           <p className="text-sm">Material: {obra.material || "none"}</p>
           <EdDelButtons id={obra.id_obra} />
+          {isAuthenticated && (
+            <button
+              onClick={() => navigate(`/obras/qr/${obra.id_obra}`)}
+              className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+            >
+              Mostrar QR
+            </button>
+          )}
 
           {/* Clasificación de Imágenes */}
           {imagenes.length > 0 ? (
