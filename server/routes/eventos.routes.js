@@ -7,7 +7,7 @@ import {
   updateEvento,
   deleteEvento,
 } from "../controllers/eventos.controllers.js";
-import { authRequired } from "../middlewares/validateToken.js";
+import { authRequired, isAdmin } from "../middlewares/validateToken.js";
 /* 
 Agregar authRequired para asegurar la ruta
 Ejemplo: 
@@ -22,10 +22,10 @@ router.get("/eventosOrd", getEventosOrdenados);
 
 router.get("/eventos/:id", getEvento);
 
-router.post("/eventos", createEvento);
+router.post("/eventos", [authRequired, isAdmin], createEvento);
 
-router.put("/eventos/:id", updateEvento);
+router.put("/eventos/:id", [authRequired, isAdmin], updateEvento);
 
-router.delete("/eventos/:id", deleteEvento);
+router.delete("/eventos/:id", [authRequired, isAdmin], deleteEvento);
 
 export default router;

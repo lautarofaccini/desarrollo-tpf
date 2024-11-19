@@ -1,13 +1,24 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation  } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 
-function ProtectedRoute() {
+const LoadingScreen = () => <h1>Loading...</h1>;
+
+export const AuthRequired = () => {
+  const location = useLocation();
+
   const { loading, isAuthenticated } = useAuth();
 
-  if (loading) return <h1>Loading...</h1>
-  if (!loading && !isAuthenticated) return <Navigate to="/login" />;
+  if (loading) return <LoadingScreen />;
+  if (!isAuthenticated) return <Navigate to="/login" state={{ from: location }}  replace />;
 
   return <Outlet />;
-}
+};
 
-export default ProtectedRoute;
+export const AdminRequired = () => {
+  const { loading, isAuthenticated, isAdmin } = useAuth();
+
+  if (loading) return <LoadingScreen />;
+  if (!isAuthenticated || !isAdmin) return <Navigate to="/" replace />;
+
+  return <Outlet />;
+};

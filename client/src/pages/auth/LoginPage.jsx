@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Background from "@/components/ImagenFondo";
+
 function LoginPage() {
   const {
     register,
@@ -10,16 +11,21 @@ function LoginPage() {
     formState: { errors },
   } = useForm();
   const { signin, isAuthenticated, errors: loginErrors } = useAuth();
-  console.log(loginErrors);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Obtener la URL de retorno desde `state` o establecerla como "/"
+  console.log(location)
+  const from = location.state?.from || "/";
 
   useEffect(() => {
-    if (isAuthenticated) navigate("/");
-  }, [isAuthenticated, navigate]);
+    if (isAuthenticated) navigate(from); // Redirigir al enlace original después de iniciar sesión
+  }, [isAuthenticated, navigate, from]);
 
   const onSubmit = handleSubmit(async (values) => {
     signin(values);
   });
+
   return (
     <Background>
       <div className="flex items-center justify-center h-screen w-full">
@@ -51,7 +57,7 @@ function LoginPage() {
               Enviar
             </button>
           </form>
-          <Link to="/register" className="text-sky-500">
+          <Link to="/register" state={{ from }} className="text-sky-500">
             Crear cuenta
           </Link>
         </div>

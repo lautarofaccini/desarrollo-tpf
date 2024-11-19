@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute";
+import { AuthRequired, AdminRequired } from "./ProtectedRoute";
 
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
@@ -39,6 +39,8 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="*" element={<NotFound />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/login" element={<LoginPage />} />
 
                 <Route path="/eventos" element={<EventosPage />} />
                 <Route path="/eventos/:id" element={<EventoPage />} />
@@ -48,26 +50,28 @@ function App() {
 
                 <Route path="/obras" element={<ObrasPage />} />
                 <Route path="/obras/:id" element={<ObraPage />} />
-                <Route path="/obras/qr/:id" element={<ObraQRPage />} />
 
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/eventos/new" element={<EventosForm />} />
-                  <Route path="/eventos/edit/:id" element={<EventosForm />} />
-
-                  <Route path="/escultores/new" element={<EscultoresForm />} />
-                  <Route path="/escultores/edit/:id" element={<EscultoresForm />} />
-
-                  <Route path="/obras/new" element={<ObrasForm />} />
-                  <Route path="/obras/edit/:id" element={<ObrasForm />} />
-
+                <Route element={<AuthRequired />}>
                   <Route
-                    path="/obras/votar/:id"
+                    path="/obras/votar"
                     element={<ObraVotacionPage />}
                   />
                 </Route>
 
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/login" element={<LoginPage />} />
+                <Route element={<AdminRequired />}>
+                  <Route path="/eventos/new" element={<EventosForm />} />
+                  <Route path="/eventos/edit/:id" element={<EventosForm />} />
+
+                  <Route path="/obras/new" element={<ObrasForm />} />
+                  <Route path="/obras/edit/:id" element={<ObrasForm />} />
+                  <Route path="/obras/qr/:id" element={<ObraQRPage />} />
+
+                  <Route path="/escultores/new" element={<EscultoresForm />} />
+                  <Route
+                    path="/escultores/edit/:id"
+                    element={<EscultoresForm />}
+                  />
+                </Route>
               </Routes>
             </main>
           </ObraProvider>

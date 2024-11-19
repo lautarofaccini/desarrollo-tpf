@@ -11,6 +11,7 @@ import usuariosRoutes from "./routes/usuarios.routes.js";
 import votaRoutes from "./routes/vota.routes.js";
 import imagenesRoutes from "./routes/imagenes.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import { createAdmin } from "./libs/initialSetup.js";
 
 const app = express();
 app.use(
@@ -32,5 +33,7 @@ app.use("/imagenes", imagenesRoutes);
 app.use("/usuarios", usuariosRoutes);
 
 app.use("/vota", votaRoutes);
+
+createAdmin();
 
 app.listen(PORT);

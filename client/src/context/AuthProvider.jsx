@@ -11,36 +11,52 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const resetAuthState = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    setIsAdmin(false);
+    setLoading(false);
+  };
+
+  const handleAuthSuccess = (data) => {
+    setUser(data);
+    setIsAuthenticated(true);
+    setIsAdmin(data.rol === "admin");
+    setLoading(false);
+  };
 
   const signup = async (user) => {
     try {
       const res = await registerRequest(user);
-      setUser(res.data);
-      setIsAuthenticated(true);
+      handleAuthSuccess(res.data);
     } catch (error) {
-      if (Array.isArray(error.response.data)) {
-        return setErrors(error.response.data);
-      }
-      setErrors([error.response.data.message]);
+      const errorMessages = Array.isArray(error.response?.data)
+        ? error.response.data
+        : [error.response?.data?.message || "Error desconocido"];
+      setErrors(errorMessages);
     }
   };
 
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
-      setUser(res.data);
-      setIsAuthenticated(true);
+      handleAuthSuccess(res.data);
     } catch (error) {
-      setErrors(error.response.data);
+      setErrors(
+        Array.isArray(error.response?.data)
+          ? error.response.data
+          : [error.response?.data?.message || "Error desconocido"]
+      );
     }
   };
 
   const logout = () => {
     Cookies.remove("token");
-    setIsAuthenticated(false);
-    setUser(null);
+    resetAuthState();
   };
 
   useEffect(() => {
@@ -53,39 +69,36 @@ export const AuthContextProvider = ({ children }) => {
   }, [errors]);
 
   useEffect(() => {
-    async function checkLogin() {
+    const checkLogin = async () => {
       const cookies = Cookies.get();
-
-      if (!cookies.token) {
-        setIsAuthenticated(false);
-        setLoading(false);
-        return setUser(null);
-      }
+      if (!cookies.token) return resetAuthState();
 
       try {
         const res = await verifyTokenRequest(cookies.token);
-        if (!res.data) {
-          setIsAuthenticated(false);
-          setLoading(false);
-          return setUser(null);
-        }
+        if (!res.data) return resetAuthState();
 
-        setIsAuthenticated(true);
-        setUser(res.data);
-        setLoading(false);
+        handleAuthSuccess(res.data);
       } catch (error) {
-        setIsAuthenticated(false);
-        setUser(null);
         console.error(error);
-        setLoading(false);
+        resetAuthState();
       }
-    }
+    };
+
     checkLogin();
-  }, [isAuthenticated]);
+  }, []);
 
   return (
     <AuthContext.Provider
-      value={{ signup, signin, logout, loading, user, isAuthenticated, errors }}
+      value={{
+        signup,
+        signin,
+        logout,
+        loading,
+        user,
+        isAuthenticated,
+        isAdmin,
+        errors,
+      }}
     >
       {children}
     </AuthContext.Provider>
