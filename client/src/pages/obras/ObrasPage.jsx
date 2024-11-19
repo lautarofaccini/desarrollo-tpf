@@ -13,8 +13,7 @@ function ObrasPage() {
     <div className="bg-neutral-800 flex flex-col justify-between px-20 py-4">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold mb-8 hc-blue text-white text-center">
-          {" "}
-          Obras{" "}
+          Obras
         </h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

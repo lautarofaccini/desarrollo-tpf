@@ -26,7 +26,7 @@ export const getQRCodeForObra = async (id_obra) => {
 
   // Generar la imagen QR basada en el token generado
   const qrCodeUrl = await QRCode.toDataURL(
-    `http://localhost:5173/obras/votar/${id_obra}?token=${obraQRCodes[id_obra]}`
+    `http://localhost:5173/obras/votar?token=${obraQRCodes[id_obra]}`
   );
 
   // Iniciar el intervalo para actualizar QR si no está corriendo

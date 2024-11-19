@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, isAdmin, logout } = useAuth();
 
   return (
     <div className="z-20 fixed bg-neutral-800 flex justify-between px-20 py-4 top-0 left-0 w-full shadow-md">
@@ -15,7 +15,7 @@ function Navbar() {
             Obras
           </Link>
         </li>
-        {isAuthenticated && (
+        {isAdmin && (
           <li>
             <Link to="/obras/new" className="text-white px-2 py-1 text-2xl">
               Crear Obra
@@ -29,9 +29,12 @@ function Navbar() {
           </Link>
         </li>
 
-        {isAuthenticated && (
+        {isAdmin && (
           <li>
-            <Link to="/escultores/new" className="text-white px-2 py-1 text-2xl">
+            <Link
+              to="/escultores/new"
+              className="text-white px-2 py-1 text-2xl"
+            >
               Crear Escultor
             </Link>
           </li>
@@ -42,14 +45,16 @@ function Navbar() {
             Eventos
           </Link>
         </li>
+        {isAdmin && (
+          <li>
+            <Link to="/eventos/new" className="text-white px-2 py-1 text-2xl">
+              Crear Evento
+            </Link>
+          </li>
+        )}
 
         {isAuthenticated ? (
           <>
-            <li>
-              <Link to="/eventos/new" className="text-white px-2 py-1 text-2xl">
-                Crear Evento
-              </Link>
-            </li>
             <li>
               <Link
                 to="/"

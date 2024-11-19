@@ -8,6 +8,7 @@ import {
   deleteImagenes,
 } from "../controllers/imagenes.controllers.js";
 import Multer from "multer";
+import { authRequired, isAdmin } from "../middlewares/validateToken.js";
 
 export const multer = Multer({
   storage: Multer.memoryStorage(),
@@ -22,12 +23,12 @@ router.get("/", getImagenes);
 
 router.get("/:id", getImagenesByObra);
 
-router.post("/", multer.array("images", 3), createImagen);
+router.post("/", [authRequired, isAdmin], multer.array("images", 3), createImagen);
 
-router.put("/:id", updateImagen);
+router.put("/:id", [authRequired, isAdmin], updateImagen);
 
-router.delete("/:id", deleteImagen);
+router.delete("/:id", [authRequired, isAdmin], deleteImagen);
 
-router.delete("/", deleteImagenes);
+router.delete("/", [authRequired, isAdmin], deleteImagenes);
 
 export default router;
