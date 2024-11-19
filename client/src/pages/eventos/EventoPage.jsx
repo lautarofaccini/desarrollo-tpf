@@ -12,7 +12,7 @@ function EventoPage() {
   const [loading, setLoading] = useState(true);
   const { getEvento } = useEventos();
   const { getObrasByEvento } = useObras();
-  const { isAuthenticated } = useAuth();
+  const { isAdmin } = useAuth();
   const params = useParams();
 
   useEffect(() => {
@@ -37,7 +37,7 @@ function EventoPage() {
   }, [getEvento, getObrasByEvento, params.id]);
 
   const terminarEventoManual = (id) => {
-    console.log(id)
+    console.log(id);
     alert(`NOT YET IMPLEMENTED`);
   };
 
@@ -79,7 +79,7 @@ function EventoPage() {
         {/* Mostrar botón de terminar manual si el evento está en curso 
         //TODO: Controlar que sea admin para terminar evento
         */}
-        {isEnCurso(evento) && isAuthenticated && (
+        {isEnCurso(evento) && isAdmin && (
           <button
             onClick={handleTerminarEvento}
             className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"

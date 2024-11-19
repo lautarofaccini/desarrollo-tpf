@@ -9,7 +9,7 @@ function ObraPage() {
   const [imagenes, setImagenes] = useState([]);
   const [loading, setLoading] = useState(true);
   const { getObra, getImagenesByObra } = useObras();
-  const { isAuthenticated } = useAuth();
+  const { isAdmin } = useAuth();
   const navigate = useNavigate();
   const params = useParams();
 
@@ -44,7 +44,7 @@ function ObraPage() {
           <p className="text-sm">{obra.fecha_creacion}</p>
           <p className="text-sm">Material: {obra.material || "none"}</p>
           <EdDelButtons id={obra.id_obra} />
-          {isAuthenticated && (
+          {isAdmin && (
             <button
               onClick={() => navigate(`/obras/qr/${obra.id_obra}`)}
               className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
@@ -52,7 +52,6 @@ function ObraPage() {
               Mostrar QR
             </button>
           )}
-
           {/* Clasificación de Imágenes */}
           {imagenes.length > 0 ? (
             <div className="mt-6">

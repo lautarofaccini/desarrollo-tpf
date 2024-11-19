@@ -167,7 +167,13 @@ export const verifyObrasToken = async (req, res) => {
   if (!token) return res.status(401).json({ message: "No autorizado" });
 
   jwt.verify(token, process.env.SECRET_KEY, async (err, obra) => {
-    if (err) return res.status(403).json({ message: "Token invalido" });
+    if (err) {
+      if (err.name === "TokenExpiredError") {
+        return res.status(403).json({ message: "Token expirado" });
+      } else {
+        return res.status(403).json({ message: "Token invalido" });
+      }
+    }
 
     const [result] = await pool.query("SELECT * FROM obras WHERE id_obra = ?", [
       obra.id_obra,
@@ -181,3 +187,4 @@ export const verifyObrasToken = async (req, res) => {
     return res.json(obraFound);
   });
 };
+

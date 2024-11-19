@@ -6,6 +6,7 @@ import {
   updateEscultor,
   deleteEscultor,
 } from "../controllers/escultores.controllers.js";
+import { authRequired, isAdmin } from "../middlewares/validateToken.js";
 
 const router = Router();
 
@@ -13,10 +14,10 @@ router.get("/", getEscultores);
 
 router.get("/:id", getEscultor);
 
-router.post("/", createEscultor);
+router.post("/", [authRequired, isAdmin], createEscultor);
 
-router.put("/:id", updateEscultor);
+router.put("/:id", [authRequired, isAdmin], updateEscultor);
 
-router.delete("/:id", deleteEscultor);
+router.delete("/:id", [authRequired, isAdmin], deleteEscultor);
 
 export default router;

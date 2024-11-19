@@ -6,17 +6,18 @@ import {
   updateUsuario,
   deleteUsuario,
 } from "../controllers/usuarios.controllers.js";
+import { authRequired, isAdmin } from "../middlewares/validateToken.js";
 
 const router = Router();
 
-router.get("/", getUsuarios);
+router.get("/", [authRequired, isAdmin], getUsuarios);
 
-router.get("/:id", getUsuario);
+router.get("/:id", [authRequired, isAdmin], getUsuario);
 
-router.post("/", createUsuario);
+router.post("/", [authRequired, isAdmin], createUsuario);
 
-router.put("/:id", updateUsuario);
+router.put("/:id", [authRequired, isAdmin], updateUsuario);
 
-router.delete("/:id", deleteUsuario);
+router.delete("/:id", [authRequired, isAdmin], deleteUsuario);
 
 export default router;

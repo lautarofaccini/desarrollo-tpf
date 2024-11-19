@@ -25,8 +25,8 @@ function ObraVotacionPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        console.log(token);
         const response = await verifyObrasTokenRequest(token);
+
         if (response.data) {
           const obraData = response.data;
           setObra(obraData);
@@ -36,12 +36,17 @@ function ObraVotacionPage() {
             const escultorData = await getEscultor(obraData.id_escultor);
             setEscultor(escultorData);
           }
-        } else {
-          setError("Token inválido o expirado.");
         }
       } catch (err) {
-        console.error(err);
-        setError(err.response?.data?.message || "Error inesperado");
+        const errorMessage = err.response?.data?.message || "Error inesperado";
+
+        if (errorMessage === "Token expirado") {
+          setError("Código expirado. Por favor, escanéa nuevamente el QR.");
+        } else if (errorMessage === "Token invalido") {
+          setError("Código inválido.");
+        } else {
+          setError(errorMessage);
+        }
       } finally {
         setLoading(false);
       }

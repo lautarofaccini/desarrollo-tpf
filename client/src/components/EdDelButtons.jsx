@@ -5,7 +5,7 @@ import { useObras } from "../context/ObraContext";
 import { useEscultores } from "@/context/EscultorContext";
 
 function EdDelButtons({ id }) {
-  const { isAuthenticated } = useAuth();
+  const { isAdmin } = useAuth();
   const { deleteEvento } = useEventos();
   const { deleteObra } = useObras();
   const { deleteEscultor } = useEscultores();
@@ -43,7 +43,7 @@ function EdDelButtons({ id }) {
 
   return (
     <>
-      {isAuthenticated && (
+      {isAdmin && (
         <div className="flex gap-x-2">
           <button
             className="bg-red-500 px-2 py-1 text-white rounded-md"
