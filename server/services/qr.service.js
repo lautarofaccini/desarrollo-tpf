@@ -23,7 +23,7 @@ export const getQRCodeForObra = async (id_obra) => {
   if (!obraQRCodes[id_obra]) {
     obraQRCodes[id_obra] = generateTokenForObra(id_obra);
   }
-  
+
   // Generar la imagen QR basada en el token generado
   const qrCodeUrl = await QRCode.toDataURL(
     `http://localhost:5173/obras/votar?token=${obraQRCodes[id_obra]}`
@@ -57,7 +57,7 @@ const updateAllQRCodes = () => {
 };
 
 // Función para iniciar el intervalo de actualización de QR
-const startQRCodeUpdateInterval = () => {
+export const startQRCodeUpdateInterval = () => {
   qrUpdateInterval = setInterval(updateAllQRCodes, 60 * 1000);
   console.log("Intervalo de actualización de códigos QR iniciado.");
 };
