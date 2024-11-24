@@ -6,6 +6,9 @@ import {
   createEvento,
   updateEvento,
   deleteEvento,
+  activarEvento,
+  pausarEvento,
+  finalizarEvento
 } from "../controllers/eventos.controllers.js";
 import { authRequired, isAdmin } from "../middlewares/validateToken.js";
 /* 
@@ -27,5 +30,14 @@ router.post("/eventos", [authRequired, isAdmin], createEvento);
 router.put("/eventos/:id", [authRequired, isAdmin], updateEvento);
 
 router.delete("/eventos/:id", [authRequired, isAdmin], deleteEvento);
+
+//Controles de evento
+
+router.post("/eventos/activar/:id", [authRequired, isAdmin], activarEvento);
+
+router.post("/eventos/pausar/:id", [authRequired, isAdmin], pausarEvento);
+
+router.post("/eventos/finalizar/:id", [authRequired, isAdmin], finalizarEvento);
+
 
 export default router;
