@@ -279,11 +279,31 @@ export const desactivarEvento = async (req, res) => {
 
     const estadoActual = eventoActual[0].estado;
 
-    if (estadoActual === "inactivo" ) {
+    if (estadoActual === "inactivo") {
+      return res.status(400).json({ message: "El evento ya está inactivo." });
+    }
+
+    // Obtener las obras relacionadas con el evento
+    const [obras] = await pool.query(
+      "SELECT id_obra FROM obras WHERE id_evento = ?",
+      [id]
+    );
+
+    if (obras.length === 0) {
       return res
         .status(400)
-        .json({ message: "El evento no se puede desactivar." });
+        .json({ message: "No hay obras asociadas a este evento." });
     }
+
+    // Eliminar los votos asociados a las obras del evento
+    for (const obra of obras) {
+      await pool.query("DELETE FROM vota WHERE id_obra = ?", [obra.id_obra]);
+    }
+
+    // Restablecer calificaciones de las obras relacionadas con el evento
+    await pool.query("UPDATE obras SET calificacion = 0 WHERE id_evento = ?", [
+      id,
+    ]);
 
     // Cambiar el estado del evento a 'inactivo'
     const [result] = await pool.query(
@@ -291,11 +311,16 @@ export const desactivarEvento = async (req, res) => {
       [id]
     );
 
-    // Desactivar QRs activos
+    if (result.affectedRows === 0)
+      return res
+        .status(404)
+        .json({ message: "No se pudo desactivar el evento." });
+
+    // Desactivar cualquier QR activo o proceso relacionado
     stopQRCodeUpdateInterval();
 
     res.json({
-      message: `Evento ${id} inactivo.`,
+      message: `Evento ${id} desactivado y votacion/clasificacion reiniciados.`,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
