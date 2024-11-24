@@ -3,6 +3,7 @@ import {
   getQRCodeForObra,
   clearQRCodesAndInterval,
   stopQRCodeUpdateInterval,
+  startQRCodeUpdateInterval,
 } from "../services/qr.service.js";
 
 export const getEventos = async (req, res) => {
@@ -101,22 +102,53 @@ export const activarEvento = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Verificar si hay un evento activo y desactivarlo
+    // Verificar si el evento ya está activo
+    const [eventoActual] = await pool.query(
+      "SELECT estado FROM eventos WHERE id_evento = ?",
+      [id]
+    );
+
+    if (eventoActual.length === 0)
+      return res.status(404).json({ message: "Evento no encontrado" });
+
+    const estadoActual = eventoActual[0].estado;
+
+    if (estadoActual === "activo" || estadoActual === "finalizado") {
+      return res
+        .status(400)
+        .json({ message: "El evento no se puede activar." });
+    }
+
+    // Si el evento está pausado, simplemente reactiva los QR
+    if (estadoActual === "pausado") {
+      const [result] = await pool.query(
+        "UPDATE eventos SET estado = 'activo' WHERE id_evento = ?",
+        [id]
+      );
+
+      if (result.affectedRows === 0)
+        return res.status(404).json({ message: "Evento no encontrado" });
+
+      // Reanudar los QR previamente pausados
+      startQRCodeUpdateInterval();
+
+      return res.json({ message: `Evento ${id} reactivado.` });
+    }
+
+    // Si hay un evento activo, desactivarlo
     await pool.query(
       "UPDATE eventos SET estado = 'inactivo' WHERE estado = 'activo'"
     );
 
-    // Desactivar QRs del evento activo
-    clearQRCodesAndInterval();
+    clearQRCodesAndInterval(); // Detener los QR previos del evento activo
 
-    // Activar el nuevo evento
     const [result] = await pool.query(
       "UPDATE eventos SET estado = 'activo' WHERE id_evento = ?",
       [id]
     );
 
     if (result.affectedRows === 0)
-      return res.status(404).json({ message: "Evento not found" });
+      return res.status(404).json({ message: "Evento no encontrado" });
 
     // Activar QRs para las obras asociadas al nuevo evento
     const [obras] = await pool.query(
@@ -131,7 +163,7 @@ export const activarEvento = async (req, res) => {
       await getQRCodeForObra(id_obra);
     }
 
-    res.json({ message: `Evento ${id} activado exitosamente.` });
+    res.json({ message: `Evento ${id} activado.` });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -140,23 +172,35 @@ export const activarEvento = async (req, res) => {
 export const pausarEvento = async (req, res) => {
   try {
     const { id } = req.params;
-    const { estado } = req.body; // Estado enviado desde el frontend (activo o pausado)
 
-    if (!["activo", "pausado"].includes(estado))
-      return res.status(400).json({ message: "Estado inválido" });
+    // Verificar si el evento ya está pausado
+    const [eventoActual] = await pool.query(
+      "SELECT estado FROM eventos WHERE id_evento = ?",
+      [id]
+    );
 
+    if (eventoActual.length === 0)
+      return res.status(404).json({ message: "Evento no encontrado" });
+
+    const estadoActual = eventoActual[0].estado;
+
+    if (estadoActual === "pausado" || estadoActual !== "activo") {
+      return res.status(400).json({ message: "El evento no se puede pausar." });
+    }
+
+    // Actualizar estado del evento a 'pausado'
     const [result] = await pool.query(
-      "UPDATE eventos SET estado = ? WHERE id_evento = ?",
-      [estado, id]
+      "UPDATE eventos SET estado = 'pausado' WHERE id_evento = ?",
+      [id]
     );
 
     if (result.affectedRows === 0)
-      return res.status(404).json({ message: "Evento not found" });
+      return res.status(404).json({ message: "Evento no encontrado" });
 
-    // Detener los QRs si el estado es pausado
-    if (estado === "pausado") stopQRCodeUpdateInterval();
+    // Detener los QRs pero mantenerlos en memoria para reactivarlos más tarde
+    stopQRCodeUpdateInterval();
 
-    res.json({ message: `Evento ${id} actualizado a estado '${estado}'.` });
+    res.json({ message: `Evento ${id} pausado.` });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
