@@ -23,7 +23,7 @@ export const getQRCodeForObra = async (id_obra) => {
   if (!obraQRCodes[id_obra]) {
     obraQRCodes[id_obra] = generateTokenForObra(id_obra);
   }
-
+  
   // Generar la imagen QR basada en el token generado
   const qrCodeUrl = await QRCode.toDataURL(
     `http://localhost:5173/obras/votar?token=${obraQRCodes[id_obra]}`
@@ -71,4 +71,11 @@ export const stopQRCodeUpdateInterval = () => {
       "Intervalo de actualización de códigos QR detenido manualmente."
     );
   }
+};
+
+// Función para limpiar los QR en memoria y detener el intervalo
+export const clearQRCodesAndInterval = () => {
+  obraQRCodes = {}; // Limpiar el mapa de códigos QR
+  stopQRCodeUpdateInterval(); // Detener el intervalo
+  console.log("Memoria de códigos QR y el intervalo han sido limpiados.");
 };
