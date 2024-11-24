@@ -102,7 +102,7 @@ export const activarEvento = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Verificar si el evento ya está activo
+    // Verificar si el evento ya está activo o finalizado
     const [eventoActual] = await pool.query(
       "SELECT estado FROM eventos WHERE id_evento = ?",
       [id]
@@ -121,13 +121,10 @@ export const activarEvento = async (req, res) => {
 
     // Si el evento está pausado, simplemente reactiva los QR
     if (estadoActual === "pausado") {
-      const [result] = await pool.query(
+      await pool.query(
         "UPDATE eventos SET estado = 'activo' WHERE id_evento = ?",
         [id]
       );
-
-      if (result.affectedRows === 0)
-        return res.status(404).json({ message: "Evento no encontrado" });
 
       // Reanudar los QR previamente pausados
       startQRCodeUpdateInterval();
@@ -135,20 +132,23 @@ export const activarEvento = async (req, res) => {
       return res.json({ message: `Evento ${id} reactivado.` });
     }
 
-    // Si hay un evento activo, desactivarlo
-    await pool.query(
-      "UPDATE eventos SET estado = 'inactivo' WHERE estado = 'activo'"
+    // Obtener todos los eventos activos o pausados
+    const [eventosActivosPausados] = await pool.query(
+      "SELECT id_evento FROM eventos WHERE estado IN ('activo', 'pausado')"
     );
 
-    clearQRCodesAndInterval(); // Detener los QR previos del evento activo
+    // Llamar a desactivarEvento para cada evento activo o pausado
+    for (const evento of eventosActivosPausados) {
+      if (evento.id_evento !== id) {
+        await desactivarEvento({ params: { id: evento.id_evento } }, res);
+      }
+    }
 
-    const [result] = await pool.query(
+    // Activar el nuevo evento
+    await pool.query(
       "UPDATE eventos SET estado = 'activo' WHERE id_evento = ?",
       [id]
     );
-
-    if (result.affectedRows === 0)
-      return res.status(404).json({ message: "Evento no encontrado" });
 
     // Activar QRs para las obras asociadas al nuevo evento
     const [obras] = await pool.query(
@@ -184,18 +184,15 @@ export const pausarEvento = async (req, res) => {
 
     const estadoActual = eventoActual[0].estado;
 
-    if (estadoActual === "pausado" || estadoActual !== "activo") {
+    if (estadoActual !== "activo") {
       return res.status(400).json({ message: "El evento no se puede pausar." });
     }
 
     // Actualizar estado del evento a 'pausado'
-    const [result] = await pool.query(
+    await pool.query(
       "UPDATE eventos SET estado = 'pausado' WHERE id_evento = ?",
       [id]
     );
-
-    if (result.affectedRows === 0)
-      return res.status(404).json({ message: "Evento no encontrado" });
 
     // Detener los QRs pero mantenerlos en memoria para reactivarlos más tarde
     stopQRCodeUpdateInterval();
@@ -234,7 +231,7 @@ export const finalizarEvento = async (req, res) => {
     );
 
     // Desactivar QRs activos
-    stopQRCodeUpdateInterval();
+    clearQRCodesAndInterval();
 
     // Calcular las calificaciones promedio por obra asociada al evento
     const [calificaciones] = await pool.query(
@@ -317,7 +314,7 @@ export const desactivarEvento = async (req, res) => {
         .json({ message: "No se pudo desactivar el evento." });
 
     // Desactivar cualquier QR activo o proceso relacionado
-    stopQRCodeUpdateInterval();
+    clearQRCodesAndInterval();
 
     res.json({
       message: `Evento ${id} desactivado y votacion/clasificacion reiniciados.`,
