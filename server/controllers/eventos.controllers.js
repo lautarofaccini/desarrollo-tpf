@@ -137,10 +137,10 @@ export const activarEvento = async (req, res) => {
       "SELECT id_evento FROM eventos WHERE estado IN ('activo', 'pausado')"
     );
 
-    // Llamar a desactivarEvento para cada evento activo o pausado
+    // Llamar a desactivarEventoLogic para cada evento activo o pausado
     for (const evento of eventosActivosPausados) {
       if (evento.id_evento !== id) {
-        await desactivarEvento({ params: { id: evento.id_evento } }, res);
+        await desactivarEventoLogic(evento.id_evento);
       }
     }
 
@@ -261,65 +261,61 @@ export const finalizarEvento = async (req, res) => {
   }
 };
 
+const desactivarEventoLogic = async (id) => {
+  // Lógica de desactivación del evento
+  const [eventoActual] = await pool.query(
+    "SELECT estado FROM eventos WHERE id_evento = ?",
+    [id]
+  );
+
+  if (eventoActual.length === 0) {
+    throw new Error("Evento no encontrado");
+  }
+
+  const estadoActual = eventoActual[0].estado;
+
+  if (estadoActual === "inactivo") {
+    throw new Error("El evento ya está inactivo.");
+  }
+
+  // Obtener las obras relacionadas con el evento
+  const [obras] = await pool.query(
+    "SELECT id_obra FROM obras WHERE id_evento = ?",
+    [id]
+  );
+
+  // Eliminar los votos asociados a las obras del evento
+  for (const obra of obras) {
+    await pool.query("DELETE FROM vota WHERE id_obra = ?", [obra.id_obra]);
+  }
+
+  // Restablecer calificaciones de las obras relacionadas con el evento
+  await pool.query("UPDATE obras SET calificacion = 0 WHERE id_evento = ?", [
+    id,
+  ]);
+
+  // Cambiar el estado del evento a 'inactivo'
+  const [result] = await pool.query(
+    "UPDATE eventos SET estado = 'inactivo' WHERE id_evento = ?",
+    [id]
+  );
+
+  if (result.affectedRows === 0) {
+    throw new Error("No se pudo desactivar el evento.");
+  }
+
+  // Desactivar cualquier QR activo o proceso relacionado
+  clearQRCodesAndInterval();
+};
+
 export const desactivarEvento = async (req, res) => {
   try {
     const { id } = req.params;
-
-    // Verificar si el evento ya está inactivo
-    const [eventoActual] = await pool.query(
-      "SELECT estado FROM eventos WHERE id_evento = ?",
-      [id]
-    );
-
-    if (eventoActual.length === 0)
-      return res.status(404).json({ message: "Evento no encontrado" });
-
-    const estadoActual = eventoActual[0].estado;
-
-    if (estadoActual === "inactivo") {
-      return res.status(400).json({ message: "El evento ya está inactivo." });
-    }
-
-    // Obtener las obras relacionadas con el evento
-    const [obras] = await pool.query(
-      "SELECT id_obra FROM obras WHERE id_evento = ?",
-      [id]
-    );
-
-    if (obras.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "No hay obras asociadas a este evento." });
-    }
-
-    // Eliminar los votos asociados a las obras del evento
-    for (const obra of obras) {
-      await pool.query("DELETE FROM vota WHERE id_obra = ?", [obra.id_obra]);
-    }
-
-    // Restablecer calificaciones de las obras relacionadas con el evento
-    await pool.query("UPDATE obras SET calificacion = 0 WHERE id_evento = ?", [
-      id,
-    ]);
-
-    // Cambiar el estado del evento a 'inactivo'
-    const [result] = await pool.query(
-      "UPDATE eventos SET estado = 'inactivo' WHERE id_evento = ?",
-      [id]
-    );
-
-    if (result.affectedRows === 0)
-      return res
-        .status(404)
-        .json({ message: "No se pudo desactivar el evento." });
-
-    // Desactivar cualquier QR activo o proceso relacionado
-    clearQRCodesAndInterval();
-
+    await desactivarEventoLogic(id);
     res.json({
-      message: `Evento ${id} desactivado y votacion/clasificacion reiniciados.`,
+      message: `Evento ${id} desactivado y votación/clasificación reiniciados.`,
     });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
