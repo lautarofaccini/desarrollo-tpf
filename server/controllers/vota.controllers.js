@@ -56,6 +56,28 @@ export const createVoto = async (req, res) => {
   try {
     const { id_obra, id_usuario, puntaje } = req.body;
 
+    // Verificar el estado del evento asociado a la obra
+    const [eventResult] = await pool.query(
+      "SELECT e.estado FROM eventos e JOIN obras o ON o.id_evento = e.id_evento WHERE o.id_obra = ?",
+      [id_obra]
+    );
+
+    if (eventResult.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Obra no asociada a ningún evento." });
+    }
+
+    const eventEstado = eventResult[0].estado;
+
+    // Comprobar si el evento está activo
+    if (eventEstado !== "activo") {
+      return res
+        .status(400)
+        .json({ message: "No se puede votar, el evento no está activo." });
+    }
+
+    // Si el evento está activo, proceder a registrar el voto
     const [result] = await pool.query(
       "INSERT INTO vota (id_obra, id_usuario, puntaje) VALUES (?, ?, ?)",
       [id_obra, id_usuario, puntaje]

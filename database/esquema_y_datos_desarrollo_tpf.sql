@@ -10,6 +10,7 @@ CREATE TABLE eventos (
     lugar VARCHAR(255) NOT NULL,
     descripcion TEXT,
     tematica VARCHAR(255),
+    estado ENUM('activo', 'pausado', 'finalizado', 'inactivo') DEFAULT 'inactivo',
 		CONSTRAINT chk_fecha_valida CHECK (fecha_inicio < fecha_fin)
 )
 ENGINE=InnoDB

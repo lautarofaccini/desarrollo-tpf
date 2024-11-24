@@ -5,60 +5,80 @@ import EdDelButtons from "@/components/EdDelButtons";
 import { useObras } from "@/context/ObraContext";
 import EscultorObraCard from "@/components/EscultorObraCard";
 import { useAuth } from "@/context/AuthContext";
+import EstadoBottons from "@/components/EstadoButtons";
 
 function EventoPage() {
   const [evento, setEvento] = useState();
   const [obras, setObras] = useState([]);
+  const [estado, setEstado] = useState("inactivo");
   const [loading, setLoading] = useState(true);
-  const { getEvento } = useEventos();
+  const [loadingEstado, setLoadingEstado] = useState(false); // Cargando cambios de estado
+  const {
+    getEvento,
+    activarEvento,
+    pausarEvento,
+    finalizarEvento,
+    desactivarEvento,
+  } = useEventos();
   const { getObrasByEvento } = useObras();
   const { isAdmin } = useAuth();
   const params = useParams();
 
+  // Cargar evento y obras
   useEffect(() => {
-    async function loadEvento() {
+    const loadEvento = async () => {
       try {
+        setLoading(true);
         const eventoData = await getEvento(params.id);
         let obrasData = await getObrasByEvento(params.id);
 
-        // Si el evento ha finalizado, ordenar las obras por calificación
-        if (isFinalizado(eventoData)) {
+        if (eventoData.estado === "finalizado") {
           obrasData = obrasData.sort((a, b) => b.calificacion - a.calificacion);
         }
 
         setEvento(eventoData);
+        setEstado(eventoData.estado);
         setObras(obrasData);
-        setLoading(false);
       } catch (error) {
-        console.error(error);
+        console.error("Error cargando el evento:", error);
+      } finally {
+        setLoading(false);
       }
-    }
+    };
     loadEvento();
   }, [getEvento, getObrasByEvento, params.id]);
 
-  const terminarEventoManual = (id) => {
-    console.log(id);
-    alert(`NOT YET IMPLEMENTED`);
+  // Cambiar estado del evento
+  const handleChangeState = async (action) => {
+    try {
+      setLoadingEstado(true); // Mostramos un estado de carga solo para el cambio de estado
+      switch (action) {
+        case "activar":
+          await activarEvento(evento.id_evento);
+          break;
+        case "pausar":
+          await pausarEvento(evento.id_evento);
+          break;
+        case "finalizar":
+          await finalizarEvento(evento.id_evento);
+          break;
+        case "desactivar":
+          await desactivarEvento(evento.id_evento);
+          break;
+        default:
+          throw new Error("Acción no válida");
+      }
+
+      // Actualizamos solo el estado del evento
+      const eventoData = await getEvento(params.id);
+      setEvento(eventoData);
+      setEstado(eventoData.estado);
+    } catch (error) {
+      console.error("Error al cambiar el estado del evento:", error);
+    } finally {
+      setLoadingEstado(false);
+    }
   };
-
-  function isEnCurso(evento) {
-    const now = new Date();
-    return (
-      new Date(evento.fecha_inicio) <= now && now <= new Date(evento.fecha_fin)
-    );
-  }
-
-  function isFinalizado(evento) {
-    return new Date(evento.fecha_fin) < new Date();
-  }
-
-  function isProximo(evento) {
-    return new Date(evento.fecha_inicio) > new Date();
-  }
-
-  function handleTerminarEvento() {
-    terminarEventoManual(evento.id_evento);
-  }
 
   if (loading) return <p>Loading...</p>;
 
@@ -76,19 +96,20 @@ function EventoPage() {
         </p>
         <EdDelButtons id={evento.id_evento} />
 
-        {/* Mostrar botón de terminar manual si el evento está en curso 
-        //TODO: Controlar que sea admin para terminar evento
-        */}
-        {isEnCurso(evento) && isAdmin && (
-          <button
-            onClick={handleTerminarEvento}
-            className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-          >
-            Terminar Evento
-          </button>
+        {isAdmin && (
+          <>
+            <p className="text-sm font-bold">
+              Estado del Evento:{" "}
+              {estado.charAt(0).toUpperCase() + estado.slice(1)}
+            </p>
+            <EstadoBottons
+              estado={estado}
+              onChangeState={handleChangeState}
+              loading={loadingEstado} // Indicador de carga
+            />
+          </>
         )}
 
-        {/* Galería de obras */}
         {obras.length > 0 && (
           <div className="mt-6">
             <h3 className="text-lg font-bold">Obras</h3>
@@ -97,8 +118,8 @@ function EventoPage() {
                 <EscultorObraCard
                   obra={obra}
                   key={obra.id_obra}
-                  mostrarCalificacion={isFinalizado(evento)}
-                  blancoYNegro={isProximo(evento)}
+                  mostrarCalificacion={estado === "finalizado"}
+                  blancoYNegro={estado === "inactivo"}
                 />
               ))}
             </div>
