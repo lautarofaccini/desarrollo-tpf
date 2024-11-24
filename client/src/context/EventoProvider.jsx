@@ -6,6 +6,10 @@ import {
   getEventosOrdenadosRequest,
   getEventoRequest,
   updateEventoRequest,
+  activarEventoRequest,
+  pausarEventoRequest,
+  finalizarEventoRequest,
+  desactivarEventoRequest,
 } from "../api/eventos.api";
 
 export const EventoContext = createContext();
@@ -62,6 +66,39 @@ export const EventoProvider = ({ children }) => {
     }
   };
 
+  const activarEvento = async (id) => {
+    try {
+      const response = await activarEventoRequest(id);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const pausarEvento = async (id) => {
+    try {
+      const response = await pausarEventoRequest(id);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const finalizarEvento = async (id) => {
+    try {
+      const response = await finalizarEventoRequest(id);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const desactivarEvento = async (id) => {
+    try {
+      const response = await desactivarEventoRequest(id);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <EventoContext.Provider
       value={{
@@ -72,6 +109,10 @@ export const EventoProvider = ({ children }) => {
         createEvento,
         getEvento,
         updateEvento,
+        activarEvento,
+        pausarEvento,
+        finalizarEvento,
+        desactivarEvento,
       }}
     >
       {children}
