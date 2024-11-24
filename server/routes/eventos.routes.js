@@ -8,14 +8,10 @@ import {
   deleteEvento,
   activarEvento,
   pausarEvento,
-  finalizarEvento
+  finalizarEvento,
+  desactivarEvento
 } from "../controllers/eventos.controllers.js";
 import { authRequired, isAdmin } from "../middlewares/validateToken.js";
-/* 
-Agregar authRequired para asegurar la ruta
-Ejemplo: 
-router.get("/ejemplo", authRequired, getEjemplo);
- */
 
 const router = Router();
 
@@ -39,5 +35,6 @@ router.post("/eventos/pausar/:id", [authRequired, isAdmin], pausarEvento);
 
 router.post("/eventos/finalizar/:id", [authRequired, isAdmin], finalizarEvento);
 
+router.post("/eventos/desactivar/:id", [authRequired, isAdmin], desactivarEvento);
 
 export default router;

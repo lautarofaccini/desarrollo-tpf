@@ -210,14 +210,28 @@ export const finalizarEvento = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Cambiar el estado del evento a 'finalizado'
-    const [result] = await pool.query(
-      "UPDATE eventos SET estado = 'finalizado' WHERE id_evento = ?",
+    // Verificar si el evento ya está finalizado
+    const [eventoActual] = await pool.query(
+      "SELECT estado FROM eventos WHERE id_evento = ?",
       [id]
     );
 
-    if (result.affectedRows === 0)
-      return res.status(404).json({ message: "Evento not found" });
+    if (eventoActual.length === 0)
+      return res.status(404).json({ message: "Evento no encontrado" });
+
+    const estadoActual = eventoActual[0].estado;
+
+    if (estadoActual === "finalizado" || estadoActual === "inactivo") {
+      return res
+        .status(400)
+        .json({ message: "El evento no se puede finalizar." });
+    }
+
+    // Cambiar el estado del evento a 'finalizado'
+    await pool.query(
+      "UPDATE eventos SET estado = 'finalizado' WHERE id_evento = ?",
+      [id]
+    );
 
     // Desactivar QRs activos
     stopQRCodeUpdateInterval();
@@ -244,6 +258,44 @@ export const finalizarEvento = async (req, res) => {
 
     res.json({
       message: `Evento ${id} finalizado y calificaciones calculadas.`,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const desactivarEvento = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Verificar si el evento ya está inactivo
+    const [eventoActual] = await pool.query(
+      "SELECT estado FROM eventos WHERE id_evento = ?",
+      [id]
+    );
+
+    if (eventoActual.length === 0)
+      return res.status(404).json({ message: "Evento no encontrado" });
+
+    const estadoActual = eventoActual[0].estado;
+
+    if (estadoActual === "inactivo" ) {
+      return res
+        .status(400)
+        .json({ message: "El evento no se puede desactivar." });
+    }
+
+    // Cambiar el estado del evento a 'inactivo'
+    const [result] = await pool.query(
+      "UPDATE eventos SET estado = 'inactivo' WHERE id_evento = ?",
+      [id]
+    );
+
+    // Desactivar QRs activos
+    stopQRCodeUpdateInterval();
+
+    res.json({
+      message: `Evento ${id} inactivo.`,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
