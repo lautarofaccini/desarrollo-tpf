@@ -53,29 +53,28 @@ const updateAllQRCodes = () => {
     obraQRCodes[id_obra] = generateTokenForObra(id_obra);
   });
 
-  console.log("QR codes actualizados:", obraQRCodes);
+  // Mostrar solo los IDs de las obras en el log
+  console.log("QRs actualizados para obras (IDs):", idsObras);
 };
 
-// Función para iniciar el intervalo de actualización de QR
+// Iniciar el intervalo de actualización de QR
 export const startQRCodeUpdateInterval = () => {
   qrUpdateInterval = setInterval(updateAllQRCodes, 60 * 1000);
   console.log("Intervalo de actualización de códigos QR iniciado.");
 };
 
-// Función para detener el intervalo manualmente (si es necesario)
+// Detener el intervalo
 export const stopQRCodeUpdateInterval = () => {
   if (qrUpdateInterval) {
     clearInterval(qrUpdateInterval);
     qrUpdateInterval = null;
-    console.log(
-      "Intervalo de actualización de códigos QR detenido manualmente."
-    );
+    console.log("Intervalo de actualización de códigos QR detenido.");
   }
 };
 
-// Función para limpiar los QR en memoria y detener el intervalo
+// Limpiar los QR en memoria y detener el intervalo
 export const clearQRCodesAndInterval = () => {
-  obraQRCodes = {}; // Limpiar el mapa de códigos QR
-  stopQRCodeUpdateInterval(); // Detener el intervalo
+  obraQRCodes = {};
+  stopQRCodeUpdateInterval();
   console.log("Memoria de códigos QR y el intervalo han sido limpiados.");
 };
