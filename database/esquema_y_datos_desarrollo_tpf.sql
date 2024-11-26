@@ -262,6 +262,38 @@ END $$
 
 DELIMITER ;
 
+/* Triggers para controlar que solamente haya un evento activo. */ 
+DELIMITER $$
+
+CREATE TRIGGER tgr_evento_activo_actualizacion BEFORE UPDATE ON eventos FOR EACH ROW
+BEGIN
+    -- Verificar si el estado está cambiando a 'activo'
+    IF NEW.estado = 'activo' THEN
+        -- Contar la cantidad de eventos que ya están activos, excluyendo el que se está actualizando
+        IF (SELECT COUNT(*) FROM eventos WHERE estado = 'activo' AND id_evento != NEW.id_evento) > 0 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se puede activar este evento porque ya existe otro evento activo.';
+        END IF;
+    END IF;
+END;
+$$
+
+CREATE TRIGGER tgr_evento_activo_insercion BEFORE INSERT ON eventos FOR EACH ROW
+BEGIN
+    -- Verificar si se está intentando insertar un evento con el estado 'activo'
+    IF NEW.estado = 'activo' THEN
+        -- Contar la cantidad de eventos que ya están activos
+        IF (SELECT COUNT(*) FROM eventos WHERE estado = 'activo') > 0 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se puede insertar este evento porque ya existe otro evento activo.';
+        END IF;
+    END IF;
+END;
+$$
+
+DELIMITER ;
+
+/* Creación de índices. */
+CREATE INDEX idx_eventos ON eventos (estado);
+
 /* Cargamos datos de prueba en la base de datos. */
 -- Inserción de datos en la tabla `eventos`
 INSERT INTO eventos (fecha_inicio, fecha_fin, lugar, descripcion, tematica) VALUES
