@@ -24,54 +24,79 @@ function RegisterPage() {
   const onSubmit = handleSubmit(async (values) => {
     const updatedValues = {
       ...values,
-      rol: "user",
+      rol: "user", // Asignar rol por defecto
     };
     signup(updatedValues);
   });
 
   return (
     <Background>
-      <div className="flex items-center justify-center h-screen w-full">
-        <div className=" bg-zinc-800 max-w-md p-10 rounded-md w-full">
-          <h1 className="text-2xl font-bold text-white">Registrar</h1>
+      <div className="flex items-center h-screen w-full overflow-hidden relative">
+        <div className="absolute top-50 left-80 bg-zinc-700 bg-opacity-80 max-w-md p-10 rounded-lg shadow-lg">
+          <h1 className="text-3xl font-bold text-center text-white underline decoration-sky-500 decoration-4 mb-6">Registrarse</h1>
+          <h2 className="text-xl text-gray-300 mb-5 text-center">
+            Por favor, completa la información para registrarte.
+          </h2>
           {registerErrors.map((error, i) => (
-            <div key={i} className="bg-red-500 p-2 text-white">
+            <div key={i} className="bg-red-500 p-2 text-white rounded mb-4">
               {error}
             </div>
           ))}
-          <form onSubmit={onSubmit}>
-            <input
-              type="text"
-              {...register("nickname", { required: true })}
-              placeholder="Nickname chido"
-              className="w-full px-4 py-2 my-2 rounded-md"
-            />
-            {errors.nickname && (
-              <p className="text-red-500">Nombre de usuario requerido</p>
-            )}
-            <input
-              type="email"
-              {...register("email", { required: true })}
-              placeholder="ejemplo@email.com"
-              className="w-full px-4 py-2 my-2 rounded-md"
-            />
-            {errors.email && <p className="text-red-500">Email requerido</p>}
-            <input
-              type="password"
-              {...register("password", { required: true })}
-              placeholder="********"
-              className="w-full px-4 py-2 my-2 rounded-md"
-            />
-            {errors.password && (
-              <p className="text-red-500">Contraseña requerida</p>
-            )}
-            <button type="submit" className="text-white">
-              Enviar
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div>
+              <input
+                type="text"
+                {...register("nickname", { required: true })}
+                placeholder="Nombre de usuario"
+                className="w-full px-4 py-2 rounded-md border border-gray-700 bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+              />
+              {errors.nickname && (
+                <p className="text-red-500 text-sm mt-1">
+                  Nombre de usuario requerido
+                </p>
+              )}
+            </div>
+            <div>
+              <input
+                type="email"
+                {...register("email", { required: true })}
+                placeholder="Correo electrónico"
+                className="w-full px-4 py-2 rounded-md border border-gray-700 bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">Email requerido</p>
+              )}
+            </div>
+            <div>
+              <input
+                type="password"
+                {...register("password", { required: true })}
+                placeholder="Contraseña"
+                className="w-full px-4 py-2 rounded-md border border-gray-700 bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+              />
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">
+                  Contraseña requerida
+                </p>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="w-full py-2 rounded-md bg-sky-500 text-white hover:bg-sky-600 transition-colors font-semibold"
+            >
+              Registrarse
             </button>
           </form>
-          <Link to="/login" state={{ from }} className="text-sky-500">
-            Inicia Sesión
-          </Link>
+          <p className="text-gray-400 mt-4 text-sm">
+            ¿Ya tienes cuenta?{" "}
+            <Link
+              to="/login"
+              state={{ from }}
+              className="text-sky-500 hover:underline"
+            >
+              Inicia sesión aquí
+            </Link>
+          </p>
         </div>
       </div>
     </Background>
