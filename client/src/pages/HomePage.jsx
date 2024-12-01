@@ -77,6 +77,36 @@ function HomePage() {
         </div>
       </section>
 
+            {/* Seccion de contacto */}
+            <section className="py-16 px-4 md:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl font-bold mb-12">Contacto</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="h-12 w-12 rounded-full bg-gray-800 flex items-center justify-center">
+                <Phone className="h-6 w-6" />
+              </div>
+              <h3 className="font-semibold">Teléfono</h3>
+              <p className="text-gray-300">+54 362 444-5555</p>
+            </div>
+            <div className="flex flex-col items-center space-y-4">
+              <div className="h-12 w-12 rounded-full bg-gray-800 flex items-center justify-center">
+                <Mail className="h-6 w-6" />
+              </div>
+              <h3 className="font-semibold">Email</h3>
+              <p className="text-gray-300">contacto@bienalchaco.com</p>
+            </div>
+            <div className="flex flex-col items-center space-y-4">
+              <div className="h-12 w-12 rounded-full bg-gray-800 flex items-center justify-center">
+                <MapPin className="h-6 w-6" />
+              </div>
+              <h3 className="font-semibold">Dirección</h3>
+              <p className="text-gray-300">Av. Sarmiento 1100, Resistencia, Chaco</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
     </main>
   )
