@@ -51,6 +51,32 @@ function HomePage() {
         </div>
       </section>
 
+            {/* Seccion de como llegar */}
+            <section className="py-16 px-4 md:px-8 bg-gray-900">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+          <div className="h-[400px] bg-gray-800 rounded-lg flex items-center justify-center text-gray-400">
+            Mapa de ubicación
+          </div>
+          <div className="space-y-6">
+            <h2 className="text-4xl font-bold">Cómo Llegar</h2>
+            <div className="space-y-4">
+              <p className="flex items-center gap-2">
+                <MapPin className="h-5 w-5 text-gray-400" />
+                Av. Sarmiento 1100, Resistencia, Chaco
+              </p>
+              <div className="space-y-2">
+                <h3 className="font-semibold text-xl">Indicaciones:</h3>
+                <ul className="list-disc list-inside space-y-2 text-gray-300">
+                  <li>Desde el centro, tomar Av. Sarmiento hacia el norte</li>
+                  <li>Girar a la derecha en la rotonda principal</li>
+                  <li>El predio se encuentra a 200 metros a la izquierda</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
     </main>
   )
