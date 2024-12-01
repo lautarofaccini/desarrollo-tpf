@@ -28,8 +28,8 @@ function LoginPage() {
     <Background>
       <div className="flex items-center h-screen w-full overflow-hidden relative">
         <div className="absolute top-50 left-80 bg-zinc-700 bg-opacity-80 max-w-md p-10 rounded-lg shadow-lg">
-          <h1 className="text-3xl text-center font-bold text-white mb-6">Bienvenido</h1>
-          <h2 className=" text-2xl text-gray-300 mb-5 text-center">Por favor, inicia sesión en su cuenta de la Bienal para continuar.</h2>
+          <h1 className="text-3xl text-center font-bold text-white underline decoration-sky-500 decoration-4 mb-6">Bienvenido</h1>
+          <h2 className=" text-xl text-gray-300 mb-5 text-center">Por favor, inicia sesión en su cuenta de la Bienal para continuar.</h2>
           {loginErrors.map((error, i) => (
             <div key={i} className="bg-red-500 p-2 text-white rounded mb-4">
               {error}
