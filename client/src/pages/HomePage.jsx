@@ -19,7 +19,7 @@ function HomePage() {
         </div>
       </section>
 
-      
+
       {/* Section de fotos de la bienal */}
       <section className="py-16 px-4 md:px-8 bg-gray-900">
         <h2 className="text-4xl font-bold text-center mb-12">Nuestras Esculturas</h2>
@@ -35,6 +35,22 @@ function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Seccion de informacion sobre la bienal */}
+      <section className="py-16 px-4 md:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl font-bold mb-8">Sobre la Bienal</h2>
+          <p className="text-lg text-gray-300 mb-6">
+            La Bienal del Chaco es un evento internacional de escultura que reúne a artistas de todo el mundo.
+            Durante este evento, podrás explorar una impresionante colección de obras de artistas reconocidos y emergentes.
+          </p>
+          <p className="text-lg text-gray-300">
+            Descubre instalaciones, pinturas, esculturas y más, diseñadas para desafiar tus sentidos e inspirar
+            nuevas perspectivas sobre el arte contemporáneo.
+          </p>
+        </div>
+      </section>
+
 
     </main>
   )
