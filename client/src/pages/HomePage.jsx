@@ -7,14 +7,14 @@ function HomePage() {
       {/* Seccion de inicio */}
       <section className="relative h-screen">
         <img
-          src="/FU-Bienal2024.jpg"
+          src="/FU-Bienal2024 editado.jpg"
           alt="Fondo Bienal"
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
         />
         <div className="absolute inset-0 flex items-center justify-end px-8 md:px-16">
           <div className="max-w-2xl">
-          <h1 className="text-6xl md:text-8xl font-bold mb-4 text-black stroke-text">La Bienal 2024</h1>
-          <p className="text-xl md:text-2xl text-black stroke-text-sm">Una exposición única de arte y escultura contemporánea</p>
+          <h1 className="text-6xl md:text-8xl font-bold mb-4 text-ligh text-[#6dc5f8] stroke-text" >Bienal 2024</h1>
+          <p className="text-xl md:text-2xl mr-6 pl-1 stroke-text-sm text-[rgb(255,255,255)]">Una exposición única de arte y escultura contemporánea</p>
           </div>
         </div>
       </section>
@@ -51,8 +51,8 @@ function HomePage() {
         </div>
       </section>
 
-            {/* Seccion de como llegar */}
-            <section className="py-16 px-4 md:px-8 bg-gray-900">
+      {/* Seccion de como llegar */}
+      <section className="py-16 px-4 md:px-8 bg-gray-900">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
           <div className="h-[400px] bg-gray-800 rounded-lg flex items-center justify-center text-gray-400">
             Mapa de ubicación
@@ -62,13 +62,14 @@ function HomePage() {
             <div className="space-y-4">
               <p className="flex items-center gap-2">
                 <MapPin className="h-5 w-5 text-gray-400" />
-                Av. Sarmiento 1100, Resistencia, Chaco
+                Avenida de los Inmigrantes 1001, Resistencia, Chaco
               </p>
               <div className="space-y-2">
                 <h3 className="font-semibold text-xl">Indicaciones:</h3>
                 <ul className="list-disc list-inside space-y-2 text-gray-300">
-                  <li>Desde el centro, tomar Av. Sarmiento hacia el norte</li>
-                  <li>Girar a la derecha en la rotonda principal</li>
+                  <li>Desde el centro, tomar Av. 25 De Mayo</li>
+                  <li>Girar a la derecha en la Av. Belgrano</li>
+                  <li>Seguir derecho hasta el parque 2 de febrero</li>
                   <li>El predio se encuentra a 200 metros a la izquierda</li>
                 </ul>
               </div>
@@ -77,8 +78,8 @@ function HomePage() {
         </div>
       </section>
 
-            {/* Seccion de contacto */}
-            <section className="py-16 px-4 md:px-8">
+      {/* Seccion de contacto */}
+      <section className="py-16 px-4 md:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-12">Contacto</h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -101,7 +102,34 @@ function HomePage() {
                 <MapPin className="h-6 w-6" />
               </div>
               <h3 className="font-semibold">Dirección</h3>
-              <p className="text-gray-300">Av. Sarmiento 1100, Resistencia, Chaco</p>
+              <p className="text-gray-300">Avenida de los Inmigrantes 1001, Resistencia, Chaco</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="py-16 px-4 md:px-8 bg-gray-900">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+          <div className="h-[400px] bg-gray-800 rounded-lg flex items-center justify-center text-gray-400">
+            Mapa de ubicación
+          </div>
+          <div className="space-y-6">
+            <h2 className="text-4xl font-bold">Cómo Llegar</h2>
+            <div className="space-y-4">
+              <p className="flex items-center gap-2">
+                <MapPin className="h-5 w-5 text-gray-400" />
+                Avenida de los Inmigrantes 1001, Resistencia, Chaco
+              </p>
+              <div className="space-y-2">
+                <h3 className="font-semibold text-xl">Indicaciones:</h3>
+                <ul className="list-disc list-inside space-y-2 text-gray-300">
+                  <li>Desde el centro, tomar Av. 25 De Mayo</li>
+                  <li>Girar a la derecha en la Av. Belgrano</li>
+                  <li>Seguir derecho hasta el parque 2 de febrero</li>
+                  <li>El predio se encuentra a 200 metros a la izquierda</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
