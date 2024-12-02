@@ -75,11 +75,11 @@ function Navbar() {
                 Iniciar Sesión
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/register" className="text-white px-2 py-1 text-2xl">
                 Registrar
               </Link>
-            </li>
+            </li> */}
           </>
         )}
       </ul>
