@@ -59,7 +59,7 @@ function Navbar() {
                 onClick={() => {
                   logout();
                 }}
-                className="text-white px-2 py-1 text-2xl"
+                className="text-white px-2 py-1 text-2xl underline"
               >
                 Cerrar Sesión
               </Link>
