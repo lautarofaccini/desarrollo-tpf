@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { AuthRequired, AdminRequired } from "./ProtectedRoute";
 
 import Navbar from "./components/Navbar";
@@ -29,51 +29,49 @@ import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 
 function App() {
+  const location = useLocation();
+  const isQRPage = location.pathname.startsWith("/obras/qr");
   return (
     <div>
       <EventoProvider>
         <EscultorProvider>
           <ObraProvider>
-            <Navbar />
-            <main className="">
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="*" element={<NotFound />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/login" element={<LoginPage />} />
+            {!isQRPage && <Navbar />}
 
-                <Route path="/eventos" element={<EventosPage />} />
-                <Route path="/eventos/:id" element={<EventoPage />} />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="*" element={<NotFound />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/login" element={<LoginPage />} />
 
-                <Route path="/escultores" element={<EscultoresPage />} />
-                <Route path="/escultores/:id" element={<EscultorPage />} />
+              <Route path="/eventos" element={<EventosPage />} />
+              <Route path="/eventos/:id" element={<EventoPage />} />
 
-                <Route path="/obras" element={<ObrasPage />} />
-                <Route path="/obras/:id" element={<ObraPage />} />
+              <Route path="/escultores" element={<EscultoresPage />} />
+              <Route path="/escultores/:id" element={<EscultorPage />} />
 
-                <Route element={<AuthRequired />}>
-                  <Route
-                    path="/obras/votar"
-                    element={<ObraVotacionPage />}
-                  />
-                </Route>
+              <Route path="/obras" element={<ObrasPage />} />
+              <Route path="/obras/:id" element={<ObraPage />} />
 
-                <Route element={<AdminRequired />}>
-                  <Route path="/eventos/new" element={<EventosForm />} />
-                  <Route path="/eventos/edit/:id" element={<EventosForm />} />
+              <Route element={<AuthRequired />}>
+                <Route path="/obras/votar" element={<ObraVotacionPage />} />
+              </Route>
 
-                  <Route path="/obras/new" element={<ObrasForm />} />
-                  <Route path="/obras/edit/:id" element={<ObrasForm />} />
-                  <Route path="/obras/qr/:id" element={<ObraQRPage />} />
+              <Route element={<AdminRequired />}>
+                <Route path="/eventos/new" element={<EventosForm />} />
+                <Route path="/eventos/edit/:id" element={<EventosForm />} />
 
-                  <Route path="/escultores/new" element={<EscultoresForm />} />
-                  <Route
-                    path="/escultores/edit/:id"
-                    element={<EscultoresForm />}
-                  />
-                </Route>
-              </Routes>
-            </main>
+                <Route path="/obras/new" element={<ObrasForm />} />
+                <Route path="/obras/edit/:id" element={<ObrasForm />} />
+                <Route path="/obras/qr/:id" element={<ObraQRPage />} />
+
+                <Route path="/escultores/new" element={<EscultoresForm />} />
+                <Route
+                  path="/escultores/edit/:id"
+                  element={<EscultoresForm />}
+                />
+              </Route>
+            </Routes>
           </ObraProvider>
         </EscultorProvider>
       </EventoProvider>
