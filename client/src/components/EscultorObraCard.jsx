@@ -5,6 +5,7 @@ import { useEscultores } from "@/context/EscultorContext";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Avatar } from "@nextui-org/avatar";
 
 function EscultorObraCard({ obra, mostrarCalificacion, blancoYNegro }) {
   const [escultor, setEscultor] = useState(null);
@@ -34,7 +35,7 @@ function EscultorObraCard({ obra, mostrarCalificacion, blancoYNegro }) {
 
   if (!escultor) return null;
 
-  const defaultImage = "/images.jpg";
+  const defaultImage = "/Escultura1.jpg";
 
   return (
     <div className="border rounded-lg overflow-hidden shadow-lg flex flex-col h-full min-h-[400px]">
@@ -92,7 +93,6 @@ function EscultorObraCard({ obra, mostrarCalificacion, blancoYNegro }) {
         <p className="text-gray-400">Estilo: {obra.estilo}</p>
         <p className="text-gray-400">Material: {obra.material || "N/A"}</p>
 
-        {/* Mostrar calificación si mostrarCalificacion es verdadero */}
         {mostrarCalificacion && (
           <p className="text-yellow-400 font-bold">
             Calificación: {obra.calificacion}
@@ -100,20 +100,24 @@ function EscultorObraCard({ obra, mostrarCalificacion, blancoYNegro }) {
         )}
 
         <hr className="my-4 border-gray-600" />
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex items-center justify-between gap-4">
+          <div className="w-full">
             <h3 className="text-lg font-bold text-white">
               {escultor.nombre} {escultor.apellido}
             </h3>
             <p className="text-gray-400">Edad: {escultor.edad}</p>
-            <p className="text-gray-400">{escultor.biografia}</p>
+            <p className="text-gray-400 line-clamp-2">{escultor.biografia}</p>
             <p className="text-gray-400">{escultor.email}</p>
           </div>
-          <img
-            src={escultor.foto_perfil || "/JEFF_KOONS_2.jpg"}
-            alt={escultor.nombre}
-            className="w-20 h-20 rounded-full object-cover aspect-square ml-4"
-          />
+          <div className="flex-shrink-0">
+            <Avatar
+              src={escultor.foto_perfil}
+              size="lg"
+              color="primary"
+              isBordered
+              className="rounded-full h-16 w-16 object-cover"
+            />
+          </div>
         </div>
       </div>
       <div className="p-4 mt-auto">
