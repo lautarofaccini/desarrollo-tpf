@@ -6,18 +6,26 @@ function HomePage() {
     <main className="min-h-screen bg-black text-white">
       {/* Seccion de inicio */}
       <section className="relative h-screen">
-        <img
-          src="/FU-Bienal2024 editado.jpg"
-          alt="Fondo Bienal"
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
-        />
-        <div className="absolute inset-0 flex items-center justify-end px-8 md:px-16">
-          <div className="max-w-2xl">
-          <h1 className="text-6xl md:text-8xl font-bold mb-4 text-ligh text-[#6dc5f8] stroke-text underline" >Bienal 2024</h1>
-          <p className="text-xl md:text-2xl mr-6 pl-1 stroke-text-sm text-[rgb(255,255,255)]">Una exposición única de arte y escultura contemporánea</p>
+      <img
+        src="/FU-Bienal2024 editado.jpg"
+        alt="Fondo Bienal"
+        className="absolute inset-0 w-full h-full object-cover opacity-90"
+      />
+      <div className="absolute inset-0 flex items-center justify-end px-8 md:px-16">
+        <div className="max-w-2xl">
+          <div className="relative">
+            <h1 className="text-6xl md:text-8xl font-bold -mb-2 ">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r  from-pink-500 via-purple-500 to-indigo-500" style={{ WebkitTextStroke: '1.5px black' }}>
+                Bienal 2024
+              </span>
+            </h1>
           </div>
+          <p className="text-xl md:text-xl mr-3 font-semibold text-gray-700  p-1 ">
+            Una exposición única de arte y escultura contemporánea
+          </p>
         </div>
-      </section>
+      </div>
+    </section>
 
 
       {/* Section de fotos de la bienal */}
@@ -57,7 +65,7 @@ function HomePage() {
       <div className="h-[400px] bg-gray-800 rounded-xl relative">
         <a href="https://www.google.com/maps/place/Predio+de+las+Bienales/@-27.4419929,-58.9848968,15.5z/data=!4m6!3m5!1s0x94450c5b052eb443:0x891619c21777887b!8m2!3d-27.4372388!4d-58.9813493!16s%2Fg%2F11c4y0ld7h?hl=es-AR&entry=ttu&g_ep=EgoyMDI0MTEyNC4xIKXMDSoASAFQAw%3D%3D">
         <img
-          src="/mapa2.png"
+          src="/Mapa3.png"
           alt="Fondo Bienal"
           className="object-cover h-full w-full rounded-2xl"
         />
