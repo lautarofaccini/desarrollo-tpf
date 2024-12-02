@@ -13,7 +13,7 @@ function EscultorPage() {
   const [loading, setLoading] = useState(true);
   const { getEscultor } = useEscultores();
   const { getObrasByEscultor } = useObras();
-  const { isAuthenticated } = useAuth();
+  const { isAdmin } = useAuth();
   const params = useParams();
 
   useEffect(() => {
@@ -64,7 +64,7 @@ function EscultorPage() {
             </div>
           </div>
 
-          {isAuthenticated && (
+          {isAdmin && (
             <div className="mt-6">
               <h3 className="text-lg font-bold">Crear Nueva Obra</h3>
 

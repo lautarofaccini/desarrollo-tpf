@@ -1,14 +1,23 @@
 import { useEffect } from "react";
 import { useEscultores } from "@/context/EscultorContext";
 import EscultorCard from "@/components/EscultorCard";
-
+import { motion } from "framer-motion";
+import { useAuth } from "@/context/AuthContext";
+import { PlusIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function EscultoresPage() {
   const { escultores, loadEscultores } = useEscultores();
+  const { isAdmin } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadEscultores();
   }, [loadEscultores]);
+
+  const handleCreateObra = () => {
+    navigate(`/obras/new`);
+  };
 
   return (
     <div className="bg-neutral-800 flex flex-col justify-between px-20 py-4">
@@ -23,8 +32,19 @@ function EscultoresPage() {
           <EscultorCard escultor={escultor} key={escultor.id_escultor} />
         ))}
       </div>
+      {isAdmin && (
+        <motion.button
+          className="fixed bottom-8 right-8 bg-pink-500 hover:bg-pink-600 text-white p-4 rounded-full shadow-lg"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={handleCreateObra}
+        >
+          <PlusIcon size={24} />
+          <span className="sr-only">Crear nuevo evento</span>
+        </motion.button>
+      )}
     </div>
-  )
+  );
 }
 
-export default EscultoresPage
+export default EscultoresPage;
