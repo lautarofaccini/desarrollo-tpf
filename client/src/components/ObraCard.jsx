@@ -26,7 +26,7 @@ function ObraCard({ obra }) {
   return (
     <div
       key={obra.id_obra}
-      className="mt-5 border rounded-lg overflow-hidden shadow-lg flex flex-col h-full min-h-[400px]"
+      className="border rounded-lg overflow-hidden shadow-lg flex flex-col h-full min-h-[400px]"
     >
       <div className="relative h-64">
         {imagenes.length > 0 ? (

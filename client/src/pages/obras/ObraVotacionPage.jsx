@@ -1,24 +1,26 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { verifyObrasTokenRequest } from "@/api/obras.api";
-import ObraCard from "@/components/ObraCard";
 import { useEscultores } from "@/context/EscultorContext";
-import EscultorCard from "@/components/EscultorCard";
+import { useObras } from "@/context/ObraContext";
 import { useAuth } from "@/context/AuthContext";
 import { createVotoRequest } from "@/api/vota.api";
+import EscultorObraCard from "@/components/EscultorObraCard";
+import StarRating from "@/components/StarRating";
+import { motion } from "framer-motion";
 
 function ObraVotacionPage() {
   const location = useLocation();
-  // Obtener el token de la URL
   const queryParams = new URLSearchParams(location.search);
   const token = queryParams.get("token");
 
-  const [obra, setObra] = useState();
-  const [escultor, setEscultor] = useState();
+  const [obra, setObra] = useState(null);
+  const [otrasObras, setOtrasObras] = useState([]);
   const [rating, setRating] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { getEscultor } = useEscultores();
+  const { getObrasByEscultor } = useObras();
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -33,8 +35,12 @@ function ObraVotacionPage() {
 
           // Solo buscar el escultor si la obra tiene un id_escultor
           if (obraData.id_escultor) {
-            const escultorData = await getEscultor(obraData.id_escultor);
-            setEscultor(escultorData);
+            const obrasEscultor = await getObrasByEscultor(
+              obraData.id_escultor
+            );
+            setOtrasObras(
+              obrasEscultor.filter((o) => o.id_obra !== obraData.id_obra)
+            );
           }
         }
       } catch (err) {
@@ -53,15 +59,7 @@ function ObraVotacionPage() {
     }
 
     fetchData();
-  }, [token, getEscultor]);
-
-  const createVoto = async (voto) => {
-    try {
-      await createVotoRequest(voto);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  }, [token, getEscultor, getObrasByEscultor]);
 
   const handleRatingSubmit = async () => {
     try {
@@ -70,51 +68,110 @@ function ObraVotacionPage() {
         id_obra: obra.id_obra,
         puntaje: rating,
       };
-      createVoto(voto);
-      alert("Gracias por tu voto!");
-      navigate("/"); // Redirigir a la página de inicio u otra página después de votar
+      await createVotoRequest(voto);
+      alert("¡Gracias por tu voto!");
+      navigate("/");
     } catch (err) {
       console.error(err);
       alert("Error al enviar tu voto.");
     }
   };
 
-  if (loading) return <div>Cargando...</div>;
+  if (loading)
+    return (
+      <div className="text-white text-center text-2xl mt-10">Cargando...</div>
+    );
   if (error)
     return (
-      <div className="text-white">
-        <div>{error}</div>
-        <Link to="/" className="text-blue-600">
+      <div className="text-white text-center mt-10">
+        <div className="text-2xl mb-4">{error}</div>
+        <Link to="/" className="text-pink-400 hover:text-pink-300 underline">
           Volver al inicio
         </Link>
       </div>
     );
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-2xl font-bold mb-4 text-white">Vota por la obra</h1>
-      <h2 className="text-lg">{obra.nombre}</h2>
-      <EscultorCard escultor={escultor} key={escultor.id_escultor} />
-      <ObraCard obra={obra} key={obra.id_obra} />
-      <div className="flex mb-4">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <span
-            key={star}
-            className={`cursor-pointer ${
-              star <= rating ? "text-yellow-500" : "text-gray-400"
-            }`}
-            onClick={() => setRating(star)}
+    <div className="min-h-screen bg-gray-900 py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <motion.h1
+          className="text-4xl font-bold mb-8 text-center text-pink-300"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          Vota por la obra y el escultor
+        </motion.h1>
+
+        <motion.div
+          className="mb-8"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <EscultorObraCard
+            obra={obra}
+            mostrarCalificacion={false}
+            blancoYNegro={false}
+          />
+        </motion.div>
+
+        <motion.div
+          className="bg-gray-800 rounded-lg p-6 mb-8"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <h2 className="text-2xl font-bold mb-4 text-purple-300">
+            Califica al escultor
+          </h2>
+          <div className="flex items-center justify-between">
+            <StarRating rating={rating} setRating={setRating} />
+            <button
+              onClick={handleRatingSubmit}
+              className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-full transition-colors duration-200"
+              disabled={rating === 0}
+            >
+              Enviar Voto
+            </button>
+          </div>
+        </motion.div>
+
+        {otrasObras.length > 0 && (
+          <motion.div
+            className="bg-gray-800 rounded-lg p-6"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
           >
-            ★
-          </span>
-        ))}
+            <h2 className="text-2xl font-bold mb-4 text-purple-300">
+              Otras obras del escultor
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {otrasObras.map((otraObra) => (
+                <div
+                  key={otraObra.id_obra}
+                  className="bg-gray-700 rounded-lg p-4"
+                >
+                  <h3 className="text-xl font-semibold text-pink-300 mb-2">
+                    {otraObra.nombre}
+                  </h3>
+                  <p className="text-indigo-300">Estilo: {otraObra.estilo}</p>
+                  <p className="text-indigo-300">
+                    Material: {otraObra.material || "N/A"}
+                  </p>
+                  <Link
+                    to={`/obras/${otraObra.id_obra}`}
+                    className="mt-2 inline-block bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-full transition-colors duration-200"
+                  >
+                    Ver detalles
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </div>
-      <button
-        onClick={handleRatingSubmit}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Enviar Voto
-      </button>
     </div>
   );
 }
