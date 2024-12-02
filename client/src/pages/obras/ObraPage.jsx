@@ -36,7 +36,7 @@ function ObraPage() {
   const imagenDespues = imagenes[2] || null;
 
   return (
-    <section className="flex justify-center items-center">
+    <section className="flex justify-center items-center mt-24">
       <div className="bg-zinc-700 text-white rounded-md p-4 w-full max-w-4xl">
         <div className="container mx-auto">
           <h1 className="text-xl font-bold mt-4">{obra.estilo}</h1>
