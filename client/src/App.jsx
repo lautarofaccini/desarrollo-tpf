@@ -35,7 +35,7 @@ function App() {
         <EscultorProvider>
           <ObraProvider>
             <Navbar />
-            <main className="pt-20">
+            <main className="">
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="*" element={<NotFound />} />
