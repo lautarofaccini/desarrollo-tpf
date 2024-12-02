@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useObras } from "@/context/ObraContext";
 import { useEscultores } from "@/context/EscultorContext";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Avatar } from "@nextui-org/avatar";
+import { Link } from "react-router-dom";
 
 function EscultorObraCard({ obra, mostrarCalificacion, blancoYNegro }) {
   const [escultor, setEscultor] = useState(null);
@@ -38,7 +38,7 @@ function EscultorObraCard({ obra, mostrarCalificacion, blancoYNegro }) {
   const defaultImage = "/Escultura1.jpg";
 
   return (
-    <div className="border rounded-lg overflow-hidden shadow-lg flex flex-col h-full min-h-[400px]">
+    <div className="border bg-gray-800 rounded-lg overflow-hidden shadow-lg flex flex-col h-full">
       <div className={`relative h-64 w-full ${blancoYNegro && "grayscale"}`}>
         {imagenes.length > 0 ? (
           <Carousel
@@ -88,10 +88,10 @@ function EscultorObraCard({ obra, mostrarCalificacion, blancoYNegro }) {
           />
         )}
       </div>
-      <div className="p-4 flex-grow relative">
-        <h2 className="text-xl font-semibold text-white">{obra.nombre}</h2>
-        <p className="text-gray-400">Estilo: {obra.estilo}</p>
-        <p className="text-gray-400">Material: {obra.material || "N/A"}</p>
+      <div className="p-4 flex-grow">
+        <h2 className="text-2xl font-bold text-pink-300 mb-2">{obra.nombre}</h2>
+        <p className="text-indigo-300">Estilo: {obra.estilo}</p>
+        <p className="text-indigo-300">Material: {obra.material || "N/A"}</p>
 
         {mostrarCalificacion && (
           <p className="text-yellow-400 font-bold">
@@ -100,23 +100,21 @@ function EscultorObraCard({ obra, mostrarCalificacion, blancoYNegro }) {
         )}
 
         <hr className="my-4 border-gray-600" />
-        <div className="flex items-center justify-between gap-4">
-          <div className="w-full">
-            <h3 className="text-lg font-bold text-white">
+        <div className="flex items-center gap-4">
+          <Avatar
+            src={escultor.foto_perfil}
+            size="lg"
+            color="primary"
+            isBordered
+            className="rounded-full h-16 w-16 object-cover"
+          />
+          <div>
+            <h3 className="text-xl font-bold text-purple-300">
               {escultor.nombre} {escultor.apellido}
             </h3>
-            <p className="text-gray-400">Edad: {escultor.edad}</p>
-            <p className="text-gray-400 line-clamp-2">{escultor.biografia}</p>
-            <p className="text-gray-400">{escultor.email}</p>
-          </div>
-          <div className="flex-shrink-0">
-            <Avatar
-              src={escultor.foto_perfil}
-              size="lg"
-              color="primary"
-              isBordered
-              className="rounded-full h-16 w-16 object-cover"
-            />
+            <p className="text-indigo-300">{escultor.nacionalidad}</p>
+            <p className="text-indigo-300 line-clamp-2">{escultor.biografia}</p>
+            <p className="text-indigo-300">{escultor.email}</p>
           </div>
         </div>
       </div>
