@@ -12,17 +12,14 @@ import {
 } from "@nextui-org/navbar";
 
 function Navbar() {
-  const { isAuthenticated, isAdmin, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
     { path: "/obras", label: "Obras" },
-    ...(isAdmin ? [{ path: "/obras/new", label: "Crear Obra" }] : []),
     { path: "/escultores", label: "Escultores" },
-    ...(isAdmin ? [{ path: "/escultores/new", label: "Crear Escultor" }] : []),
     { path: "/eventos", label: "Eventos" },
-    ...(isAdmin ? [{ path: "/eventos/new", label: "Crear Evento" }] : []),
     ...(isAuthenticated
       ? [{ path: "/", label: "Cerrar Sesión", onClick: logout }]
       : [{ path: "/login", label: "Iniciar Sesión" }]),
@@ -35,6 +32,7 @@ function Navbar() {
       shouldHideOnScroll
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
+      maxWidth="full"
     >
       {/* Brand */}
       <NavbarBrand>
