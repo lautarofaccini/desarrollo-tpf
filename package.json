@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server/index.js"
+    "dev": "nodemon --no-deprecation server/index.js"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "mysql2": "^3.11.4",
+    "mysql2": "^3.11.5",
     "qrcode": "^1.5.4",
     "sharp": "^0.33.5",
     "zod": "^3.23.8"
