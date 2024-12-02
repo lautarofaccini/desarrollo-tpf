@@ -7,7 +7,7 @@ function EscultorCard({ escultor }) {
       className="border rounded-lg overflow-hidden shadow-lg flex flex-col h-full min-h-[400px]"
     >
       <img
-        src={escultor.foto_perfil || "/JEFF_KOONS_2.jpg"}
+        src={escultor.foto_perfil || "/Escultura1.jpg"}
         alt={escultor.nombre}
         className="w-full h-64 object-cover"
       />
