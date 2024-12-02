@@ -25,6 +25,7 @@ function LoginPage() {
   });
 
   return (
+    <div className="">
     <Background>
       <div className="flex items-center h-screen w-full overflow-hidden relative">
         <div className="absolute top-50 left-80 bg-zinc-700 bg-opacity-80 max-w-md p-10 rounded-lg shadow-lg">
@@ -80,6 +81,7 @@ function LoginPage() {
         </div>
       </div>
     </Background>
+    </div>
   );
 }
 
