@@ -3,6 +3,8 @@ import EventoCard from "@/components/EventoCard";
 import { useEventos } from "@/context/EventoContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { PlusIcon } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 function EventosPage() {
   const { eventos, loadEventosOrdenados } = useEventos();
@@ -13,6 +15,7 @@ function EventosPage() {
   });
   const [activeEventIndex, setActiveEventIndex] = useState(0);
   const containerRef = useRef(null);
+  const { isAdmin } = useAuth();
 
   const navigate = useNavigate();
 
@@ -38,7 +41,7 @@ function EventosPage() {
         }
         return acc;
       },
-      { past: [], current: [], future: [] },
+      { past: [], current: [], future: [] }
     );
 
     setCategorizedEvents(categorized);
@@ -68,10 +71,8 @@ function EventosPage() {
     const handleWheel = (e) => {
       e.preventDefault();
       if (e.deltaY > 0) {
-        // Scrolling down
         setActiveEventIndex((prev) => Math.min(prev + 1, allEvents.length - 1));
       } else {
-        // Scrolling up
         setActiveEventIndex((prev) => Math.max(prev - 1, 0));
       }
     };
@@ -99,14 +100,21 @@ function EventosPage() {
     }
   };
 
+  const handleCreateEvent = () => {
+    navigate(`/eventos/new`);
+  };
+
   return (
-    <div className="min-h-screen text-white py-8 px-4" ref={containerRef}>
+    <div
+      className="min-h-screen bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 text-white py-8 px-4 relative"
+      ref={containerRef}
+    >
       <div className="max-w-4xl mx-auto">
         <AnimatePresence>
           <motion.div
             className="space-y-8"
             initial={{ y: 0 }}
-            animate={{ y: -activeEventIndex * 120 }}
+            animate={{ y: -activeEventIndex * 140 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
             {allEvents.map((evento, index) => (
@@ -120,6 +128,17 @@ function EventosPage() {
           </motion.div>
         </AnimatePresence>
       </div>
+      {isAdmin && (
+        <motion.button
+          className="fixed bottom-8 right-8 bg-pink-500 hover:bg-pink-600 text-white p-4 rounded-full shadow-lg"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={handleCreateEvent}
+        >
+          <PlusIcon size={24} />
+          <span className="sr-only">Crear nuevo evento</span>
+        </motion.button>
+      )}
     </div>
   );
 }
