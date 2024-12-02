@@ -41,7 +41,7 @@ export function ImageSlider({ images }) {
               <img
                 src={src}
                 alt={`Escultura ${index + 1}`}
-                className="w-full h-90 object-cover rounded-lg"
+                className="w-full h-full object-cover rounded-lg"
               />
             </div>
           ))}
