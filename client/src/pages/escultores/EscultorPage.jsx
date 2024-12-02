@@ -5,6 +5,7 @@ import EdDelButtons from "@/components/EdDelButtons";
 import { useAuth } from "@/context/AuthContext";
 import ObraCard from "@/components/ObraCard";
 import { useObras } from "@/context/ObraContext";
+import { Avatar } from "@nextui-org/avatar";
 
 function EscultorPage() {
   const [escultor, setEscultor] = useState();
@@ -12,7 +13,7 @@ function EscultorPage() {
   const [loading, setLoading] = useState(true);
   const { getEscultor } = useEscultores();
   const { getObrasByEscultor } = useObras();
-  const { isAuthenticated } = useAuth();
+  const { isAdmin } = useAuth();
   const params = useParams();
 
   useEffect(() => {
@@ -36,10 +37,12 @@ function EscultorPage() {
     <section className="flex justify-center items-center">
       <div className="bg-zinc-700 text-white rounded-md p-4">
         <div className="container mx-auto">
-          <img
-            src={escultor.foto_perfil || "/JEFF_KOONS_2.jpg"}
-            alt={escultor.nombre}
-            className="w-full max-w-md object-cover"
+          <Avatar
+            src={escultor.foto_perfil}
+            size="lg"
+            color="primary"
+            isBordered
+            className="rounded-full h-16 w-16 object-cover"
           />
           <h2 className="text-xl font-bold mt-4">
             {escultor.nombre} {escultor.apellido}
@@ -61,7 +64,7 @@ function EscultorPage() {
             </div>
           </div>
 
-          {isAuthenticated && (
+          {isAdmin && (
             <div className="mt-6">
               <h3 className="text-lg font-bold">Crear Nueva Obra</h3>
 
