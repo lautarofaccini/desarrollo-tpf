@@ -11,7 +11,7 @@ function EscultoresPage() {
   }, [loadEscultores]);
 
   return (
-    <div className="bg-neutral-800 flex flex-col justify-between px-20 py-4">
+    <div className="bg-neutral-800 flex flex-col justify-between px-20 py-4 mt-5">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold mb-8 hc-blue text-white text-center">
           {" "}
