@@ -110,7 +110,6 @@ function EventosPage() {
       ref={containerRef}
     >
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 text-center">Eventos</h1>
         <AnimatePresence>
           <motion.div
             className="space-y-8"
