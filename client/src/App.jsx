@@ -35,7 +35,7 @@ function App() {
         <EscultorProvider>
           <ObraProvider>
             <Navbar />
-            <main className="">
+            
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="*" element={<NotFound />} />
@@ -52,10 +52,7 @@ function App() {
                 <Route path="/obras/:id" element={<ObraPage />} />
 
                 <Route element={<AuthRequired />}>
-                  <Route
-                    path="/obras/votar"
-                    element={<ObraVotacionPage />}
-                  />
+                  <Route path="/obras/votar" element={<ObraVotacionPage />} />
                 </Route>
 
                 <Route element={<AdminRequired />}>
@@ -73,7 +70,6 @@ function App() {
                   />
                 </Route>
               </Routes>
-            </main>
           </ObraProvider>
         </EscultorProvider>
       </EventoProvider>
