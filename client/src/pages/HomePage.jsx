@@ -1,7 +1,20 @@
 import GoogleMapComponent from "@/components/GoogleMapComponent";
 import { MapPin, Mail, Phone } from "lucide-react";
+import { ImageSlider } from '@/components/CarruselDeImg'
 
 function HomePage() {
+  const images = [
+    "/Escultura1.jpg",
+    "/Escultura2.jpg",
+    "/Escultura3.jpg",
+    "/Escultura4.jpg",
+    "/Escultura5.jpg",
+    "/Escultura6.jpg",
+    "/Escultura7.jpg",
+    "/Escultura8.jpg",
+    "/Escultura9.jpg",
+    "/Escultura10.jpg",
+  ];
   return (
     <main className="min-h-screen bg-black text-white">
       {/* Seccion de inicio */}
@@ -33,19 +46,9 @@ function HomePage() {
       {/* Section de fotos de la bienal */}
       <section className="py-16 px-4 md:px-8 bg-gray-900">
         <h2 className="text-4xl font-bold text-center mb-12">
-          Nuestras Esculturas
+          Ediciones Anteriores
         </h2>
-        <div className="flex overflow-x-auto space-x-4 pb-4">
-          {[1, 2, 3, 4, 5].map((_, index) => (
-            <div key={index} className="flex-none w-64 h-80">
-              <img
-                src={`/Escultura${index + 1}.jpg`}
-                alt={`Escultura ${index + 1}`}
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </div>
-          ))}
-        </div>
+        <ImageSlider images={images} />
       </section>
 
       {/* Seccion de informacion sobre la bienal */}
