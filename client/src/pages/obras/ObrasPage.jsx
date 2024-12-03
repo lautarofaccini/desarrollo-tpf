@@ -20,13 +20,13 @@ function ObrasPage() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-pink-300 via-purple-500 to-indigo-300 text-white flex flex-col justify-between px-20 py-4 container-scrollable pb-20" style={{ maxHeight: 'calc(100vh - 4rem)'}} >
+    <div className="bg-gradient-to-br from-pink-300 via-purple-500 to-indigo-300 text-white flex flex-col justify-between px-60 py-8 container-scrollable pb-20" style={{ maxHeight: 'calc(100vh - 4rem)'}} >
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold mb-8 hc-blue text-white text-center">
           Obras
         </h1>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
         {obras.map((obra) => (
           <ObraCard obra={obra} key={obra.id_obra} />
         ))}
