@@ -21,15 +21,17 @@ export const EscultorProvider = ({ children }) => {
     try {
       const response = await deleteEscultorRequest(id);
       console.log(response);
-      setEscultores(escultores.filter((escultor) => escultor.id_escultor !== id));
+      setEscultores(
+        escultores.filter((escultor) => escultor.id_escultor !== id)
+      );
     } catch (error) {
       console.error(error);
     }
   };
 
-  const createEscultor = async (escultor) => {
+  const createEscultor = async (escultor, selectedImage) => {
     try {
-      await createEscultorRequest(escultor);
+      await createEscultorRequest(escultor, selectedImage);
       /* 
       TODO: Ver forma de no pedir todos los escultores cada vez que se carga la pagina, si asi fuera se podria usar ->
       setEscultores([...escultores, response.data]) */
@@ -47,9 +49,9 @@ export const EscultorProvider = ({ children }) => {
     }
   };
 
-  const updateEscultor = async (id, newFields) => {
+  const updateEscultor = async (id, newFields, selectedImage, isImageRemoved) => {
     try {
-      const response = await updateEscultorRequest(id, newFields);
+      const response = await updateEscultorRequest(id, newFields, selectedImage, isImageRemoved);
       console.log(response);
     } catch (error) {
       console.error(error);
