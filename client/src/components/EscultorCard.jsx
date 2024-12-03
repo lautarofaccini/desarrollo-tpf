@@ -2,19 +2,23 @@ import { Link } from "react-router-dom";
 
 function EscultorCard({ escultor }) {
   return (
-    <div
-      className="border border-gray-700 rounded-lg overflow-hidden shadow-lg flex flex-col w-full h-full bg-gray-900 transition-transform hover:scale-105"
-    >
+    <div className="border border-gray-700 rounded-lg overflow-hidden shadow-lg flex flex-col w-full h-full bg-gray-900 transition-transform hover:scale-105">
       <img
         src={escultor.foto_perfil || "/Escultura3.jpg"}
         alt={escultor.nombre}
         className="w-full h-64 object-cover object-center"
       />
       <div className="p-6 flex-grow flex flex-col">
-        <h2 className="text-2xl font-bold text-white mb-4 line-clamp-2">{escultor.nombre} {escultor.apellido}</h2>
-        <p className="text-gray-400 text-base mb-4 line-clamp-6 flex-grow">{escultor.biografia}</p>
+        <h2 className="text-2xl font-bold text-white mb-4 line-clamp-2">
+          {escultor.nombre} {escultor.apellido}
+        </h2>
+        <p className="text-gray-400 text-base mb-4 line-clamp-6 flex-grow">
+          {escultor.biografia}
+        </p>
         <p className="text-gray-400 text-base mb-2">Edad: {escultor.edad}</p>
-        <p className="text-gray-400 text-base truncate mb-4">{escultor.email}</p>
+        <p className="text-gray-400 text-base truncate mb-4">
+          {escultor.email}
+        </p>
       </div>
       <div className="p-6">
         <Link
