@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { useEventos } from "@/context/EventoContext";
 import { useParams } from "react-router-dom";
-import EdDelButtons from "@/components/EdDelButtons";
 import { useObras } from "@/context/ObraContext";
-import EscultorObraCard from "@/components/EscultorObraCard";
 import { useAuth } from "@/context/AuthContext";
-import EstadoBottons from "@/components/EstadoButtons";
+import { motion } from "framer-motion";
+import EventoHeader from "@/components/EventoHeader";
+import ObraGrid from "@/components/ObraGrid";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import EventControls from "@/components/EventControls";
 
 function EventoPage() {
-  const [evento, setEvento] = useState();
+  const [evento, setEvento] = useState(null);
   const [obras, setObras] = useState([]);
-  const [estado, setEstado] = useState("inactivo");
   const [loading, setLoading] = useState(true);
-  const [loadingEstado, setLoadingEstado] = useState(false); // Cargando cambios de estado
+  const [loadingEstado, setLoadingEstado] = useState(false);
   const {
     getEvento,
     activarEvento,
@@ -22,36 +23,33 @@ function EventoPage() {
   } = useEventos();
   const { getObrasByEvento } = useObras();
   const { isAdmin } = useAuth();
-  const params = useParams();
+  const { id } = useParams();
 
-  // Cargar evento y obras
   useEffect(() => {
     const loadEvento = async () => {
       try {
         setLoading(true);
-        const eventoData = await getEvento(params.id);
-        let obrasData = await getObrasByEvento(params.id);
+        const eventoData = await getEvento(id);
+        let obrasData = await getObrasByEvento(id);
 
         if (eventoData.estado === "finalizado") {
           obrasData = obrasData.sort((a, b) => b.calificacion - a.calificacion);
         }
 
         setEvento(eventoData);
-        setEstado(eventoData.estado);
         setObras(obrasData);
       } catch (error) {
-        console.error("Error cargando el evento:", error);
+        console.error("Error loading event:", error);
       } finally {
         setLoading(false);
       }
     };
     loadEvento();
-  }, [getEvento, getObrasByEvento, params.id]);
+  }, [getEvento, getObrasByEvento, id]);
 
-  // Cambiar estado del evento
   const handleChangeState = async (action) => {
     try {
-      setLoadingEstado(true); // Mostramos un estado de carga solo para el cambio de estado
+      setLoadingEstado(true);
       switch (action) {
         case "activar":
           await activarEvento(evento.id_evento);
@@ -66,67 +64,40 @@ function EventoPage() {
           await desactivarEvento(evento.id_evento);
           break;
         default:
-          throw new Error("Acción no válida");
+          throw new Error("Invalid action");
       }
-
-      // Actualizamos solo el estado del evento
-      const eventoData = await getEvento(params.id);
-      setEvento(eventoData);
-      setEstado(eventoData.estado);
+      const updatedEvento = await getEvento(id);
+      setEvento(updatedEvento);
     } catch (error) {
-      console.error("Error al cambiar el estado del evento:", error);
+      console.error("Error changing event state:", error);
     } finally {
       setLoadingEstado(false);
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingSpinner />;
 
   return (
-    <section className="flex justify-center items-center">
-      <div className="bg-zinc-700 text-white rounded-md p-4">
-        <div className="text-xl font-bold">{evento.lugar}</div>
-        <p className="text-sm">{evento.descripcion}</p>
-        <p className="text-sm">{evento.tematica}</p>
-        <p className="text-xs">
-          {new Date(evento.fecha_inicio).toLocaleDateString()}
-        </p>
-        <p className="text-xs">
-          {new Date(evento.fecha_fin).toLocaleDateString()}
-        </p>
-        <EdDelButtons id={evento.id_evento} />
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8"
+    >
+      <div className="max-w-7xl mx-auto">
+        <EventoHeader evento={evento} />
 
         {isAdmin && (
-          <>
-            <p className="text-sm font-bold">
-              Estado del Evento:{" "}
-              {estado.charAt(0).toUpperCase() + estado.slice(1)}
-            </p>
-            <EstadoBottons
-              estado={estado}
-              onChangeState={handleChangeState}
-              loading={loadingEstado} // Indicador de carga
-            />
-          </>
+          <EventControls
+            evento={evento}
+            onChangeState={handleChangeState}
+            loading={loadingEstado}
+          />
         )}
 
-        {obras.length > 0 && (
-          <div className="mt-6">
-            <h3 className="text-lg font-bold">Obras</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-              {obras.map((obra) => (
-                <EscultorObraCard
-                  obra={obra}
-                  key={obra.id_obra}
-                  mostrarCalificacion={estado === "finalizado"}
-                  blancoYNegro={estado === "inactivo"}
-                />
-              ))}
-            </div>
-          </div>
-        )}
+        <ObraGrid obras={obras} estadoEvento={evento.estado} />
       </div>
-    </section>
+    </motion.div>
   );
 }
 
