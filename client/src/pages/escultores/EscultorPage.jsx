@@ -98,16 +98,27 @@ function EscultorPage() {
         >
           <h2 className="text-2xl font-bold text-purple-400 mb-6">Obras</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {obras.map((obra, index) => (
-              <motion.div
-                key={obra.id_obra}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: 0.1 * index }}
+            {obras.length > 0 ? (
+              obras.map((obra, index) => (
+                <motion.div
+                  key={obra.id_obra}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3, delay: 0.1 * index }}
+                >
+                  <ObraCard obra={obra} />
+                </motion.div>
+              ))
+            ) : (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-center text-indigo-300"
               >
-                <ObraCard obra={obra} />
-              </motion.div>
-            ))}
+                No se han proporcionado obras...
+              </motion.p>
+            )}
           </div>
         </motion.div>
 
@@ -128,9 +139,6 @@ function EscultorPage() {
               <Plus className="w-5 h-5 mr-2" />
               Nueva Obra
             </Link>
-            <h2 className="text-2xl font-bold text-red-800 mb-4 pt-6">
-              TODO: Enviar al formulario con escultor ya seleccionado
-            </h2>
           </motion.div>
         )}
       </div>
