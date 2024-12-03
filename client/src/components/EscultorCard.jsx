@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function EscultorCard({ escultor }) {
   return (
-    <div className="border border-gray-700 rounded-lg overflow-hidden shadow-lg flex flex-col w-full h-full bg-gray-900 transition-transform hover:scale-105">
+    <div className="border-4 border-gray-700 rounded-2xl overflow-hidden shadow-lg flex flex-col w-full h-full bg-gray-900 transition-transform hover:scale-105">
       <img
         src={escultor.foto_perfil || "/Escultura3.jpg"}
         alt={escultor.nombre}
