@@ -3,24 +3,23 @@ import { Link } from "react-router-dom";
 function EscultorCard({ escultor }) {
   return (
     <div
-      key={escultor.id_escultor}
-      className="border rounded-lg overflow-hidden shadow-lg flex flex-col h-full min-h-[400px]"
+      className="border border-gray-700 rounded-lg overflow-hidden shadow-lg flex flex-col w-full max-w-sm h-[36rem] bg-gray-900 transition-transform hover:scale-105"
     >
       <img
-        src={escultor.foto_perfil || "/Escultura1.jpg"}
+        src={escultor.foto_perfil || "/Escultura3.jpg"}
         alt={escultor.nombre}
-        className="w-full h-64 object-cover"
+        className="w-full h-64 object-cover object-center"
       />
-      <div className="p-2 flex-grow">
-        <h2 className="text-xl font-semibold text-white">{escultor.nombre} {escultor.apellido}</h2>
-        <p className="text-gray-400">{escultor.biografia}</p>
-        <p className="text-gray-400">{escultor.edad}</p>
-        <p className="text-gray-400">{escultor.email}</p>
+      <div className="p-6 flex-grow flex flex-col">
+        <h2 className="text-2xl font-bold text-white mb-4 line-clamp-2">{escultor.nombre} {escultor.apellido}</h2>
+        <p className="text-gray-400 text-base mb-4 line-clamp-6 flex-grow">{escultor.biografia}</p>
+        <p className="text-gray-400 text-base mb-2">Edad: {escultor.edad}</p>
+        <p className="text-gray-400 text-base truncate mb-4">{escultor.email}</p>
       </div>
-      <div className="p-2 mt-auto">
+      <div className="p-6">
         <Link
           to={`/escultores/${escultor.id_escultor}`}
-          className="mt-2 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full text-center"
+          className="block bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors duration-300 text-center font-semibold text-lg"
         >
           Ver más
         </Link>

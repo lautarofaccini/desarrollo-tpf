@@ -106,7 +106,7 @@ function EventosPage() {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 text-white py-8 px-4 relative"
+      className="min-h-screen bg-gradient-to-br from-pink-300 via-purple-500 to-indigo-300 text-white py-8 px-4 relative"
       ref={containerRef}
     >
       <div className="max-w-4xl mx-auto">
