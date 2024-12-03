@@ -20,7 +20,7 @@ function ObrasPage() {
   };
 
   return (
-    <div className="bg-neutral-800 flex flex-col justify-between px-20 py-4">
+    <div className="bg-gradient-to-br from-pink-300 via-purple-500 to-indigo-300 text-white flex flex-col justify-between px-20 py-4">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold mb-8 hc-blue text-white text-center">
           Obras
@@ -39,7 +39,7 @@ function ObrasPage() {
           onClick={handleCreateObra}
         >
           <PlusIcon size={24} />
-          <span className="sr-only">Crear nuevo evento</span>
+          <span className="sr-only">Crear nueva obra</span>
         </motion.button>
       )}
     </div>
