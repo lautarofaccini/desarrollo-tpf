@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body {
+    overflow: hidden;  /* Borra el scroll en todas las pag */
+}
+
+  /* Ocultar scroll pero se puede mover */
+.container-scrollable {
+    overflow: scroll; 
+}
+
+.container-scrollable::-webkit-scrollbar {
+    width: 0px; 
+    background: transparent; 
+}
+
+.container-scrollable::-webkit-scrollbar-thumb {
+    background: transparent;  
+}
