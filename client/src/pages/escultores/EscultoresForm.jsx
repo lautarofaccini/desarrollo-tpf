@@ -1,16 +1,18 @@
 import { useForm } from "react-hook-form";
 import { useEscultores } from "@/context/EscultorContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { X } from "lucide-react";
 
 function EscultoresForm() {
+  const [selectedImage, setSelectedImage] = useState(null); // Imagen seleccionada para perfil
+  const [previewUrl, setPreviewUrl] = useState(null); // URL de previsualización
+  const [isSubmitting, setIsSubmitting] = useState(false); // Estado para manejar el envío del formulario
+  const [isImageRemoved, setIsImageRemoved] = useState(false); // Bandera para saber si se eliminó la imagen actual
 
   const { register, handleSubmit, setValue } = useForm();
-
   const { createEscultor, getEscultor, updateEscultor } = useEscultores();
-
   const navigate = useNavigate();
-
   const params = useParams();
 
   useEffect(() => {
@@ -18,37 +20,48 @@ function EscultoresForm() {
       if (params.id) {
         const escultorData = await getEscultor(params.id);
 
-        // Convertir la fecha al formato "yyyy-MM-dd"
-        const fecha_nacimiento = escultorData.fecha_nacimiento
-          ? new Date(escultorData.fecha_nacimiento).toISOString().split("T")[0]
-          : "";
-
-        // Actualizar el estado del escultor con las fechas y horas separadas
-
         setValue("nombre", escultorData.nombre);
         setValue("apellido", escultorData.apellido);
         setValue("nacionalidad", escultorData.nacionalidad);
-        setValue("fecha_nacimiento", fecha_nacimiento);
+        setValue(
+          "fecha_nacimiento",
+          escultorData.fecha_nacimiento
+            ? new Date(escultorData.fecha_nacimiento)
+                .toISOString()
+                .split("T")[0]
+            : ""
+        );
         setValue("biografia", escultorData.biografia);
         setValue("email", escultorData.email || "");
         setValue("telefono", escultorData.telefono || "");
 
-        //Separar la fecha antes de mandarla
-        //setEscultor(escultor);
-      } else {
-        setValue("nombre", "");
-        setValue("apellido", "");
-        setValue("nacionalidad", "");
-        setValue("fecha_nacimiento", ""), setValue("biografia", "");
-        setValue("email", "");
-        setValue("telefono", "");
+        // Previsualizar la imagen de perfil existente
+        if (escultorData.foto_perfil) {
+          setPreviewUrl(escultorData.foto_perfil);
+        }
       }
     }
     loadEscultor();
   }, [getEscultor, params.id, setValue]);
 
+  const onImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+      setIsImageRemoved(false); // La imagen no está eliminada
+    }
+  };
+
+  const removeSelectedImage = () => {
+    setSelectedImage(null);
+    setPreviewUrl(null);
+    setIsImageRemoved(true); // Indicar que se eliminó la imagen actual
+  };
+
   const onSubmit = handleSubmit(async (values) => {
-    // Combinar fecha y hora en un solo valor de tipo datetime
+    setIsSubmitting(true);
+
     const escultor = {
       nombre: values.nombre,
       apellido: values.apellido,
@@ -64,16 +77,16 @@ function EscultoresForm() {
     if (escultor.telefono === "") delete escultor.telefono;
 
     if (params.id) {
-      await updateEscultor(params.id, escultor);
+      await updateEscultor(params.id, escultor, selectedImage, isImageRemoved);
     } else {
-      await createEscultor(escultor);
+      await createEscultor(escultor, selectedImage);
     }
     navigate("/escultores");
   });
 
   return (
     <div className="flex items-center justify-center h-screen w-full">
-      <div className="bg-zinc-800 max-w-md  w-full p-10 rounded-md">
+      <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
         <form onSubmit={onSubmit}>
           <h1 className="text-white text-xl font-bold uppercase text-center">
             {params.id ? "Actualizar Escultor" : "Crear Escultor"}
@@ -98,6 +111,33 @@ function EscultoresForm() {
               />
             </div>
           </div>
+
+          <label className="text-gray-400 block">Foto de Perfil</label>
+          <input
+            type="file"
+            accept="image/jpeg, image/png"
+            onChange={onImageChange}
+            className="px-2 py-1 rounded-sm w-full text-white"
+          />
+          <div className="">
+            {previewUrl && (
+              <div className="relative">
+                <img
+                  src={previewUrl}
+                  alt="Foto de perfil"
+                  className="w-32 h-32 object-cover rounded-md"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeSelectedImage()}
+                  className="absolute top-1 left-1 bg-red-500 text-white p-1 rounded-full"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            )}
+          </div>
+
           {
             //TODO: Que te deje elegir entre una lista de nacionaliadades existentes
           }
@@ -106,8 +146,7 @@ function EscultoresForm() {
             type="text"
             placeholder="Escribe una nacionalidad"
             {...register("nacionalidad")}
-            className="px-2
-             py-1 rounded-sm w-full"
+            className="px-2 py-1 rounded-sm w-full"
           />
           {
             //TODO: Ver porque los placeholders de los input de tipo date no se adaptan al color
@@ -146,8 +185,9 @@ function EscultoresForm() {
           <button
             type="submit"
             className="block bg-indigo-500 px-2 py-1 mt-2 text-white w-full rounded-md"
+            disabled={isSubmitting}
           >
-            Guardar
+            {isSubmitting ? "Guardando..." : "Guardar"}
           </button>
         </form>
       </div>

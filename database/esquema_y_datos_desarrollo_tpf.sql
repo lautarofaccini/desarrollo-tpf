@@ -28,7 +28,7 @@ CREATE TABLE escultores (
     biografia TEXT NOT NULL,
     email VARCHAR(150),
     telefono VARCHAR(20),
-    foto_perfil BLOB
+    foto_perfil VARCHAR(255)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
