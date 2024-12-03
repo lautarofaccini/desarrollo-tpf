@@ -112,7 +112,9 @@ export const deleteImagenes = async (req, res) => {
       // Eliminar de Google Cloud Storage
       const filename = imageUrl.split("/").pop();
       const blob = bucket.file(filename);
-      await blob.delete();
+      await blob.delete().catch((error) => {
+        console.error("Error deleting previous image:", error);
+      });
     }
     res.status(200).json({ message: "Images deleted successfully" });
   } catch (error) {
