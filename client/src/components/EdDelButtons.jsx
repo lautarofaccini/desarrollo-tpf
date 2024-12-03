@@ -3,6 +3,8 @@ import { useAuth } from "../context/AuthContext";
 import { useEventos } from "../context/EventoContext";
 import { useObras } from "../context/ObraContext";
 import { useEscultores } from "@/context/EscultorContext";
+import { motion } from "framer-motion";
+import { Edit, Trash2 } from "lucide-react";
 
 function EdDelButtons({ id }) {
   const { isAdmin } = useAuth();
@@ -44,19 +46,23 @@ function EdDelButtons({ id }) {
   return (
     <>
       {isAdmin && (
-        <div className="flex gap-x-2">
-          <button
-            className="bg-red-500 px-2 py-1 text-white rounded-md"
-            onClick={handleDelete}
-          >
-            Eliminar
-          </button>
-          <button
-            className="bg-slate-500 px-2 py-1 text-white rounded-md"
+        <div className="flex space-x-2">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full"
             onClick={handleEdit}
           >
-            Editar
-          </button>
+            <Edit className="w-5 h-5" />
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
+            onClick={handleDelete}
+          >
+            <Trash2 className="w-5 h-5" />
+          </motion.button>
         </div>
       )}
     </>
