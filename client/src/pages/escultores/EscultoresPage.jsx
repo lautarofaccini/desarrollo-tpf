@@ -27,7 +27,7 @@ function EscultoresPage() {
           Escultores{" "}
         </h1>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-20 ">
         {escultores.map((escultor) => (
           <EscultorCard escultor={escultor} key={escultor.id_escultor} />
         ))}
