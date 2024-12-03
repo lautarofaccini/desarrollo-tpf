@@ -21,10 +21,10 @@ function ObraCard({ obra }) {
     loadImagenes();
   }, [obra, getImagenesByObra]);
 
-  const defaultImage = "/Escultura4.jpg";
+  const defaultImage = "@/Escultura10.jpg";
 
   return (
-    <div className="border border-gray-700 rounded-lg overflow-hidden shadow-lg flex flex-col w-full h-full bg-gray-900 transition-transform hover:scale-105">
+    <div className="border-4 border-gray-700 rounded-2xl overflow-hidden shadow-lg flex flex-col w-full h-full bg-gray-900 transition-transform hover:scale-105">
       <div className="relative h-64">
         {imagenes.length > 0 ? (
           <Carousel
