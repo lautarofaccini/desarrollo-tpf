@@ -21,13 +21,10 @@ function ObraCard({ obra }) {
     loadImagenes();
   }, [obra, getImagenesByObra]);
 
-  const defaultImage = "/images.jpg";
+  const defaultImage = "/Escultura4.jpg";
 
   return (
-    <div
-      key={obra.id_obra}
-      className="mt-5 border rounded-lg overflow-hidden shadow-lg flex flex-col h-full min-h-[400px]"
-    >
+    <div className="border border-gray-700 rounded-lg overflow-hidden shadow-lg flex flex-col w-full h-full bg-gray-900 transition-transform hover:scale-105">
       <div className="relative h-64">
         {imagenes.length > 0 ? (
           <Carousel
@@ -62,7 +59,7 @@ function ObraCard({ obra }) {
             {imagenes.map((imagen, index) => (
               <div key={index} className="h-64">
                 <img
-                  src={imagen}
+                  src={imagen || defaultImage}
                   alt={`${obra.nombre} - Imagen ${index + 1}`}
                   className="w-full h-full object-cover"
                 />
@@ -73,19 +70,25 @@ function ObraCard({ obra }) {
           <img
             src={defaultImage}
             alt={obra.nombre}
-            className="w-full h-full object-cover"
+            className="w-full h-64 object-cover object-center"
           />
         )}
       </div>
-      <div className="p-2 flex-grow">
-        <h2 className="text-xl font-semibold text-white">{obra.estilo}</h2>
-        <p className="text-gray-400">{obra.descripcion}</p>
-        <p className="text-gray-400">Material: {obra.material || "none"}</p>
+      <div className="p-6 flex-grow flex flex-col">
+        <h2 className="text-2xl font-bold text-white mb-4 line-clamp-2">
+          {obra.estilo}
+        </h2>
+        <p className="text-gray-400 text-base mb-4 line-clamp-6 flex-grow">
+          {obra.descripcion}
+        </p>
+        <p className="text-gray-400 text-base mb-2">
+          Material: {obra.material || "none"}
+        </p>
       </div>
-      <div className="p-2 mt-auto">
+      <div className="p-6">
         <Link
           to={`/obras/${obra.id_obra}`}
-          className="mt-2 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full text-center"
+          className="block bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors duration-300 text-center font-semibold text-lg"
         >
           Ver más
         </Link>
