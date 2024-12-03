@@ -15,8 +15,8 @@ function EscultoresPage() {
     loadEscultores();
   }, [loadEscultores]);
 
-  const handleCreateObra = () => {
-    navigate(`/obras/new`);
+  const handleCreateEsc = () => {
+    navigate(`/escultores/new`);
   };
 
   return (
@@ -27,7 +27,7 @@ function EscultoresPage() {
           Escultores{" "}
         </h1>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-20 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {escultores.map((escultor) => (
           <EscultorCard escultor={escultor} key={escultor.id_escultor} />
         ))}
@@ -37,7 +37,7 @@ function EscultoresPage() {
           className="fixed bottom-8 right-8 bg-pink-500 hover:bg-pink-600 text-white p-4 rounded-full shadow-lg"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={handleCreateObra}
+          onClick={handleCreateEsc}
         >
           <PlusIcon size={24} />
           <span className="sr-only">Crear nuevo evento</span>
