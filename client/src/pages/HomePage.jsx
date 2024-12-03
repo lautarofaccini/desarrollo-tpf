@@ -16,7 +16,7 @@ function HomePage() {
     "/Escultura10.jpg",
   ];
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-black text-white container-scrollable" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
       {/* Seccion de inicio */}
       <section className="relative h-screen">
         <img
