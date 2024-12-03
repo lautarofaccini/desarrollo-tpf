@@ -20,14 +20,14 @@ function EscultoresPage() {
   };
 
   return (
-    <div className="bg-neutral-800 flex flex-col justify-between px-20 py-4">
-      <div className="flex justify-between items-center">
+    <div className="bg-gradient-to-br from-pink-300 via-purple-500 to-indigo-300  text-white flex flex-col justify-between px-20 py-4">
+      <div className="flex justify-between items-center ">
         <h1 className="text-2xl font-bold mb-8 hc-blue text-white text-center">
           {" "}
           Escultores{" "}
         </h1>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-20 ">
         {escultores.map((escultor) => (
           <EscultorCard escultor={escultor} key={escultor.id_escultor} />
         ))}

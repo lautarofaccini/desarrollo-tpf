@@ -1,7 +1,20 @@
 import GoogleMapComponent from "@/components/GoogleMapComponent";
 import { MapPin, Mail, Phone } from "lucide-react";
+import { ImageSlider } from '@/components/CarruselDeImg'
 
 function HomePage() {
+  const images = [
+    "/Escultura1.jpg",
+    "/Escultura2.jpg",
+    "/Escultura3.jpg",
+    "/Escultura4.jpg",
+    "/Escultura5.jpg",
+    "/Escultura6.jpg",
+    "/Escultura7.jpg",
+    "/Escultura8.jpg",
+    "/Escultura9.jpg",
+    "/Escultura10.jpg",
+  ];
   return (
     <main className="min-h-screen bg-black text-white">
       {/* Seccion de inicio */}
@@ -32,26 +45,16 @@ function HomePage() {
 
       {/* Section de fotos de la bienal */}
       <section className="py-16 px-4 md:px-8 bg-gray-900">
-        <h2 className="text-4xl font-bold text-center mb-12">
-          Nuestras Esculturas
+        <h2 className="text-4xl font-bold text-center mb-12 underline">
+          Ediciones Anteriores
         </h2>
-        <div className="flex overflow-x-auto space-x-4 pb-4">
-          {[1, 2, 3, 4, 5].map((_, index) => (
-            <div key={index} className="flex-none w-64 h-80">
-              <img
-                src={`/Escultura${index + 1}.jpg`}
-                alt={`Escultura ${index + 1}`}
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </div>
-          ))}
-        </div>
+        <ImageSlider images={images} />
       </section>
 
       {/* Seccion de informacion sobre la bienal */}
       <section className="py-16 px-4 md:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-8">Sobre la Bienal</h2>
+          <h2 className="text-4xl font-bold mb-8 underline">Sobre la Bienal</h2>
           <p className="text-lg text-gray-300 mb-6">
             La Bienal del Chaco es un evento internacional de escultura que
             reúne a artistas de todo el mundo. Durante este evento, podrás
@@ -72,8 +75,8 @@ function HomePage() {
           <div>
             <GoogleMapComponent />
           </div>
-          <div className="space-y-6">
-            <h2 className="text-4xl font-bold text-white">Cómo Llegar</h2>
+          <div className="ml-10 text center space-y-6 ">
+            <h2 className="text-4xl font-bold text-white underline">Cómo Llegar</h2>
             <div className="space-y-4">
               <p className="flex items-center gap-2 text-gray-400">
                 <MapPin className="h-5 w-5 text-gray-400" />
@@ -98,7 +101,7 @@ function HomePage() {
       {/* Seccion de contacto */}
       <section className="py-16 px-4 md:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-12">Contacto</h2>
+          <h2 className="text-4xl font-bold mb-12 underline">Contacto</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="flex flex-col items-center space-y-4">
               <div className="h-12 w-12 rounded-full bg-gray-800 flex items-center justify-center">
