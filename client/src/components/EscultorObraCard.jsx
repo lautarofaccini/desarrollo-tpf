@@ -38,7 +38,7 @@ function EscultorObraCard({ obra, mostrarCalificacion, blancoYNegro }) {
   const defaultImage = "/Escultura1.jpg";
 
   return (
-    <div className="border bg-gray-800 rounded-lg overflow-hidden shadow-lg flex flex-col h-full">
+    <div className="border bg-gray-900 rounded-lg overflow-hidden shadow-lg flex flex-col h-full">
       <div className={`relative h-64 w-full ${blancoYNegro && "grayscale"}`}>
         {imagenes.length > 0 ? (
           <Carousel
