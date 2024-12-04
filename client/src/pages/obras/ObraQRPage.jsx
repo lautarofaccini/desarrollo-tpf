@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { getObrasQRRequest } from "@/api/obras.api";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+/* import QRCode from "qrcode-decoder"; */
 import { io } from "socket.io-client"; // Importar la biblioteca de WebSockets
 
 function ObraQRPage() {
   const [qrCode, setQrCode] = useState("");
-  const [decodedUrl, setDecodedUrl] = useState();
+  /* const [decodedUrl, setDecodedUrl] = useState(); */
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const params = useParams();
@@ -27,11 +28,10 @@ function ObraQRPage() {
     fetchQrCode();
 
     // Conectar con el servidor WebSocket
-    const socket = io("http://192.168.0.5:4000"); 
+    const socket = io("http://192.168.0.5:4000");
 
     // Escuchar actualizaciones del QR específico
     socket.on(`qr-updated-${params.id}`, (newQrCode) => {
-      console.log(`QR actualizado recibido para la obra ${params.id}:`, newQrCode);
       setQrCode(newQrCode);
     });
 
@@ -46,8 +46,7 @@ function ObraQRPage() {
   }, [params]);
 
   //Solo para probar en desarrollo
-
-  
+  /*
   useEffect(() => {
     if (qrCode) {
       const img = new Image();
@@ -73,7 +72,7 @@ function ObraQRPage() {
       };
     }
   }, [qrCode]);
-
+ */
 
   if (loading) return <div>loading...</div>;
 
@@ -106,11 +105,11 @@ function ObraQRPage() {
           Escanea el QR para votar
         </h1>
         <img src={qrCode} alt="Código QR" className="" />
-        {decodedUrl && (
+        {/* decodedUrl && (
           <Link to={decodedUrl} className="text-blue-400">
             Código
           </Link>
-        )}
+        ) */}
       </div>
     </div>
   );
