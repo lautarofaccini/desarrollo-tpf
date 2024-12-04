@@ -13,7 +13,12 @@ function ObrasForm() {
   const [isSubmitting, setIsSubmitting] = useState(false); // Estado para manejar el envío del formulario
 
   const [searchParams] = useSearchParams(); // Obtener parámetros de la URL
-  const { register, handleSubmit, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
   const { createObra, getObra, updateObra, getImagenesByObra } = useObras();
   const navigate = useNavigate();
   const params = useParams();
@@ -130,7 +135,7 @@ function ObrasForm() {
             disabled={previewUrls.length >= 3}
           />
 
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-2 mt-2">
             {previewUrls.map((url, index) => (
               <div key={index} className="relative">
                 <img
@@ -185,19 +190,30 @@ function ObrasForm() {
             type="number"
             min="1"
             placeholder="ID del evento de la obra"
-            {...register("id_evento")}
+            {...register("id_evento", { required: "ID Evento requerido" })}
             className="px-2 py-1 rounded-sm w-full"
           />
+          {errors.id_evento && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.id_evento.message}
+            </p>
+          )}
 
           <label className="text-gray-400 block">ID del Escultor</label>
           <input
             type="number"
             min="1"
             placeholder="ID del escultor de la obra"
-            {...register("id_escultor")}
+            {...register("id_escultor", { required: "ID Escultor requerido" })}
             className="px-2 py-1 rounded-sm w-full"
             readOnly={!!searchParams.get("escultor")} // Deshabilitado si hay escultor preseleccionado
           />
+          {errors.id_escultor && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.id_escultor.message}
+            </p>
+          )}
+
           <button
             type="submit"
             className="block bg-indigo-500 px-2 py-1 mt-2 text-white w-full rounded-md"
