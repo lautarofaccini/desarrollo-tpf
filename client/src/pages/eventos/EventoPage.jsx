@@ -94,8 +94,25 @@ function EventoPage() {
             loading={loadingEstado}
           />
         )}
-
-        <ObraGrid obras={obras} estadoEvento={evento.estado} />
+        {obras.length > 0 ? (
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="bg-gray-800 rounded-lg p-6 shadow-lg"
+          >
+            <ObraGrid obras={obras} estadoEvento={evento.estado} />
+          </motion.div>
+        ) : (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-center text-indigo-300"
+          >
+            Aún no hay obras para este evento...
+          </motion.p>
+        )}
       </div>
     </motion.div>
   );
