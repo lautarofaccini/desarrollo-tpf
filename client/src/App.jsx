@@ -28,6 +28,7 @@ import { ObraProvider } from "./context/ObraProvider";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import AboutPage from "./pages/AboutPage";
+import OpenCameraButton from "./components/OpenCameraButton";
 
 function App() {
   const location = useLocation();
@@ -74,6 +75,7 @@ function App() {
                 />
               </Route>
             </Routes>
+            <OpenCameraButton />
           </ObraProvider>
         </EscultorProvider>
       </EventoProvider>
