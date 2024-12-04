@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { verifyObrasTokenRequest } from "@/api/obras.api";
 import { useEscultores } from "@/context/EscultorContext";
 import { useObras } from "@/context/ObraContext";
@@ -19,10 +19,12 @@ function ObraVotacionPage() {
   const [rating, setRating] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [votoError, setVotoError] = useState(null);
+  const [votoEnviado, setVotoEnviado] = useState(false);
+
   const { getEscultor } = useEscultores();
   const { getObrasByEscultor } = useObras();
   const { user } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -62,6 +64,7 @@ function ObraVotacionPage() {
   }, [token, getEscultor, getObrasByEscultor]);
 
   const handleRatingSubmit = async () => {
+    setVotoError(null); // Reseteamos errores previos
     try {
       const voto = {
         id_usuario: user.id_usuario,
@@ -69,11 +72,11 @@ function ObraVotacionPage() {
         puntaje: rating,
       };
       await createVotoRequest(voto);
-      alert("¡Gracias por tu voto!");
-      navigate("/");
+      setVotoEnviado(true); // Indicamos que el voto fue exitoso
     } catch (err) {
-      console.error(err);
-      alert("Error al enviar tu voto.");
+      const errorMessage =
+        err.response?.data?.message || "Error al enviar tu voto.";
+      setVotoError(errorMessage); // Guardamos el error
     }
   };
 
@@ -81,11 +84,27 @@ function ObraVotacionPage() {
     return (
       <div className="text-white text-center text-2xl mt-10">Cargando...</div>
     );
+
   if (error)
     return (
       <div className="text-white text-center mt-10">
         <div className="text-2xl mb-4">{error}</div>
         <Link to="/" className="text-pink-400 hover:text-pink-300 underline">
+          Volver al inicio
+        </Link>
+      </div>
+    );
+
+  if (votoEnviado)
+    return (
+      <div className="text-white text-center mt-10">
+        <h1 className="text-4xl font-bold text-pink-300">
+          ¡Gracias por tu voto!
+        </h1>
+        <Link
+          to="/"
+          className="mt-4 text-pink-400 hover:text-pink-300 underline"
+        >
           Volver al inicio
         </Link>
       </div>
@@ -135,6 +154,9 @@ function ObraVotacionPage() {
               Enviar Voto
             </button>
           </div>
+          {votoError && (
+            <div className="mt-4 text-red-500 font-semibold">{votoError}</div>
+          )}
         </motion.div>
 
         {otrasObras.length > 0 && (
