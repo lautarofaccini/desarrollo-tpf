@@ -4,7 +4,7 @@ import { verifyObrasTokenRequest } from "@/api/obras.api";
 import { useEscultores } from "@/context/EscultorContext";
 import { useObras } from "@/context/ObraContext";
 import { useAuth } from "@/context/AuthContext";
-import { createVotoRequest } from "@/api/vota.api";
+import { createVotoRequest, getVotoByObraUsuarioRequest } from "@/api/vota.api"; // Nueva función
 import EscultorObraCard from "@/components/EscultorObraCard";
 import StarRating from "@/components/StarRating";
 import { motion } from "framer-motion";
@@ -21,6 +21,7 @@ function ObraVotacionPage() {
   const [error, setError] = useState(null);
   const [votoError, setVotoError] = useState(null);
   const [votoEnviado, setVotoEnviado] = useState(false);
+  const [yaVotado, setYaVotado] = useState(false); // Nuevo estado para verificar si ya votó
 
   const { getEscultor } = useEscultores();
   const { getObrasByEscultor } = useObras();
@@ -30,9 +31,19 @@ function ObraVotacionPage() {
     async function fetchData() {
       try {
         const response = await verifyObrasTokenRequest(token);
-
         if (response.data) {
           const obraData = response.data;
+
+          // Verificar si el usuario ya votó
+          const votoExistente = await getVotoByObraUsuarioRequest(
+            obraData.id_obra,
+            user.id_usuario
+          );
+          if (votoExistente) {
+            setYaVotado(true); // Si ya votó, actualizar el estado
+            return;
+          }
+
           setObra(obraData);
 
           // Solo buscar el escultor si la obra tiene un id_escultor
@@ -61,7 +72,7 @@ function ObraVotacionPage() {
     }
 
     fetchData();
-  }, [token, getEscultor, getObrasByEscultor]);
+  }, [token, user.id_usuario, getEscultor, getObrasByEscultor]);
 
   const handleRatingSubmit = async () => {
     setVotoError(null); // Reseteamos errores previos
@@ -90,6 +101,22 @@ function ObraVotacionPage() {
       <div className="text-white text-center mt-10">
         <div className="text-2xl mb-4">{error}</div>
         <Link to="/" className="text-pink-400 hover:text-pink-300 underline">
+          Volver al inicio
+        </Link>
+      </div>
+    );
+
+  if (yaVotado)
+    return (
+      <div className="text-white text-center mt-10">
+        <h1 className="text-4xl font-bold text-green-400">¡Ya has votado!</h1>
+        <p className="text-lg text-gray-400 mt-4">
+          Gracias por participar. Solo puedes votar una vez por esta obra.
+        </p>
+        <Link
+          to="/"
+          className="mt-4 text-pink-400 hover:text-pink-300 underline"
+        >
           Volver al inicio
         </Link>
       </div>
