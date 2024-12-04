@@ -1,6 +1,6 @@
 import GoogleMapComponent from "@/components/GoogleMapComponent";
 import { MapPin, Mail, Phone } from "lucide-react";
-import { ImageSlider } from '@/components/CarruselDeImg'
+import { ImageSlider } from "@/components/CarruselDeImg";
 
 function HomePage() {
   const images = [
@@ -16,8 +16,10 @@ function HomePage() {
     "/Escultura10.jpg",
   ];
   return (
-    <main className="min-h-screen bg-black text-white container-scrollable" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
-      {/* Seccion de inicio */}
+    <main
+      className="min-h-screen bg-black text-white container-scrollable"
+      style={{ maxHeight: "calc(100vh - 4rem)" }}
+    >
       <section className="relative h-screen">
         <img
           src="/FU-Bienal2024 editado.jpg"
@@ -76,7 +78,9 @@ function HomePage() {
             <GoogleMapComponent />
           </div>
           <div className="ml-10 text center space-y-6 ">
-            <h2 className="text-4xl font-bold text-white underline">Cómo Llegar</h2>
+            <h2 className="text-4xl font-bold text-white underline">
+              Cómo Llegar
+            </h2>
             <div className="space-y-4">
               <p className="flex items-center gap-2 text-gray-400">
                 <MapPin className="h-5 w-5 text-gray-400" />
@@ -125,31 +129,6 @@ function HomePage() {
               <p className="text-gray-300">
                 Avenida de los Inmigrantes 1001, Resistencia, Chaco
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Seccion del grupo (NO se si meter) */}
-      <section className="py-16 px-4 md:px-8 bg-gray-900">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
-          <div className="p-0 m-0">
-            <h1 className="text-6xl">Grupo N°5</h1>
-          </div>
-          <div className="space-y-6">
-            <h2 className="text-4xl font-bold">Integrantes:</h2>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <ul className="list-disc list-inside space-y-2 pl-5 text-gray-300">
-                  <li>Mauri</li>
-                  <li>Lauti</li>
-                  <li>Negro</li>
-                  <li>Ñamil</li>
-                  <li>Agustina</li>
-                  <li>Cuñado</li>
-                  <li>Juani del asco</li>
-                </ul>
-              </div>
             </div>
           </div>
         </div>

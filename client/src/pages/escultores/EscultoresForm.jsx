@@ -10,7 +10,12 @@ function EscultoresForm() {
   const [isSubmitting, setIsSubmitting] = useState(false); // Estado para manejar el envío del formulario
   const [isImageRemoved, setIsImageRemoved] = useState(false); // Bandera para saber si se eliminó la imagen actual
 
-  const { register, handleSubmit, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
   const { createEscultor, getEscultor, updateEscultor } = useEscultores();
   const navigate = useNavigate();
   const params = useParams();
@@ -97,18 +102,32 @@ function EscultoresForm() {
               <input
                 type="text"
                 placeholder="Escribe el nombre"
-                {...register("nombre")}
+                {...register("nombre", {
+                  required: "El nombre es obligatorio",
+                })}
                 className="px-2 py-1 rounded-sm w-full"
               />
+              {errors.nombre && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.nombre.message}
+                </p>
+              )}
             </div>
             <div>
               <label className="text-gray-400 block">Apellido</label>
               <input
                 type="text"
                 placeholder="Escribe el apellido"
-                {...register("apellido")}
+                {...register("apellido", {
+                  required: "El apellido es obligatorio",
+                })}
                 className="px-2 py-1 rounded-sm w-full"
               />
+              {errors.apellido && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.apellido.message}
+                </p>
+              )}
             </div>
           </div>
 
@@ -119,24 +138,22 @@ function EscultoresForm() {
             onChange={onImageChange}
             className="px-2 py-1 rounded-sm w-full text-white"
           />
-          <div className="">
-            {previewUrl && (
-              <div className="relative">
-                <img
-                  src={previewUrl}
-                  alt="Foto de perfil"
-                  className="w-32 h-32 object-cover rounded-md"
-                />
-                <button
-                  type="button"
-                  onClick={() => removeSelectedImage()}
-                  className="absolute top-1 left-1 bg-red-500 text-white p-1 rounded-full"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-            )}
-          </div>
+          {previewUrl && (
+            <div className="relative">
+              <img
+                src={previewUrl}
+                alt="Foto de perfil"
+                className="w-32 h-32 object-cover rounded-md"
+              />
+              <button
+                type="button"
+                onClick={() => removeSelectedImage()}
+                className="absolute top-1 left-1 bg-red-500 text-white p-1 rounded-full"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          )}
 
           {
             //TODO: Que te deje elegir entre una lista de nacionaliadades existentes
@@ -145,7 +162,9 @@ function EscultoresForm() {
           <input
             type="text"
             placeholder="Escribe una nacionalidad"
-            {...register("nacionalidad")}
+            {...register("nacionalidad", {
+              required: "La nacionalidad es obligatoria",
+            })}
             className="px-2 py-1 rounded-sm w-full"
           />
           {
@@ -154,17 +173,31 @@ function EscultoresForm() {
           <label className="text-gray-400 block">Fecha de Nacimiento</label>
           <input
             type="date"
-            {...register("fecha_nacimiento")}
+            {...register("fecha_nacimiento", {
+              required: "La fecha de nacimiento es obligatoria",
+            })}
             className="px-2 py-1 rounded-sm w-full"
           />
+          {errors.fecha_nacimiento && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.fecha_nacimiento.message}
+            </p>
+          )}
 
           <label className="text-gray-400 block">Biografía</label>
           <textarea
             rows="3"
             placeholder="Escribe una biografía"
-            {...register("biografia")}
+            {...register("biografia", {
+              required: "La biografía es obligatoria",
+            })}
             className="px-2 py-1 rounded-sm w-full"
           ></textarea>
+          {errors.biografia && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.biografia.message}
+            </p>
+          )}
 
           <label className="text-gray-400 block">Email</label>
           <input
