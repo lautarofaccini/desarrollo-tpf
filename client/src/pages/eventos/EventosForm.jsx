@@ -1,15 +1,19 @@
 import { useForm } from "react-hook-form";
 import { useEventos } from "@/context/EventoContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function EventosForm() {
-  const { register, handleSubmit, setValue } = useForm();
+  const [generalError, setGeneralError] = useState(""); // Estado para el error general
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
   const { createEvento, getEvento, updateEvento } = useEventos();
-
   const navigate = useNavigate();
-
   const params = useParams();
 
   useEffect(() => {
@@ -34,9 +38,6 @@ function EventosForm() {
         setValue("lugar", eventoData.lugar);
         setValue("descripcion", eventoData.descripcion || "");
         setValue("tematica", eventoData.tematica || "");
-
-        //Separar la fecha antes de mandarla
-        //setEvento(evento);
       } else {
         setValue("fecha_inicio", "");
         setValue("tiempo_inicio", "");
@@ -51,70 +52,118 @@ function EventosForm() {
   }, [getEvento, params.id, setValue]);
 
   const onSubmit = handleSubmit(async (values) => {
-    // Combinar fecha y hora en un solo valor de tipo datetime
-    const evento = {
-      fecha_inicio: `${values.fecha_inicio} ${values.tiempo_inicio}`,
-      fecha_fin: `${values.fecha_fin} ${values.tiempo_fin}`,
-      lugar: values.lugar,
-      descripcion: values.descripcion,
-      tematica: values.tematica,
-    };
+    setGeneralError(""); // Reiniciar el error general
+    try {
+      const evento = {
+        fecha_inicio: `${values.fecha_inicio} ${values.tiempo_inicio}`,
+        fecha_fin: `${values.fecha_fin} ${values.tiempo_fin}`,
+        lugar: values.lugar,
+        descripcion: values.descripcion,
+        tematica: values.tematica,
+      };
 
-    // Filtrar campos opcionales
-    if (evento.lugar === "") delete evento.lugar;
-    if (evento.descripcion === "") delete evento.descripcion;
-    if (evento.tematica === "") delete evento.tematica;
+      if (evento.lugar === "") delete evento.lugar;
+      if (evento.descripcion === "") delete evento.descripcion;
+      if (evento.tematica === "") delete evento.tematica;
 
-    if (params.id) {
-      await updateEvento(params.id, evento);
-    } else {
-      await createEvento(evento);
+      if (params.id) {
+        await updateEvento(params.id, evento);
+      } else {
+        await createEvento(evento);
+      }
+      console.log(generalError);
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error);
+      setGeneralError(
+        error.message || "Ocurrió un error al intentar guardar el evento."
+      );
     }
-    navigate("/eventos");
   });
 
   return (
     <div className="flex items-center justify-center h-screen w-full">
-      <div className="bg-zinc-800 max-w-md  w-full p-10 rounded-md">
+      <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
         <form onSubmit={onSubmit}>
           <h1 className="text-white text-xl font-bold uppercase text-center">
             {params.id ? "Actualizar Evento" : "Crear Evento"}
           </h1>
+
+          {/* Mostrar el error general */}
+          {generalError && (
+            <div className="bg-red-500 text-white p-3 rounded-md text-center mb-4">
+              {generalError}
+            </div>
+          )}
+
+          {/* Fecha de Inicio */}
           <label className="text-gray-400 block">Fecha de Inicio</label>
           <div className="flex gap-x-2">
             <input
               type="date"
-              {...register("fecha_inicio")}
-              className=" px-2 py-1 rounded-sm w-full"
+              {...register("fecha_inicio", {
+                required: "La fecha de inicio es obligatoria",
+              })}
+              className="px-2 py-1 rounded-sm w-full"
             />
             <input
               type="time"
-              {...register("tiempo_inicio")}
+              {...register("tiempo_inicio", {
+                required: "La hora de inicio es obligatoria",
+              })}
               className="px-2 py-1 rounded-sm"
             />
           </div>
+          {errors.fecha_inicio && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.fecha_inicio.message}
+            </p>
+          )}
+          {errors.tiempo_inicio && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.tiempo_inicio.message}
+            </p>
+          )}
 
+          {/* Fecha de Fin */}
           <label className="text-gray-400 block">Fecha de Fin</label>
           <div className="flex gap-x-2">
             <input
               type="date"
-              {...register("fecha_fin")}
-              className=" px-2 py-1 rounded-sm w-full"
+              {...register("fecha_fin", {
+                required: "La fecha de fin es obligatoria",
+              })}
+              className="px-2 py-1 rounded-sm w-full"
             />
             <input
               type="time"
-              {...register("tiempo_fin")}
+              {...register("tiempo_fin", {
+                required: "La hora de fin es obligatoria",
+              })}
               className="px-2 py-1 rounded-sm"
             />
           </div>
+          {errors.fecha_fin && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.fecha_fin.message}
+            </p>
+          )}
+          {errors.tiempo_fin && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.tiempo_fin.message}
+            </p>
+          )}
 
+          {/* Lugar */}
           <label className="text-gray-400 block">Lugar</label>
           <input
             type="text"
             placeholder="Escribe un lugar"
-            {...register("lugar")}
+            {...register("lugar", { required: "El lugar es obligatorio" })}
             className="px-2 py-1 rounded-sm w-full"
           />
+          {errors.lugar && (
+            <p className="text-red-500 text-sm mt-1">{errors.lugar.message}</p>
+          )}
 
           <label className="text-gray-400 block">Descripción</label>
           <textarea
@@ -123,7 +172,7 @@ function EventosForm() {
             {...register("descripcion")}
             className="px-2 py-1 rounded-sm w-full"
           ></textarea>
-          
+
           <label className="text-gray-400 block">Temática</label>
           <input
             type="text"
