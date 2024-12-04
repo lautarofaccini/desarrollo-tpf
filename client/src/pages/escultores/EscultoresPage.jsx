@@ -20,7 +20,7 @@ function EscultoresPage() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-pink-300 via-purple-500 to-indigo-300  text-white flex flex-col justify-between px-60 py-8 container-scrollable pb-20" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
+    <div className="bg-gradient-to-br from-pink-300 via-purple-500 to-indigo-300  text-white flex flex-col justify-between px-10 sm:px-48 xl:px-60 py-8 container-scrollable pb-20" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
       <div className="flex justify-between items-center ">
         <h1 className="text-2xl font-bold mb-8 hc-blue text-white text-center">
           {" "}
