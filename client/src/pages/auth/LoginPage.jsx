@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "@/context/AuthContext";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import Background from "@/components/ImagenFondo";
 
 function LoginPage() {
   const {
@@ -25,12 +24,12 @@ function LoginPage() {
   });
 
   return (
-    <div className="">
-    <Background>
-      <div className="flex items-center h-screen w-full overflow-hidden relative">
-        <div className="absolute top-50 left-80 bg-zinc-700 bg-opacity-80 max-w-md p-10 rounded-lg shadow-lg">
-          <h1 className="text-3xl text-center font-bold text-white underline decoration-sky-500 decoration-4 mb-6">Bienvenido</h1>
-          <h2 className=" text-xl text-gray-300 mb-5 text-center">Por favor, inicia sesión en su cuenta de la Bienal para continuar.</h2>
+    <div className="min-h-screen w-full bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('/Home.png')" }}>
+      <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+      <div className="relative z-10 flex items-center justify-center md:justify-start min-h-screen w-full p-4 md:pl-[10%]">
+        <div className="w-full max-w-sm md:max-w-md bg-zinc-700 bg-opacity-80 p-6 sm:p-8 rounded-lg shadow-lg">
+          <h1 className="text-2xl sm:text-3xl text-center font-bold text-white underline decoration-sky-500 decoration-4 mb-4 sm:mb-6">Bienvenido</h1>
+          <h2 className="text-lg sm:text-xl text-gray-300 mb-4 sm:mb-5 text-center">Por favor, inicia sesión en su cuenta de la Bienal para continuar.</h2>
           {loginErrors.map((error, i) => (
             <div key={i} className="bg-red-500 p-2 text-white rounded mb-4">
               {error}
@@ -68,7 +67,7 @@ function LoginPage() {
               Iniciar Sesión
             </button>
           </form>
-          <p className="text-gray-400 mt-4 text-sm">
+          <p className="text-gray-400 mt-4 text-sm text-center">
             ¿No tienes cuenta?{" "}
             <Link
               to="/register"
@@ -80,9 +79,9 @@ function LoginPage() {
           </p>
         </div>
       </div>
-    </Background>
     </div>
   );
 }
 
 export default LoginPage;
+
