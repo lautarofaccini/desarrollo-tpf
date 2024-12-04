@@ -3,6 +3,7 @@ import { useObras } from "@/context/ObraContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 
 function ObrasForm() {
   const [selectedImages, setSelectedImages] = useState([]); // Nuevas imágenes seleccionadas
@@ -11,6 +12,7 @@ function ObrasForm() {
   const [imagesToDelete, setImagesToDelete] = useState([]); // Imágenes existentes a eliminar
   const [isSubmitting, setIsSubmitting] = useState(false); // Estado para manejar el envío del formulario
 
+  const [searchParams] = useSearchParams(); // Obtener parámetros de la URL
   const { register, handleSubmit, setValue } = useForm();
   const { createObra, getObra, updateObra, getImagenesByObra } = useObras();
   const navigate = useNavigate();
@@ -40,10 +42,16 @@ function ObrasForm() {
           setExistingImages(urls);
           setPreviewUrls(urls); // Previsualizar las imágenes existentes
         }
+      } else {
+        // Si es una nueva obra, verifica si hay un escultor preseleccionado
+        const escultorId = searchParams.get("escultor");
+        if (escultorId) {
+          setValue("id_escultor", escultorId);
+        }
       }
     }
     loadObra();
-  }, [getObra, params.id, setValue, getImagenesByObra]);
+  }, [getObra, params.id, setValue, getImagenesByObra, searchParams]);
 
   const onSubmit = handleSubmit(async (values) => {
     setIsSubmitting(true);
@@ -188,6 +196,7 @@ function ObrasForm() {
             placeholder="ID del escultor de la obra"
             {...register("id_escultor")}
             className="px-2 py-1 rounded-sm w-full"
+            readOnly={!!searchParams.get("escultor")} // Deshabilitado si hay escultor preseleccionado
           />
           <button
             type="submit"
