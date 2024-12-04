@@ -18,21 +18,21 @@ app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  }),
+  })
 );
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
 
-app.use(authRoutes);
-app.use("/escultores/", escultoresRoutes);
-app.use("/", eventosRoutes);
-app.use(indexRoutes);
-app.use("/obras", obrasRoutes);
-app.use("/imagenes", imagenesRoutes);
-app.use("/usuarios", usuariosRoutes);
+app.use("/api", authRoutes);
+app.use("/api/escultores/", escultoresRoutes);
+app.use("/api/", eventosRoutes);
+app.use("/api", indexRoutes);
+app.use("/api/obras", obrasRoutes);
+app.use("/api/imagenes", imagenesRoutes);
+app.use("/api/usuarios", usuariosRoutes);
 
-app.use("/vota", votaRoutes);
+app.use("/api/vota", votaRoutes);
 
 initialSetup();
 
