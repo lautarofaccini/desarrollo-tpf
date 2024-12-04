@@ -37,6 +37,7 @@ function EscultorPage() {
   if (loading) return <LoadingSpinner />;
 
   return (
+    <div className="flex">
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -44,6 +45,7 @@ function EscultorPage() {
       className="min-h-screen bg-gray-700 text-white py-12 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-7xl mx-auto">
+        {/* Header del escultor */}
         <motion.div
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -56,16 +58,16 @@ function EscultorPage() {
               size="xl"
               color="primary"
               isBordered
-              className="w-32 h-32 rounded-full object-cover"
+              className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover"
             />
             <div className="flex-grow">
-              <div className="flex justify-between items-start mb-4">
-                <h1 className="text-4xl font-bold text-pink-400">
+              <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
+                <h1 className="text-3xl sm:text-4xl font-bold text-pink-400">
                   {escultor.nombre} {escultor.apellido}
                 </h1>
                 <EdDelButtons id={escultor.id_escultor} />
               </div>
-              <p className="text-xl text-indigo-300 mb-4">
+              <p className="text-lg sm:text-xl text-indigo-300 mb-4">
                 {escultor.biografia}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
@@ -90,6 +92,7 @@ function EscultorPage() {
           </div>
         </motion.div>
 
+        {/* Obras */}
         <motion.div
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -97,7 +100,7 @@ function EscultorPage() {
           className="bg-gray-800 rounded-lg p-6 shadow-lg"
         >
           <h2 className="text-2xl font-bold text-purple-400 mb-6">Obras</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {obras.map((obra, index) => (
               <motion.div
                 key={obra.id_obra}
@@ -111,6 +114,7 @@ function EscultorPage() {
           </div>
         </motion.div>
 
+        {/* Agregar obra (solo para admins) */}
         {isAdmin && (
           <motion.div
             initial={{ y: 50, opacity: 0 }}
@@ -128,13 +132,11 @@ function EscultorPage() {
               <Plus className="w-5 h-5 mr-2" />
               Nueva Obra
             </Link>
-            <h2 className="text-2xl font-bold text-red-800 mb-4 pt-6">
-              TODO: Enviar al formulario con escultor ya seleccionado
-            </h2>
           </motion.div>
         )}
       </div>
     </motion.div>
+    </div>
   );
 }
 
