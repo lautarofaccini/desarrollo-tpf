@@ -33,7 +33,11 @@ export const EventoProvider = ({ children }) => {
       console.log(response);
       setEventos(eventos.filter((evento) => evento.id_evento !== id));
     } catch (error) {
-      console.error(error);
+      throw (
+        error.response?.data ||
+        error.message ||
+        "Error desconocido."
+      );
     }
   };
 
@@ -66,7 +70,7 @@ export const EventoProvider = ({ children }) => {
       throw (
         error.response?.data ||
         error.message ||
-        "Error desconocido al crear el evento."
+        "Error desconocido."
       );
     }
   };
