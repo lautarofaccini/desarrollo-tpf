@@ -53,6 +53,10 @@ function ObrasForm() {
         if (escultorId) {
           setValue("id_escultor", escultorId);
         }
+        const eventoId = searchParams.get("evento");
+        if (eventoId) {
+          setValue("id_evento", eventoId);
+        }
       }
     }
     loadObra();
@@ -217,6 +221,7 @@ function ObrasForm() {
             placeholder="ID del evento de la obra"
             {...register("id_evento", { required: "ID Evento requerido" })}
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
+            readOnly={!!searchParams.get("evento")}
           />
           {errors.id_evento && (
             <p className="text-red-500 text-sm mt-1">
