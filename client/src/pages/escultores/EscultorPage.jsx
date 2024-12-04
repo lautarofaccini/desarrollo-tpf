@@ -37,7 +37,6 @@ function EscultorPage() {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="flex">
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -147,7 +146,6 @@ function EscultorPage() {
         )}
       </div>
     </motion.div>
-    </div>
   );
 }
 
