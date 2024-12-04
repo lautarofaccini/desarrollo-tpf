@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import QRCode from "qrcode";
 import dotenv from "dotenv";
+import { io } from "../index.js";
 
 dotenv.config();
 // Clave secreta para firmar los tokens
@@ -26,7 +27,7 @@ export const getQRCodeForObra = async (id_obra) => {
 
   // Generar la imagen QR basada en el token generado
   const qrCodeUrl = await QRCode.toDataURL(
-    `http://localhost:5173/obras/votar?token=${obraQRCodes[id_obra]}`
+    `http://192.168.0.5:5173/obras/votar?token=${obraQRCodes[id_obra]}`
   );
 
   // Iniciar el intervalo para actualizar QR si no está corriendo
@@ -37,24 +38,23 @@ export const getQRCodeForObra = async (id_obra) => {
   return qrCodeUrl;
 };
 
-// Actualizar todos los QR cada minuto
-const updateAllQRCodes = () => {
+// Modifica solo `updateAllQRCodes` para emitir eventos
+const updateAllQRCodes = async () => {
   const idsObras = Object.keys(obraQRCodes);
 
-  if (idsObras.length === 0) {
-    // Si no hay QR para actualizar, detener el intervalo
-    clearInterval(qrUpdateInterval);
-    qrUpdateInterval = null;
-    console.log("No hay códigos QR que actualizar. Intervalo detenido.");
-    return;
+  for (const id_obra of idsObras) {
+    obraQRCodes[id_obra] = generateTokenForObra(id_obra);
+
+    // Generar URL del QR y esperar que termine
+    const qrCodeUrl = await QRCode.toDataURL(
+      `http://192.168.0.5:5173/obras/votar?token=${obraQRCodes[id_obra]}`
+    );
+
+    // Emitir el evento con el nuevo QR
+    io.emit(`qr-updated-${id_obra}`, qrCodeUrl);
   }
 
-  idsObras.forEach((id_obra) => {
-    obraQRCodes[id_obra] = generateTokenForObra(id_obra);
-  });
-
-  // Mostrar solo los IDs de las obras en el log
-  console.log("QRs actualizados para obras (IDs):", idsObras);
+  console.log("QRs actualizados para obras:", idsObras);
 };
 
 // Iniciar el intervalo de actualización de QR
