@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 function EventosForm() {
   const [generalError, setGeneralError] = useState(""); // Estado para el error general
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     handleSubmit,
@@ -52,36 +53,38 @@ function EventosForm() {
   }, [getEvento, params.id, setValue]);
 
   const onSubmit = handleSubmit(async (values) => {
+    setIsSubmitting(true);
     setGeneralError(""); // Reiniciar el error general
+    const evento = {
+      fecha_inicio: `${values.fecha_inicio} ${values.tiempo_inicio}`,
+      fecha_fin: `${values.fecha_fin} ${values.tiempo_fin}`,
+      lugar: values.lugar,
+      descripcion: values.descripcion,
+      tematica: values.tematica,
+    };
+
+    if (evento.lugar === "") delete evento.lugar;
+    if (evento.descripcion === "") delete evento.descripcion;
+    if (evento.tematica === "") delete evento.tematica;
+
     try {
-      const evento = {
-        fecha_inicio: `${values.fecha_inicio} ${values.tiempo_inicio}`,
-        fecha_fin: `${values.fecha_fin} ${values.tiempo_fin}`,
-        lugar: values.lugar,
-        descripcion: values.descripcion,
-        tematica: values.tematica,
-      };
-
-      if (evento.lugar === "") delete evento.lugar;
-      if (evento.descripcion === "") delete evento.descripcion;
-      if (evento.tematica === "") delete evento.tematica;
-
       if (params.id) {
         await updateEvento(params.id, evento);
       } else {
         await createEvento(evento);
       }
-      console.log(generalError);
+      navigate("/eventos");
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
       setGeneralError(
         error.message || "Ocurrió un error al intentar guardar el evento."
       );
+    } finally {
+      setIsSubmitting(false);
     }
   });
 
   return (
-
     <div className="flex items-center justify-center h-screen w-full bg-gradient-to-br from-pink-300 via-purple-500 to-indigo-300">
       <div className="-mt-20 max-w-md w-full p-10 border-4 border-gray-700 rounded-2xl shadow-lg bg-gray-900">
         <form onSubmit={onSubmit}>
@@ -97,21 +100,23 @@ function EventosForm() {
           )}
 
           {/* Fecha de Inicio */}
-          <label className="text-white underline block pb-1">Fecha de Inicio</label>
+          <label className="text-white underline block pb-1">
+            Fecha de Inicio
+          </label>
           <div className="flex gap-x-2">
             <input
               type="date"
               {...register("fecha_inicio", {
                 required: "La fecha de inicio es obligatoria",
               })}
-              className="px-2 py-1 rounded-sm w-full"
+              className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
             />
             <input
               type="time"
               {...register("tiempo_inicio", {
                 required: "La hora de inicio es obligatoria",
               })}
-              className="px-2 py-1 rounded-sm"
+              className="px-2 py-1 rounded-sm bg-gray-200 text-black"
             />
           </div>
           {errors.fecha_inicio && (
@@ -126,21 +131,23 @@ function EventosForm() {
           )}
 
           {/* Fecha de Fin */}
-          <label className="text-white block pt-2 pb-1 underline">Fecha de Fin</label>
+          <label className="text-white block pt-2 pb-1 underline">
+            Fecha de Fin
+          </label>
           <div className="flex gap-x-2">
             <input
               type="date"
               {...register("fecha_fin", {
                 required: "La fecha de fin es obligatoria",
               })}
-              className="px-2 py-1 rounded-sm w-full"
+              className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
             />
             <input
               type="time"
               {...register("tiempo_fin", {
                 required: "La hora de fin es obligatoria",
               })}
-              className="px-2 py-1 rounded-sm"
+              className="px-2 py-1 rounded-sm bg-gray-200 text-black"
             />
           </div>
           {errors.fecha_fin && (
@@ -167,7 +174,9 @@ function EventosForm() {
             <p className="text-red-500 text-sm mt-1">{errors.lugar.message}</p>
           )}
 
-          <label className="text-white block underline pt-2 pb-1">Descripción</label>
+          <label className="text-white block underline pt-2 pb-1">
+            Descripción
+          </label>
           <textarea
             rows="3"
             placeholder="Escribe una descripción"
@@ -175,7 +184,9 @@ function EventosForm() {
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           ></textarea>
 
-          <label className="text-white block underline pt-2 pb-1">Temática</label>
+          <label className="text-white block underline pt-2 pb-1">
+            Temática
+          </label>
 
           <input
             type="text"
@@ -187,8 +198,9 @@ function EventosForm() {
           <button
             type="submit"
             className="block bg-blue-600 px-2 py-1 mt-6 text-white hover:bg-blue-800 transition-colors duration-300 text-center w-full rounded-md font-semibold text-lg hover:scale-105 hover:transition-300"
+            disabled={isSubmitting}
           >
-            Guardar
+            {isSubmitting ? "Guardando..." : "Guardar"}
           </button>
         </form>
       </div>

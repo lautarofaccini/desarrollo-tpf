@@ -1,9 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useObras } from "@/context/ObraContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
 
 function ObrasForm() {
   const [selectedImages, setSelectedImages] = useState([]); // Nuevas imágenes seleccionadas
@@ -11,6 +10,7 @@ function ObrasForm() {
   const [existingImages, setExistingImages] = useState([]); // Imágenes ya existentes del backend
   const [imagesToDelete, setImagesToDelete] = useState([]); // Imágenes existentes a eliminar
   const [isSubmitting, setIsSubmitting] = useState(false); // Estado para manejar el envío del formulario
+  const [generalError, setGeneralError] = useState(null); // Estado para el error del backend
 
   const [searchParams] = useSearchParams(); // Obtener parámetros de la URL
   const {
@@ -53,6 +53,10 @@ function ObrasForm() {
         if (escultorId) {
           setValue("id_escultor", escultorId);
         }
+        const eventoId = searchParams.get("evento");
+        if (eventoId) {
+          setValue("id_evento", eventoId);
+        }
       }
     }
     loadObra();
@@ -60,6 +64,8 @@ function ObrasForm() {
 
   const onSubmit = handleSubmit(async (values) => {
     setIsSubmitting(true);
+    setGeneralError(null); // Limpiar errores anteriores
+
     const obra = {
       fecha_creacion: values.fecha_creacion,
       descripcion: values.descripcion,
@@ -76,12 +82,20 @@ function ObrasForm() {
     if (obra.descripcion === "") delete obra.descripcion;
     if (obra.estilo === "") delete obra.estilo;
 
-    if (params.id) {
-      await updateObra(params.id, obra, selectedImages, imagesToDelete);
-    } else {
-      await createObra(obra, selectedImages);
+    try {
+      if (params.id) {
+        await updateObra(params.id, obra, selectedImages, imagesToDelete);
+      } else {
+        await createObra(obra, selectedImages);
+      }
+      navigate("/obras");
+    } catch (error) {
+      setGeneralError(
+        error.response?.data?.message || "Ocurrió un error al guardar la obra."
+      );
+    } finally {
+      setIsSubmitting(false);
     }
-    navigate("/obras");
   });
 
   const onImageChange = (e) => {
@@ -125,6 +139,13 @@ function ObrasForm() {
             {params.id ? "Actualizar Obra" : "Crear Obra"}
           </h1>
 
+          {/* Mostrar el error general */}
+          {generalError && (
+            <div className="bg-red-500 text-white p-3 rounded-md text-center mb-4">
+              {generalError}
+            </div>
+          )}
+
           <label className="text-white block underline pb-1">Imágenes</label>
           <input
             type="file"
@@ -154,14 +175,18 @@ function ObrasForm() {
             ))}
           </div>
 
-          <label className="text-white underline pt-2 pb-1 block">Fecha de Creación</label>
+          <label className="text-white underline pt-2 pb-1 block">
+            Fecha de Creación
+          </label>
           <input
             type="date"
             {...register("fecha_creacion")}
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           />
 
-          <label className="text-white underline pt-2 pb-1 block">Material</label>
+          <label className="text-white underline pt-2 pb-1 block">
+            Material
+          </label>
           <input
             type="text"
             placeholder="Escribe el material del que está compuesta la obra"
@@ -169,7 +194,9 @@ function ObrasForm() {
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           />
 
-          <label className="text-white underline pt-2 pb-1 block">Descripción</label>
+          <label className="text-white underline pt-2 pb-1 block">
+            Descripción
+          </label>
           <textarea
             rows="3"
             placeholder="Escribe una descripción"
@@ -185,13 +212,16 @@ function ObrasForm() {
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           />
 
-          <label className="text-white underline pt-2 pb-1 block">ID del Evento</label>
+          <label className="text-white underline pt-2 pb-1 block">
+            ID del Evento
+          </label>
           <input
             type="number"
             min="1"
             placeholder="ID del evento de la obra"
             {...register("id_evento", { required: "ID Evento requerido" })}
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
+            readOnly={!!searchParams.get("evento")}
           />
           {errors.id_evento && (
             <p className="text-red-500 text-sm mt-1">
@@ -199,7 +229,9 @@ function ObrasForm() {
             </p>
           )}
 
-          <label className="text-white block underline pt-2 pb-1">ID del Escultor</label>
+          <label className="text-white block underline pt-2 pb-1">
+            ID del Escultor
+          </label>
           <input
             type="number"
             min="1"
