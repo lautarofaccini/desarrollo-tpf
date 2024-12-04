@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { getObrasQRRequest } from "@/api/obras.api";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import QRCode from "qrcode-decoder";
+import { useParams, useNavigate } from "react-router-dom";
 
 function ObraQRPage() {
   const [qrCode, setQrCode] = useState("");
-  const [decodedUrl, setDecodedUrl] = useState();
+  /* const [decodedUrl, setDecodedUrl] = useState(); */
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false); // Nuevo estado para errores
   const params = useParams();
@@ -35,6 +34,8 @@ function ObraQRPage() {
   }, [params]);
 
   //Solo para probar en desarrollo
+
+  /* 
   useEffect(() => {
     if (qrCode) {
       const img = new Image();
@@ -60,6 +61,7 @@ function ObraQRPage() {
       };
     }
   }, [qrCode]);
+ */
 
   if (loading) return <div>loading...</div>;
 
