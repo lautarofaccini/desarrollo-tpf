@@ -93,11 +93,11 @@ function ObraQRPage() {
           Escanea el QR para votar
         </h1>
         <img src={qrCode} alt="Código QR" className="" />
-        {decodedUrl && (
+        {/* decodedUrl && (
           <Link to={decodedUrl} className="text-blue-400">
             Código
           </Link>
-        )}
+        ) */}
       </div>
     </div>
   );
