@@ -37,13 +37,15 @@ function EscultorPage() {
   if (loading) return <LoadingSpinner />;
 
   return (
+    <div className="flex">
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen bg-gray-700 text-white py-12 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-7xl mx-auto">
+        {/* Header del escultor */}
         <motion.div
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -56,16 +58,16 @@ function EscultorPage() {
               size="xl"
               color="primary"
               isBordered
-              className="w-32 h-32 rounded-full object-cover"
+              className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover"
             />
             <div className="flex-grow">
-              <div className="flex justify-between items-start mb-4">
-                <h1 className="text-4xl font-bold text-pink-400">
+              <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
+                <h1 className="text-3xl sm:text-4xl font-bold text-pink-400">
                   {escultor.nombre} {escultor.apellido}
                 </h1>
                 <EdDelButtons id={escultor.id_escultor} />
               </div>
-              <p className="text-xl text-indigo-300 mb-4">
+              <p className="text-lg sm:text-xl text-indigo-300 mb-4">
                 {escultor.biografia}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
@@ -90,6 +92,7 @@ function EscultorPage() {
           </div>
         </motion.div>
 
+        {/* Obras */}
         <motion.div
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -122,6 +125,7 @@ function EscultorPage() {
           </div>
         </motion.div>
 
+        {/* Agregar obra (solo para admins) */}
         {isAdmin && (
           <motion.div
             initial={{ y: 50, opacity: 0 }}
@@ -143,6 +147,7 @@ function EscultorPage() {
         )}
       </div>
     </motion.div>
+    </div>
   );
 }
 

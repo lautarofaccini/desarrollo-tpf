@@ -90,15 +90,15 @@ function EscultoresForm() {
   });
 
   return (
-    <div className="flex items-center justify-center h-screen w-full">
-      <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
+    <div className="flex items-center justify-center h-screen w-full bg-gradient-to-br from-pink-300 via-purple-500 to-indigo-300 ">
+      <div className="-mt-20 max-w-md w-full p-10 border-4 border-gray-700 rounded-2xl shadow-lg bg-gray-900">
         <form onSubmit={onSubmit}>
-          <h1 className="text-white text-xl font-bold uppercase text-center">
+          <h1 className="text-white text-2xl pb-8 underline font-bold uppercase text-center">
             {params.id ? "Actualizar Escultor" : "Crear Escultor"}
           </h1>
           <div className="flex gap-x-2">
             <div>
-              <label className="text-gray-400 block">Nombre</label>
+              <label className="text-white block underline">Nombre</label>
               <input
                 type="text"
                 placeholder="Escribe el nombre"
@@ -113,8 +113,8 @@ function EscultoresForm() {
                 </p>
               )}
             </div>
-            <div>
-              <label className="text-gray-400 block">Apellido</label>
+            <div className="pb-4">
+              <label className="text-white block underline">Apellido</label>
               <input
                 type="text"
                 placeholder="Escribe el apellido"
@@ -131,12 +131,12 @@ function EscultoresForm() {
             </div>
           </div>
 
-          <label className="text-gray-400 block">Foto de Perfil</label>
+          <label className="text-white block pb-1 underline">Foto de Perfil</label>
           <input
             type="file"
             accept="image/jpeg, image/png"
             onChange={onImageChange}
-            className="px-2 py-1 rounded-sm w-full text-white"
+            className="px-0 py-1 rounded-sm w-full text-white"
           />
           {previewUrl && (
             <div className="relative">
@@ -158,7 +158,7 @@ function EscultoresForm() {
           {
             //TODO: Que te deje elegir entre una lista de nacionaliadades existentes
           }
-          <label className="text-gray-400 block">Nacionalidad</label>
+          <label className="text-white block pt-2 underline pb-1">Nacionalidad</label>
           <input
             type="text"
             placeholder="Escribe una nacionalidad"
@@ -166,17 +166,19 @@ function EscultoresForm() {
               required: "La nacionalidad es obligatoria",
             })}
             className="px-2 py-1 rounded-sm w-full"
+
           />
           {
             //TODO: Ver porque los placeholders de los input de tipo date no se adaptan al color
           }
-          <label className="text-gray-400 block">Fecha de Nacimiento</label>
+          <label className="text-white underline block pt-2 pb-1">Fecha de Nacimiento</label>
           <input
             type="date"
             {...register("fecha_nacimiento", {
               required: "La fecha de nacimiento es obligatoria",
             })}
             className="px-2 py-1 rounded-sm w-full"
+
           />
           {errors.fecha_nacimiento && (
             <p className="text-red-500 text-sm mt-1">
@@ -184,7 +186,7 @@ function EscultoresForm() {
             </p>
           )}
 
-          <label className="text-gray-400 block">Biografía</label>
+          <label className="text-white block pt-2 pb-1 underline">Biografía</label>
           <textarea
             rows="3"
             placeholder="Escribe una biografía"
@@ -199,25 +201,25 @@ function EscultoresForm() {
             </p>
           )}
 
-          <label className="text-gray-400 block">Email</label>
+          <label className="text-white block pt-2 pb-1 underline">Email</label>
           <input
             type="email"
             placeholder="Escribe el email de contacto (opcional)"
             {...register("email")}
-            className="px-2 py-1 rounded-sm w-full"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200"
           />
 
-          <label className="text-gray-400 block">Teléfono</label>
+          <label className="text-white underline block pt-2 pb-1">Teléfono</label>
           <input
             type="telefono"
             placeholder="Escribe el telefono de contacto (opcional)"
             {...register("telefono")}
-            className="px-2 py-1 rounded-sm w-full"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200"
           />
 
           <button
             type="submit"
-            className="block bg-indigo-500 px-2 py-1 mt-2 text-white w-full rounded-md"
+            className="block bg-blue-600 px-2 py-1 mt-6 text-white hover:bg-blue-800 transition-colors duration-300 text-center w-full rounded-md font-semibold text-lg hover:scale-105 hover:transition-300"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Guardando..." : "Guardar"}
