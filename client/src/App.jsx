@@ -27,6 +27,7 @@ import { ObraProvider } from "./context/ObraProvider";
 
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
+import AboutPage from "./pages/AboutPage";
 
 function App() {
   const location = useLocation();
@@ -41,6 +42,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="*" element={<NotFound />} />
+              <Route path="/about" element={<AboutPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/login" element={<LoginPage />} />
 

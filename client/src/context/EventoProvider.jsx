@@ -39,7 +39,8 @@ export const EventoProvider = ({ children }) => {
 
   const createEvento = async (evento) => {
     try {
-      await createEventoRequest(evento);
+      const response = await createEventoRequest(evento);
+      return response.json();
       /* 
       TODO: Ver forma de no pedir todos los eventos cada vez que se carga la pagina, si asi fuera se podria usar ->
       setEventos([...eventos, response.data]) */
