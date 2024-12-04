@@ -20,6 +20,7 @@ function Navbar() {
     { path: "/obras", label: "Obras" },
     { path: "/escultores", label: "Escultores" },
     { path: "/eventos", label: "Eventos" },
+    { path: "/about", label: "Conocenos" },
     ...(isAuthenticated
       ? [{ path: "/", label: "Cerrar Sesión", onClick: logout }]
       : [{ path: "/login", label: "Iniciar Sesión" }]),
@@ -34,7 +35,6 @@ function Navbar() {
       onMenuOpenChange={setIsMenuOpen}
       maxWidth="full"
     >
-      {/* Brand */}
       <NavbarBrand>
         <Link to="/">
           <img src="/Logo.png" alt="Logo" />
