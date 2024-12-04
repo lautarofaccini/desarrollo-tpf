@@ -16,7 +16,7 @@ export const createObraRequest = async (obra, selectedImages) => {
     });
 
     // Enviar todas las imágenes y el id_obra en una sola petición
-    await axios.post("http://localhost:4000/imagenes", formData, {
+    await axios.post("/imagenes", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
@@ -53,7 +53,7 @@ export const updateObraRequest = async (
       formData.append("images", image);
     });
 
-    await axios.post("http://localhost:4000/imagenes", formData, {
+    await axios.post("/imagenes", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }

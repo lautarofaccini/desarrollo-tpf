@@ -5,10 +5,10 @@ import { useObras } from "@/context/ObraContext";
 import { useAuth } from "@/context/AuthContext";
 import { motion } from "framer-motion";
 import EventoHeader from "@/components/EventoHeader";
-import ObraGrid from "@/components/ObraGrid";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import EventControls from "@/components/EventControls";
 import { Plus } from "lucide-react";
+import EscultorObraCard from "@/components/EscultorObraCard";
 
 function EventoPage() {
   const [evento, setEvento] = useState(null);
@@ -106,14 +106,20 @@ function EventoPage() {
           <h2 className="text-2xl font-bold text-purple-400 mb-6">Obras</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {obras.length > 0 ? (
-              <motion.div
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="bg-gray-800 rounded-lg p-6 shadow-lg"
-              >
-                <ObraGrid obras={obras} estadoEvento={evento.estado} />
-              </motion.div>
+              obras.map((obra, index) => (
+                <motion.div
+                  key={obra.id_obra}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 * index }}
+                >
+                  <EscultorObraCard
+                    obra={obra}
+                    mostrarCalificacion={evento.estado === "finalizado"}
+                    blancoYNegro={evento.estado === "inactivo"}
+                  />
+                </motion.div>
+              ))
             ) : (
               <motion.p
                 initial={{ opacity: 0 }}
