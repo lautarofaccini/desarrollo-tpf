@@ -33,19 +33,25 @@ export const EventoProvider = ({ children }) => {
       console.log(response);
       setEventos(eventos.filter((evento) => evento.id_evento !== id));
     } catch (error) {
-      console.error(error);
+      console.log(error)
+      throw (
+        error.response?.data ||
+        error.message ||
+        "Error desconocido."
+      );
     }
   };
 
   const createEvento = async (evento) => {
     try {
-      const response = await createEventoRequest(evento);
-      return response.json();
-      /* 
-      TODO: Ver forma de no pedir todos los eventos cada vez que se carga la pagina, si asi fuera se podria usar ->
-      setEventos([...eventos, response.data]) */
+      await createEventoRequest(evento);
     } catch (error) {
-      console.error(error);
+      // Propaga el error para que pueda ser manejado en el formulario.
+      throw (
+        error.response?.data ||
+        error.message ||
+        "Error desconocido al crear el evento."
+      );
     }
   };
 
@@ -60,13 +66,15 @@ export const EventoProvider = ({ children }) => {
 
   const updateEvento = async (id, newFields) => {
     try {
-      const response = await updateEventoRequest(id, newFields);
-      console.log(response);
+      await updateEventoRequest(id, newFields);
     } catch (error) {
-      console.error(error);
+      throw (
+        error.response?.data ||
+        error.message ||
+        "Error desconocido."
+      );
     }
   };
-
   const activarEvento = async (id) => {
     try {
       const response = await activarEventoRequest(id);

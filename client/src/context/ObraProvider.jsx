@@ -22,23 +22,28 @@ export const ObraProvider = ({ children }) => {
 
   const deleteObra = async (id) => {
     try {
-      console.log(id)
+      console.log(id);
       const response = await deleteObraRequest(id);
       console.log(response);
       setObras(obras.filter((obra) => obra.id_obra !== id));
     } catch (error) {
-      console.error(error);
+      throw (
+        error.response?.data ||
+        error.message ||
+        "Error desconocido."
+      );
     }
   };
 
   const createObra = async (obra, selectedImages) => {
     try {
       await createObraRequest(obra, selectedImages);
-      /* 
-      TODO: Ver forma de no pedir todos los obras cada vez que se carga la pagina, si asi fuera se podria usar ->
-      setObras([...obras, response.data]) */
     } catch (error) {
-      console.error(error);
+      throw (
+        error.response?.data ||
+        error.message ||
+        "Error desconocido."
+      );
     }
   };
 
@@ -77,9 +82,13 @@ export const ObraProvider = ({ children }) => {
         selectedImages,
         imagesToDelete
       );
-      console.log(response)
+      console.log(response);
     } catch (error) {
-      console.error(error);
+      throw (
+        error.response?.data ||
+        error.message ||
+        "Error desconocido."
+      );
     }
   };
 
