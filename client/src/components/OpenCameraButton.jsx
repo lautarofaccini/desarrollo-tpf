@@ -5,9 +5,7 @@ import { isMobile } from "react-device-detect";
 const OpenCameraButton = () => {
   const handleOpenCamera = () => {
     if (navigator.userAgent.includes("Android")) {
-      // Usar intent:// para Android
-      window.location.href =
-        "intent://#Intent;scheme=qrscanner;package=com.google.zxing.client.android;end";
+      window.location.href = "https://webqr.com/";
     } else {
       // Abrir el esquema por defecto (iOS/otros dispositivos)
       window.location.href = "camera://";
