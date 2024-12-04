@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "@/context/AuthContext";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import Background from "@/components/ImagenFondo";
 
 function RegisterPage() {
   const {
@@ -14,27 +13,27 @@ function RegisterPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Obtener la URL de retorno desde `state` o establecerla como "/"
   const from = location.state?.from || "/";
 
   useEffect(() => {
-    if (isAuthenticated) navigate(from); // Redirigir al enlace original tras registrarse
+    if (isAuthenticated) navigate(from);
   }, [isAuthenticated, navigate, from]);
 
   const onSubmit = handleSubmit(async (values) => {
     const updatedValues = {
       ...values,
-      rol: "user", // Asignar rol por defecto
+      rol: "user",
     };
     signup(updatedValues);
   });
 
   return (
-    <Background>
-      <div className="flex items-center h-screen w-full overflow-hidden relative">
-        <div className="absolute top-50 left-80 bg-zinc-700 bg-opacity-80 max-w-md p-10 rounded-lg shadow-lg">
-          <h1 className="text-3xl font-bold text-center text-white underline decoration-sky-500 decoration-4 mb-6">Registrarse</h1>
-          <h2 className="text-xl text-gray-300 mb-5 text-center">
+    <div className="min-h-screen w-full bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('/Home.png')" }}>
+      <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+      <div className="relative z-10 flex items-center justify-center md:justify-start min-h-screen w-full p-4 md:pl-[10%]">
+        <div className="w-full max-w-sm md:max-w-md bg-zinc-700 bg-opacity-80 p-6 sm:p-8 rounded-lg shadow-lg">
+          <h1 className="text-2xl sm:text-3xl text-center font-bold text-white underline decoration-sky-500 decoration-4 mb-4 sm:mb-6">Registrarse</h1>
+          <h2 className="text-lg sm:text-xl text-gray-300 mb-4 sm:mb-5 text-center">
             Por favor, completa la información para registrarte.
           </h2>
           {registerErrors.map((error, i) => (
@@ -87,7 +86,7 @@ function RegisterPage() {
               Registrarse
             </button>
           </form>
-          <p className="text-gray-400 mt-4 text-sm">
+          <p className="text-gray-400 mt-4 text-sm text-center">
             ¿Ya tienes cuenta?{" "}
             <Link
               to="/login"
@@ -99,7 +98,7 @@ function RegisterPage() {
           </p>
         </div>
       </div>
-    </Background>
+    </div>
   );
 }
 
