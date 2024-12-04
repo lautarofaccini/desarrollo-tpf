@@ -33,6 +33,7 @@ export const EventoProvider = ({ children }) => {
       console.log(response);
       setEventos(eventos.filter((evento) => evento.id_evento !== id));
     } catch (error) {
+      console.log(error)
       throw (
         error.response?.data ||
         error.message ||
