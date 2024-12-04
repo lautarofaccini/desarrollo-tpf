@@ -184,7 +184,7 @@ function EscultoresForm() {
 
           <button
             type="submit"
-            className="block bg-blue-600 px-2 py-1 mt-6 text-white hover:bg-blue-700 transition-colors duration-300 text-center w-full rounded-md font-semibold text-lg"
+            className="block bg-blue-600 px-2 py-1 mt-6 text-white hover:bg-blue-800 transition-colors duration-300 text-center w-full rounded-md font-semibold text-lg hover:scale-105 hover:transition-300"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Guardando..." : "Guardar"}
