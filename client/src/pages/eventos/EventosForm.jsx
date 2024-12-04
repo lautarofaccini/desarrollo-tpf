@@ -74,67 +74,67 @@ function EventosForm() {
   });
 
   return (
-    <div className="flex items-center justify-center h-screen w-full">
-      <div className="bg-zinc-800 max-w-md  w-full p-10 rounded-md">
+    <div className="flex items-center justify-center h-screen w-full bg-gradient-to-br from-pink-300 via-purple-500 to-indigo-300">
+      <div className="-mt-20 max-w-md w-full p-10 border-4 border-gray-700 rounded-2xl shadow-lg bg-gray-900">
         <form onSubmit={onSubmit}>
-          <h1 className="text-white text-xl font-bold uppercase text-center">
+          <h1 className="text-white text-2xl  pb-8 underline font-bold uppercase text-center">
             {params.id ? "Actualizar Evento" : "Crear Evento"}
           </h1>
-          <label className="text-gray-400 block">Fecha de Inicio</label>
+          <label className="text-white underline block pb-1">Fecha de Inicio</label>
           <div className="flex gap-x-2">
             <input
               type="date"
               {...register("fecha_inicio")}
-              className=" px-2 py-1 rounded-sm w-full"
+              className=" px-2 py-1 rounded-sm w-full bg-gray-200 text-black "
             />
             <input
               type="time"
               {...register("tiempo_inicio")}
-              className="px-2 py-1 rounded-sm"
+              className="px-2 py-1 rounded-sm bg-gray-200 text-black"
             />
           </div>
 
-          <label className="text-gray-400 block">Fecha de Fin</label>
+          <label className="text-white block pt-2 pb-1 underline">Fecha de Fin</label>
           <div className="flex gap-x-2">
             <input
               type="date"
               {...register("fecha_fin")}
-              className=" px-2 py-1 rounded-sm w-full"
+              className=" px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
             />
             <input
               type="time"
               {...register("tiempo_fin")}
-              className="px-2 py-1 rounded-sm"
+              className="px-2 py-1 rounded-sm bg-gray-200 text-black"
             />
           </div>
 
-          <label className="text-gray-400 block">Lugar</label>
+          <label className="text-white block underline pt-2 pb-1">Lugar</label>
           <input
-            type="text"
+            type="text text"
             placeholder="Escribe un lugar"
             {...register("lugar")}
-            className="px-2 py-1 rounded-sm w-full"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           />
 
-          <label className="text-gray-400 block">Descripción</label>
+          <label className="text-white block underline pt-2 pb-1">Descripción</label>
           <textarea
             rows="3"
             placeholder="Escribe una descripción"
             {...register("descripcion")}
-            className="px-2 py-1 rounded-sm w-full"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           ></textarea>
           
-          <label className="text-gray-400 block">Temática</label>
+          <label className="text-white block underline pt-2 pb-1">Temática</label>
           <input
             type="text"
             placeholder="Escribe una temática"
             {...register("tematica")}
-            className="px-2 py-1 rounded-sm w-full"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           />
 
           <button
             type="submit"
-            className="block bg-indigo-500 px-2 py-1 mt-2 text-white w-full rounded-md"
+            className="block bg-blue-600 px-2 py-1 mt-6 text-white hover:bg-blue-800 transition-colors duration-300 text-center w-full rounded-md font-semibold text-lg hover:scale-105 hover:transition-300"
           >
             Guardar
           </button>
