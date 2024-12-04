@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
   Navbar as NextUINavbar,
@@ -14,17 +14,27 @@ import {
 function Navbar() {
   const { isAuthenticated, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login"); // Redirige al login después de cerrar sesión
+  };
 
   const menuItems = [
     { path: "/obras", label: "Obras" },
     { path: "/escultores", label: "Escultores" },
     { path: "/eventos", label: "Eventos" },
-    { path: "/about", label: "Conocenos" },
+    { path: "/about", label: "Conócenos" },
     ...(isAuthenticated
-      ? [{ path: "/", label: "Cerrar Sesión", onClick: logout }]
+      ? [{ path: "#", label: "Cerrar Sesión", onClick: handleLogout }]
       : [{ path: "/login", label: "Iniciar Sesión" }]),
   ];
+
+  const handleMenuClose = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
     <NextUINavbar
@@ -36,7 +46,7 @@ function Navbar() {
       maxWidth="full"
     >
       <NavbarBrand>
-        <Link to="/">
+        <Link to="/" onClick={handleMenuClose}>
           <img src="/Logo.png" alt="Logo" />
         </Link>
       </NavbarBrand>
@@ -59,7 +69,13 @@ function Navbar() {
                   ? "text-[#58c2f0]"
                   : "text-white"
               }`}
-              onClick={item.onClick}
+              onClick={(e) => {
+                if (item.onClick) {
+                  e.preventDefault(); // Previene la navegación si hay una acción personalizada
+                  item.onClick(e);
+                }
+                handleMenuClose(); // Cierra el menú
+              }}
             >
               {item.label}
             </Link>
@@ -69,6 +85,17 @@ function Navbar() {
 
       {/* Menú desplegable */}
       <NavbarMenu className="bg-neutral-900 bg-opacity-90 backdrop-blur-lg mt-8">
+        <NavbarMenuItem>
+          <Link
+            to="/"
+            className={`w-full text-lg underline ${
+              location.pathname === "/" ? "text-[#58c2f0]" : "text-white"
+            }`}
+            onClick={handleMenuClose}
+          >
+            Home
+          </Link>
+        </NavbarMenuItem>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={index}>
             <Link
@@ -78,7 +105,13 @@ function Navbar() {
                   ? "text-[#58c2f0]"
                   : "text-white"
               }`}
-              onClick={item.onClick}
+              onClick={(e) => {
+                if (item.onClick) {
+                  e.preventDefault(); // Previene la navegación si hay una acción personalizada
+                  item.onClick(e);
+                }
+                handleMenuClose(); // Cierra el menú
+              }}
             >
               {item.label}
             </Link>
