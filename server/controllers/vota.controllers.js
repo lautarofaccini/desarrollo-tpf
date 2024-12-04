@@ -13,7 +13,7 @@ export const getVotos = async (req, res) => {
       );
 
       if (result.length === 0)
-        return res.status(404).json({ message: "Voto not found" });
+        return res.status(404).json({ message: "Voto no encontrado" });
 
       return res.json(result[0]);
     }
