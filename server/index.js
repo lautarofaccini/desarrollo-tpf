@@ -33,7 +33,6 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
 
-// Rutas existentes
 app.use("/api", authRoutes);
 app.use("/api/escultores/", escultoresRoutes);
 app.use("/api/", eventosRoutes);
