@@ -11,7 +11,7 @@ import { authRequired, isAdmin } from "../middlewares/validateToken.js";
 
 const router = Router();
 
-router.get("/", [authRequired, isAdmin], getVotos);
+router.get("/", getVotos);
 
 router.get("/obra/:id_obra", [authRequired, isAdmin], getVotosByObra);
 
