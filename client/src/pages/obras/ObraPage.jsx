@@ -45,7 +45,7 @@ function ObraPage() {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8"
     >
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
