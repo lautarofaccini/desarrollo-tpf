@@ -25,7 +25,11 @@ export const EscultorProvider = ({ children }) => {
         escultores.filter((escultor) => escultor.id_escultor !== id)
       );
     } catch (error) {
-      console.error(error);
+      throw (
+        error.response?.data ||
+        error.message ||
+        "Error desconocido."
+      );
     }
   };
 
@@ -36,7 +40,7 @@ export const EscultorProvider = ({ children }) => {
       throw (
         error.response?.data ||
         error.message ||
-        "Error desconocido al crear el evento."
+        "Error desconocido."
       );
     }
   };
@@ -68,7 +72,7 @@ export const EscultorProvider = ({ children }) => {
       throw (
         error.response?.data ||
         error.message ||
-        "Error desconocido al crear el evento."
+        "Error desconocido."
       );
     }
   };

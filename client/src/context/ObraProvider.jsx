@@ -27,7 +27,11 @@ export const ObraProvider = ({ children }) => {
       console.log(response);
       setObras(obras.filter((obra) => obra.id_obra !== id));
     } catch (error) {
-      console.error(error);
+      throw (
+        error.response?.data ||
+        error.message ||
+        "Error desconocido."
+      );
     }
   };
 
@@ -38,7 +42,7 @@ export const ObraProvider = ({ children }) => {
       throw (
         error.response?.data ||
         error.message ||
-        "Error desconocido al crear el evento."
+        "Error desconocido."
       );
     }
   };
@@ -83,11 +87,11 @@ export const ObraProvider = ({ children }) => {
       throw (
         error.response?.data ||
         error.message ||
-        "Error desconocido al crear el evento."
+        "Error desconocido."
       );
     }
   };
-  
+
   const getImagenesByObra = async (id) => {
     try {
       const response = await getImagenesByObraRequest(id);
