@@ -25,18 +25,23 @@ export const EscultorProvider = ({ children }) => {
         escultores.filter((escultor) => escultor.id_escultor !== id)
       );
     } catch (error) {
-      console.error(error);
+      throw (
+        error.response?.data ||
+        error.message ||
+        "Error desconocido."
+      );
     }
   };
 
   const createEscultor = async (escultor, selectedImage) => {
     try {
       await createEscultorRequest(escultor, selectedImage);
-      /* 
-      TODO: Ver forma de no pedir todos los escultores cada vez que se carga la pagina, si asi fuera se podria usar ->
-      setEscultores([...escultores, response.data]) */
     } catch (error) {
-      console.error(error);
+      throw (
+        error.response?.data ||
+        error.message ||
+        "Error desconocido."
+      );
     }
   };
 
@@ -49,12 +54,26 @@ export const EscultorProvider = ({ children }) => {
     }
   };
 
-  const updateEscultor = async (id, newFields, selectedImage, isImageRemoved) => {
+  const updateEscultor = async (
+    id,
+    newFields,
+    selectedImage,
+    isImageRemoved
+  ) => {
     try {
-      const response = await updateEscultorRequest(id, newFields, selectedImage, isImageRemoved);
+      const response = await updateEscultorRequest(
+        id,
+        newFields,
+        selectedImage,
+        isImageRemoved
+      );
       console.log(response);
     } catch (error) {
-      console.error(error);
+      throw (
+        error.response?.data ||
+        error.message ||
+        "Error desconocido."
+      );
     }
   };
 
