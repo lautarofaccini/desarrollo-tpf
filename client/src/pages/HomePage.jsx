@@ -1,5 +1,5 @@
 import GoogleMapComponent from "@/components/GoogleMapComponent";
-import { MapPin, Mail, Phone } from "lucide-react";
+import { MapPin, Mail, Phone } from 'lucide-react';
 import { ImageSlider } from "@/components/CarruselDeImg";
 
 function HomePage() {
@@ -17,28 +17,29 @@ function HomePage() {
   ];
   return (
     <main
-      className="min-h-screen bg-black text-white container-scrollable"
+      className="min-h-screen bg-black text-white container-scrollable "
       style={{ maxHeight: "calc(100vh - 4rem)" }}
     >
       <section className="relative h-screen">
-        <img
-          src="/FU-Bienal2024 editado.jpg"
-          alt="Fondo Bienal"
-          className="absolute inset-0 w-full h-full object-cover opacity-90"
-        />
-        <div className="absolute inset-0 flex items-center justify-end px-8 md:px-16">
-          <div className="max-w-2xl">
-            <div className="relative">
-              <h1 className="text-6xl md:text-8xl font-bold -mb-2 ">
-                <span
-                  className="bg-clip-text text-transparent bg-gradient-to-r  from-pink-500 via-purple-500 to-indigo-500"
-                  style={{ WebkitTextStroke: "1.5px black" }}
-                >
-                  Bienal 2024
-                </span>
-              </h1>
-            </div>
-            <p className="text-xl md:text-xl mr-3 font-semibold text-gray-700  p-1 ">
+        <div className="absolute inset-0 ">
+          <img
+            src="/FU-Bienal2024 editado.jpg"
+            alt="Fondo Bienal"
+            className="w-full h-full object-cover opacity-90"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-10 md:bg-opacity-0"></div>
+        </div>
+        <div className="absolute inset-0 flex items-start  md:items-center justify-start md:justify-end px-0 md:px-16 pt-1 text-center md:pt-0">
+          <div className="max-w-2xl md:text-right">
+            <h1 className="text-5xl md:text-8xl font-bold mb-2 md:mb-4">
+              <span
+                className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500"
+                style={{ WebkitTextStroke: "1px black", textShadow: "2px 2px 4px rgba(0,0,0,0.1)" }}
+              >
+                Bienal 2024
+              </span>
+            </h1>
+            <p className="text-xl text-center md:text-xl md:-mt-5 font-semibold text-black shadow-text">
               Una exposición única de arte y escultura contemporánea
             </p>
           </div>
@@ -138,3 +139,4 @@ function HomePage() {
 }
 
 export default HomePage;
+
