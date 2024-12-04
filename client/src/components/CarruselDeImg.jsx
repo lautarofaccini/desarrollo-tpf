@@ -3,7 +3,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import PropTypes from 'prop-types'
 
-export function ImageSlider({ images }) {
+export function ImageSlider({ images, autoPlay = true }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'start',
     loop: true,
@@ -21,6 +21,15 @@ export function ImageSlider({ images }) {
     setNextBtnEnabled(emblaApi.canScrollNext())
   }, [emblaApi])
 
+  const autoPlayCallback = useCallback(() => {
+    if (!emblaApi) return
+    if (emblaApi.canScrollNext()) {
+      emblaApi.scrollNext()
+    } else {
+      emblaApi.scrollTo(0)
+    }
+  }, [emblaApi])
+
   useEffect(() => {
     if (!emblaApi) return
     onSelect()
@@ -28,16 +37,24 @@ export function ImageSlider({ images }) {
     emblaApi.on('reInit', onSelect)
   }, [emblaApi, onSelect])
 
+  useEffect(() => {
+    if (!autoPlay) return
+
+    const intervalId = setInterval(autoPlayCallback, 3000)
+
+    return () => clearInterval(intervalId)
+  }, [autoPlay, autoPlayCallback])
+
   if (!images || images.length === 0) {
     return <div className="text-center text-gray-500">No hay imágenes para mostrar</div>
   }
 
   return (
-    <div className="relative">
+    <div className="relative px-4 md:px-0">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex -ml-4">
           {images.map((src, index) => (
-            <div key={index} className="flex-[0_0_25%] min-w-0 pl-4">
+            <div key={index} className="flex-[0_0_100%] md:flex-[0_0_25%] min-w-0 pl-4">
               <img
                 src={src}
                 alt={`Escultura ${index + 1}`}
@@ -48,7 +65,7 @@ export function ImageSlider({ images }) {
         </div>
       </div>
       <button
-        className={`absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/80 hover:bg-white text-black p-2 rounded-full ${
+        className={`absolute top-1/2 left-0 md:left-4 transform -translate-y-1/2 bg-white/80 hover:bg-white text-black p-2 rounded-full ${
           !prevBtnEnabled ? 'opacity-50 cursor-not-allowed' : ''
         }`}
         onClick={scrollPrev}
@@ -58,7 +75,7 @@ export function ImageSlider({ images }) {
         <ChevronLeft className="h-6 w-6" />
       </button>
       <button
-        className={`absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/80 hover:bg-white text-black p-2 rounded-full ${
+        className={`absolute top-1/2 right-0 md:right-4 transform -translate-y-1/2 bg-white/80 hover:bg-white text-black p-2 rounded-full ${
           !nextBtnEnabled ? 'opacity-50 cursor-not-allowed' : ''
         }`}
         onClick={scrollNext}
@@ -72,5 +89,7 @@ export function ImageSlider({ images }) {
 }
 
 ImageSlider.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.string).isRequired
+  images: PropTypes.arrayOf(PropTypes.string).isRequired,
+  autoPlay: PropTypes.bool
 }
+
