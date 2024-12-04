@@ -1,41 +1,53 @@
 import { useEffect, useState } from "react";
 import { getObrasQRRequest } from "@/api/obras.api";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { io } from "socket.io-client"; // Importar la biblioteca de WebSockets
 
 function ObraQRPage() {
   const [qrCode, setQrCode] = useState("");
-  /* const [decodedUrl, setDecodedUrl] = useState(); */
+  const [decodedUrl, setDecodedUrl] = useState();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false); // Nuevo estado para errores
+  const [error, setError] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Obtener el QR al montar el componente
-    async function fetchQrCode() {
+    const fetchQrCode = async () => {
       try {
         const response = await getObrasQRRequest(params.id);
         setQrCode(response.data.qrCode);
-        setError(false); // Resetear error si la carga es exitosa
+        setError(false);
       } catch (error) {
         console.error("Error al obtener el QR:", error);
-        setError(true); // Establecer error si la solicitud falla
+        setError(true);
       }
       setLoading(false);
-    }
+    };
 
     fetchQrCode();
 
-    // Configurar el intervalo para actualizar el QR cada 1 minuto (60000 ms)
-    const intervalId = setInterval(fetchQrCode, 60000);
+    // Conectar con el servidor WebSocket
+    const socket = io("http://192.168.0.5:4000"); 
 
-    // Limpiar el intervalo al desmontar el componente
-    return () => clearInterval(intervalId);
+    // Escuchar actualizaciones del QR específico
+    socket.on(`qr-updated-${params.id}`, (newQrCode) => {
+      console.log(`QR actualizado recibido para la obra ${params.id}:`, newQrCode);
+      setQrCode(newQrCode);
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("Error de conexión al WebSocket:", err);
+    });
+
+    // Limpiar la conexión al desmontar el componente
+    return () => {
+      socket.disconnect();
+    };
   }, [params]);
 
   //Solo para probar en desarrollo
 
-  /* 
+  
   useEffect(() => {
     if (qrCode) {
       const img = new Image();
@@ -61,12 +73,11 @@ function ObraQRPage() {
       };
     }
   }, [qrCode]);
- */
+
 
   if (loading) return <div>loading...</div>;
 
   if (error) {
-    // Mostrar mensaje de error y botón para volver al inicio
     return (
       <div className="flex items-center justify-center h-screen w-full">
         <div className="bg-zinc-800 max-w-md p-10 rounded-md">
@@ -78,7 +89,7 @@ function ObraQRPage() {
             tarde.
           </p>
           <button
-            onClick={() => navigate("/")} // Navegar al inicio
+            onClick={() => navigate("/")}
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Volver al inicio
@@ -95,11 +106,11 @@ function ObraQRPage() {
           Escanea el QR para votar
         </h1>
         <img src={qrCode} alt="Código QR" className="" />
-        {/* decodedUrl && (
+        {decodedUrl && (
           <Link to={decodedUrl} className="text-blue-400">
             Código
           </Link>
-        ) */}
+        )}
       </div>
     </div>
   );
