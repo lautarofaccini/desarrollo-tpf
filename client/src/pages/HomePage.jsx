@@ -104,7 +104,7 @@ function HomePage() {
       </section>
 
       {/* Seccion de contacto */}
-      <section className="py-16 px-4 md:px-8 md:mb-10">
+      <section className="py-16 px-4 md:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-12 underline">Contacto</h2>
           <div className="grid md:grid-cols-3 gap-8">
