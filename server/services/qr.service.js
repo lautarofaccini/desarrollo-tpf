@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import QRCode from "qrcode";
 import dotenv from "dotenv";
 import { io } from "../index.js";
+import { VITE_IP } from "../../server/config.js";
 
 dotenv.config();
 // Clave secreta para firmar los tokens
@@ -27,7 +28,7 @@ export const getQRCodeForObra = async (id_obra) => {
 
   // Generar la imagen QR basada en el token generado
   const qrCodeUrl = await QRCode.toDataURL(
-    `http://192.168.0.5:5173/obras/votar?token=${obraQRCodes[id_obra]}`
+    `http://${VITE_IP}:5173/obras/votar?token=${obraQRCodes[id_obra]}`
   );
 
   // Iniciar el intervalo para actualizar QR si no está corriendo
@@ -47,7 +48,7 @@ const updateAllQRCodes = async () => {
 
     // Generar URL del QR y esperar que termine
     const qrCodeUrl = await QRCode.toDataURL(
-      `http://192.168.0.5:5173/obras/votar?token=${obraQRCodes[id_obra]}`
+      `http://${VITE_IP}:5173/obras/votar?token=${obraQRCodes[id_obra]}`
     );
 
     // Emitir el evento con el nuevo QR
