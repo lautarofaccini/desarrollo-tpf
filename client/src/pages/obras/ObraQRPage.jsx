@@ -31,7 +31,7 @@ function ObraQRPage() {
     // Conectar con el servidor WebSocket
     const socket = io(
       `http://${import.meta.env.VITE_HOST || "localhost"}:${
-    import.meta.env.VITE_PORT || 4000
+    import.meta.env.VITE_SERVER_PORT || 4000
   }`
     );
 
