@@ -22,9 +22,11 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.3.1",
     "react-google-recaptcha": "^3.1.0",
+    "react-helmet": "^6.1.0",
     "react-hook-form": "^7.53.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.27.0",
+    "react-share": "^5.1.1",
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
