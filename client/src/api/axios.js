@@ -1,7 +1,8 @@
 import axios from "axios";
+import { VITE_IP } from "../../../server/config";
 
 const instance = axios.create({
-  baseURL: "http://192.168.0.5:4000/api",
+  baseURL: `http://${VITE_IP}:4000/api`,
   withCredentials: true,
 });
 
