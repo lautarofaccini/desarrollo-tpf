@@ -1,7 +1,8 @@
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/context/AuthContext";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 function RegisterPage() {
   const {
@@ -12,6 +13,7 @@ function RegisterPage() {
   const { signup, isAuthenticated, errors: registerErrors } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [captchaValue, setCaptchaValue] = useState(null);
 
   const from = location.state?.from || "/";
 
@@ -20,12 +22,22 @@ function RegisterPage() {
   }, [isAuthenticated, navigate, from]);
 
   const onSubmit = handleSubmit(async (values) => {
+    if (!captchaValue) {
+      // Mostrar un error si el captcha no se ha completado
+      alert("Por favor, completa el captcha");
+      return;
+    }
     const updatedValues = {
       ...values,
       rol: "user",
+      captcha: captchaValue,
     };
     signup(updatedValues);
   });
+
+  const handleCaptchaChange = (value) => {
+    setCaptchaValue(value);
+  };
 
   return (
     <div className="min-h-screen w-full bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('/Home.png')" }}>
@@ -79,6 +91,11 @@ function RegisterPage() {
                 </p>
               )}
             </div>
+            <ReCAPTCHA 
+              sitekey="6LfsWZMqAAAAAOQ2zL0xFXd-SXMRCDuza7pRZXfk" 
+              onChange={handleCaptchaChange}
+              className="w-full flex justify-center " 
+            />
             <button
               type="submit"
               className="w-full py-2 rounded-md bg-sky-500 text-white hover:bg-sky-600 transition-colors font-semibold"
@@ -103,3 +120,4 @@ function RegisterPage() {
 }
 
 export default RegisterPage;
+
