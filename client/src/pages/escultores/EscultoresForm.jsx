@@ -130,7 +130,7 @@ function EscultoresForm() {
                 {...register("nombre", {
                   required: "El nombre es obligatorio",
                 })}
-                className="px-2 py-1 rounded-sm w-full"
+                className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black "
               />
               {errors.nombre && (
                 <p className="text-red-500 text-sm mt-1">
@@ -146,10 +146,10 @@ function EscultoresForm() {
                 {...register("apellido", {
                   required: "El apellido es obligatorio",
                 })}
-                className="px-2 py-1 rounded-sm w-full"
+                className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
               />
               {errors.apellido && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-red-500 text-sm mt-1 ">
                   {errors.apellido.message}
                 </p>
               )}
@@ -163,7 +163,8 @@ function EscultoresForm() {
             type="file"
             accept="image/jpeg, image/png"
             onChange={onImageChange}
-            className="px-0 py-1 rounded-sm w-full text-white"
+            className="px-0 py-1 rounded-sm w-full text-white file:mr-5 file:py-1 file:px-3 file:border-[1px]
+              file:text-lm file:font-medium file:bg-stone-50 file:text-stone-700 hover:file:cursor-pointer hover:file:bg-blue-50 hover:file:text-pink-400"
           />
           {previewUrl && (
             <div className="relative">
@@ -194,7 +195,7 @@ function EscultoresForm() {
             {...register("nacionalidad", {
               required: "La nacionalidad es obligatoria",
             })}
-            className="px-2 py-1 rounded-sm w-full"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
           />
           {
             //TODO: Ver porque los placeholders de los input de tipo date no se adaptan al color
@@ -207,7 +208,7 @@ function EscultoresForm() {
             {...register("fecha_nacimiento", {
               required: "La fecha de nacimiento es obligatoria",
             })}
-            className="px-2 py-1 rounded-sm w-full"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
           />
           {errors.fecha_nacimiento && (
             <p className="text-red-500 text-sm mt-1">
@@ -224,7 +225,7 @@ function EscultoresForm() {
             {...register("biografia", {
               required: "La biografía es obligatoria",
             })}
-            className="px-2 py-1 rounded-sm w-full"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
           ></textarea>
           {errors.biografia && (
             <p className="text-red-500 text-sm mt-1">
@@ -237,7 +238,7 @@ function EscultoresForm() {
             type="email"
             placeholder="Escribe el email de contacto (opcional)"
             {...register("email")}
-            className="px-2 py-1 rounded-sm w-full bg-gray-200"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
           />
 
           <label className="text-white underline block pt-2 pb-1">
@@ -247,7 +248,7 @@ function EscultoresForm() {
             type="telefono"
             placeholder="Escribe el telefono de contacto (opcional)"
             {...register("telefono")}
-            className="px-2 py-1 rounded-sm w-full bg-gray-200"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
           />
 
           <button
