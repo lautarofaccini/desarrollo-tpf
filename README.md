@@ -9,6 +9,26 @@
 - Agustín Juan Luis Arduña Zago
 - Juan Ignacio Velazco Gez Schegtel
 
+## Instrucciones:
+1. Clonar el repositorio de GitHub
+2. Ejecutar npm install tanto en /client como en /server
+3. Crear un .env en /client con la siguiente información:
+    VITE_HOST: Tu direccion IP (opcional)
+    VITE_PORT: El puerto donde se ejecutará el cliente (opcional)
+4. Crear un .env en la carpeta raíz con la siguiente información:
+    DB_HOST: Host de la base de datos
+    DB_PORT: Puerto de la base de datos
+    DB_USER: Usuario de la base de datos
+    DB_PASSWORD: Contraseña del usuario de la base de datos
+    DB_DATABASE: Nombre de la base de datos
+    HOST: Tu direccion IP (opcional)
+    PORT: El puerto donde se ejecutará el cliente (opcional)
+    TOKEN_SECRET: Clave para los token de autenticación 
+    SECRET_KEY: Clave para los token de los QR
+5. Ajustar el puerto del servidor en /server/config.js
+6. Instalar la base de datos desde /database/Creación de base de datos/esquema_desarrollo_tpf
+7. Disfrutar :)
+
 ## Actividad 1: Escenario
 La organización de la **Bienal Internacional de Escultura del Chaco** se ha contactado con su empresa para planificar, analizar, desarrollar e implementar un sistema de gestión que soporte el registro de los eventos y escultores, así como también aplicaciones satélites para que los ciudadanos y el público en general puedan realizar comentarios y votaciones durante el evento.
 
