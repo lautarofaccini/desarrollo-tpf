@@ -12,7 +12,9 @@ import votaRoutes from "./routes/vota.routes.js";
 import imagenesRoutes from "./routes/imagenes.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import { initialSetup } from "./libs/initialSetup.js";
-import { VITE_IP } from "./config.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Agregar dependencias para WebSockets
 import { Server } from "socket.io";
@@ -25,7 +27,9 @@ const server = http.createServer(app); // Crear servidor HTTP con Express
 // Configuración de CORS
 app.use(
   cors({
-    origin: `http://${VITE_IP}:5173`, // Reemplaza con tu IP local
+    origin: `http://${process.env.HOST || "localhost"}:${
+      process.env.PORT || 5173
+    }`,
     credentials: true,
   })
 );
@@ -46,7 +50,9 @@ app.use("/api/vota", votaRoutes);
 // Configuración de WebSockets
 const io = new Server(server, {
   cors: {
-    origin: `http://${VITE_IP}:5173`, // Reemplaza con tu IP local
+    origin: `http://${process.env.HOST || "localhost"}:${
+      process.env.PORT || 5173
+    }`,
     credentials: true,
   },
 });
