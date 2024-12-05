@@ -43,7 +43,7 @@ function ObraPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-500 to-indigo-300 text-white py-12 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-7xl mx-auto">
         <motion.div
@@ -53,7 +53,7 @@ function ObraPage() {
           className="bg-gray-800 rounded-lg p-6 mb-8 shadow-lg"
         >
           <div className="flex justify-between items-start mb-4">
-            <h1 className="text-4xl font-bold text-pink-400">{obra.estilo}</h1>
+            <h1 className="text-4xl font-bold text-blue-500 underline">{obra.estilo}</h1>
             <div className="flex space-x-2">
               <EdDelButtons id={obra.id_obra} />
               {isAdmin && (
@@ -68,13 +68,13 @@ function ObraPage() {
               )}
             </div>
           </div>
-          <p className="text-xl text-indigo-300 mb-4">{obra.descripcion}</p>
+          <p className="text-xl text-white mb-4">{obra.descripcion}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-            <div className="flex items-center text-purple-300">
+            <div className="flex items-center text-white">
               <Calendar className="w-5 h-5 mr-2" />
               <span>{obra.fecha_creacion}</span>
             </div>
-            <div className="flex items-center text-purple-300">
+            <div className="flex items-center text-white">
               <Box className="w-5 h-5 mr-2" />
               <span>Material: {obra.material || "N/A"}</span>
             </div>
@@ -88,7 +88,7 @@ function ObraPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="bg-gray-800 rounded-lg p-6 shadow-lg"
           >
-            <h2 className="text-2xl font-bold text-purple-400 mb-4">Progreso de la Obra</h2>
+            <h2 className="text-2xl font-bold text-blue-500 mb-4 underline">Progreso de la Obra</h2>
             <div className={`grid gap-6 ${
               imagenes.length > 1 ? "sm:grid-cols-2" : ""
             } ${imagenes.length > 2 ? "lg:grid-cols-3" : ""}`}>
@@ -105,7 +105,7 @@ function ObraPage() {
                     transition={{ duration: 0.3, delay: 0.1 * index }}
                     className="text-center"
                   >
-                    <h3 className="font-semibold text-pink-300 mb-2">{item.title}</h3>
+                    <h3 className="font-semibold text-white mb-2">{item.title}</h3>
                     <img
                       src={item.image.url}
                       alt={item.title}
