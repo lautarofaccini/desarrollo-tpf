@@ -16,7 +16,7 @@ const OpenCameraButton = () => {
     <>
       {isMobile && (
         <motion.button
-          className="fixed bottom-8 right-8 bg-pink-500 hover:bg-pink-600 text-white p-4 rounded-full shadow-lg"
+          className="fixed bottom-8 right-8 bg-pink-500 hover:bg-pink-600 border-white border-1 text-white p-4 rounded-full shadow-lg"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={handleOpenCamera}
