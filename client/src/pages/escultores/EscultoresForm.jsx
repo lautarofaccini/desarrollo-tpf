@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useEscultores } from "@/context/EscultorContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { X } from 'lucide-react';
 
 function EscultoresForm() {
   const [selectedImage, setSelectedImage] = useState(null); // Imagen seleccionada para perfil
@@ -126,7 +126,7 @@ function EscultoresForm() {
               <label className="text-white block underline">Nombre</label>
               <input
                 type="text"
-                placeholder="Escribe el nombre"
+                placeholder="Ej: Pablo"
                 {...register("nombre", {
                   required: "El nombre es obligatorio",
                 })}
@@ -142,7 +142,7 @@ function EscultoresForm() {
               <label className="text-white block underline">Apellido</label>
               <input
                 type="text"
-                placeholder="Escribe el apellido"
+                placeholder="Ej: Picasso"
                 {...register("apellido", {
                   required: "El apellido es obligatorio",
                 })}
@@ -190,7 +190,7 @@ function EscultoresForm() {
           </label>
           <input
             type="text"
-            placeholder="Escribe una nacionalidad"
+            placeholder="Ej: Español"
             {...register("nacionalidad", {
               required: "La nacionalidad es obligatoria",
             })}
@@ -220,7 +220,7 @@ function EscultoresForm() {
           </label>
           <textarea
             rows="3"
-            placeholder="Escribe una biografía"
+            placeholder="Ej: Artista reconocido por sus obras innovadoras..."
             {...register("biografia", {
               required: "La biografía es obligatoria",
             })}
@@ -264,3 +264,4 @@ function EscultoresForm() {
 }
 
 export default EscultoresForm;
+
