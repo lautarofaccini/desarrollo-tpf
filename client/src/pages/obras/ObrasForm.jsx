@@ -151,7 +151,8 @@ function ObrasForm() {
             type="file"
             accept="image/jpeg, image/png"
             onChange={onImageChange}
-            className="px-0 py-1 rounded-sm w-full text-white "
+            className="px-0 py-1 rounded-sm w-full text-white file:mr-5 file:py-1 file:px-3 file:border-[1px]
+              file:text-lm file:font-medium file:bg-stone-50 file:text-stone-700 hover:file:cursor-pointer hover:file:bg-blue-50 hover:file:text-pink-400"
             multiple
             disabled={previewUrls.length >= 3}
           />
@@ -167,7 +168,7 @@ function ObrasForm() {
                 <button
                   type="button"
                   onClick={() => removeSelectedImage(index)}
-                  className="absolute top-0 right-0  bg-red-500 text-white p-1 rounded-full"
+                  className="absolute top-0 right-0  bg-red-500 text-white p-1 rounded-full "
                 >
                   <X size={16} />
                 </button>
@@ -191,7 +192,7 @@ function ObrasForm() {
             type="text"
             placeholder="Ej: Mármol, Bronce, Madera"
             {...register("material", { required: "El material es obligatorio" })}
-            className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
           />
 
           <label className="text-white underline pt-2 pb-1 block">
@@ -201,7 +202,7 @@ function ObrasForm() {
             rows="3"
             placeholder="Ej: Escultura abstracta que representa la libertad"
             {...register("descripcion", { required: "La descripción es obligatoria" })}
-            className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
           ></textarea>
 
           <label className="text-white underline pt-2 pb-1 block">Estilo</label>
@@ -209,7 +210,7 @@ function ObrasForm() {
             type="text"
             placeholder="Ej: Abstracto, Realista, Modernista"
             {...register("estilo", { required: "El estilo es obligatorio" })}
-            className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
           />
 
           <label className="text-white underline pt-2 pb-1 block">
@@ -220,7 +221,7 @@ function ObrasForm() {
             min="1"
             placeholder="Ej: 1"
             {...register("id_evento", { required: "ID Evento requerido" })}
-            className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
             readOnly={!!searchParams.get("evento")}
           />
           {errors.id_evento && (
@@ -237,7 +238,7 @@ function ObrasForm() {
             min="1"
             placeholder="Ej: 1"
             {...register("id_escultor", { required: "ID Escultor requerido" })}
-            className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
             readOnly={!!searchParams.get("escultor")} // Deshabilitado si hay escultor preseleccionado
           />
           {errors.id_escultor && (
