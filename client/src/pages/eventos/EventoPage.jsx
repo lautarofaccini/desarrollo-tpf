@@ -83,9 +83,9 @@ function EventoPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-500 to-indigo-300 text-white py-12 px-4 sm:px-6 lg:px-8"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto ">
         <EventoHeader evento={evento} />
 
         {isAdmin && (
@@ -101,9 +101,9 @@ function EventoPage() {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-gray-800 rounded-lg p-6 shadow-lg"
+          className="bg-gray-800 rounded-lg  p-6 shadow-lg"
         >
-          <h2 className="text-2xl font-bold text-purple-400 mb-6">Obras</h2>
+          <h2 className="text-2xl font-bold text-blue-500 underline mb-6">Obras</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {obras.length > 0 ? (
               obras.map((obra, index) => (
@@ -139,9 +139,9 @@ function EventoPage() {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-8 bg-gray-800 rounded-lg p-6 shadow-lg"
+            className="mt-8 bg-gray-800 rounded-lg p-6 shadow-lg "
           >
-            <h2 className="text-2xl font-bold text-purple-400 mb-4">
+            <h2 className="text-2xl font-bold text-blue-500 underline mb-4">
               Agregar Obra
             </h2>
             {

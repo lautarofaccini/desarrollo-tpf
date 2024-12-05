@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useObras } from "@/context/ObraContext";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { X } from 'lucide-react';
 
 function ObrasForm() {
   const [selectedImages, setSelectedImages] = useState([]); // Nuevas imágenes seleccionadas
@@ -180,7 +180,7 @@ function ObrasForm() {
           </label>
           <input
             type="date"
-            {...register("fecha_creacion")}
+            {...register("fecha_creacion", { required: "La fecha de creación es obligatoria" })}
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           />
 
@@ -189,8 +189,8 @@ function ObrasForm() {
           </label>
           <input
             type="text"
-            placeholder="Escribe el material del que está compuesta la obra"
-            {...register("material")}
+            placeholder="Ej: Mármol, Bronce, Madera"
+            {...register("material", { required: "El material es obligatorio" })}
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           />
 
@@ -199,16 +199,16 @@ function ObrasForm() {
           </label>
           <textarea
             rows="3"
-            placeholder="Escribe una descripción"
-            {...register("descripcion")}
+            placeholder="Ej: Escultura abstracta que representa la libertad"
+            {...register("descripcion", { required: "La descripción es obligatoria" })}
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           ></textarea>
 
           <label className="text-white underline pt-2 pb-1 block">Estilo</label>
           <input
             type="text"
-            placeholder="Escribe el estilo con el que se compuso la obra"
-            {...register("estilo")}
+            placeholder="Ej: Abstracto, Realista, Modernista"
+            {...register("estilo", { required: "El estilo es obligatorio" })}
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           />
 
@@ -218,7 +218,7 @@ function ObrasForm() {
           <input
             type="number"
             min="1"
-            placeholder="ID del evento de la obra"
+            placeholder="Ej: 1"
             {...register("id_evento", { required: "ID Evento requerido" })}
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
             readOnly={!!searchParams.get("evento")}
@@ -235,7 +235,7 @@ function ObrasForm() {
           <input
             type="number"
             min="1"
-            placeholder="ID del escultor de la obra"
+            placeholder="Ej: 1"
             {...register("id_escultor", { required: "ID Escultor requerido" })}
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
             readOnly={!!searchParams.get("escultor")} // Deshabilitado si hay escultor preseleccionado
@@ -260,3 +260,4 @@ function ObrasForm() {
 }
 
 export default ObrasForm;
+
