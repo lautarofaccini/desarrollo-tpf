@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getObrasQRRequest } from "@/api/obras.api";
 import { useParams, useNavigate } from "react-router-dom";
-import { VITE_IP } from "../../../../server/config";
 
 /* import QRCode from "qrcode-decoder"; */
 import { io } from "socket.io-client"; // Importar la biblioteca de WebSockets
@@ -30,7 +29,11 @@ function ObraQRPage() {
     fetchQrCode();
 
     // Conectar con el servidor WebSocket
-    const socket = io(`http://${VITE_IP}:5173`);
+    const socket = io(
+      `http://${import.meta.env.VITE_HOST || "localhost"}:${
+    import.meta.env.VITE_PORT || 4000
+  }`
+    );
 
     // Escuchar actualizaciones del QR específico
     socket.on(`qr-updated-${params.id}`, (newQrCode) => {
