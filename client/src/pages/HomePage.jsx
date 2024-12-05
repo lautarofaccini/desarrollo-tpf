@@ -21,11 +21,16 @@ function HomePage() {
     >
       <section className="relative h-screen">
         <div className="absolute inset-0 ">
-          <img
-            src="/FU-Bienal2024 editado.jpg"
-            alt="Fondo Bienal"
-            className="w-full h-full object-cover opacity-90"
-          />
+        <img
+        src="/FU-Bienal2024.jpg"  // Fondo para móviles
+        alt="Fondo Bienal Móvil"
+        className="w-full h-full object-cover opacity-90 md:hidden"  
+      />
+      <img
+        src="/FU-Bienal2024 editado.jpg"  // Fondo para pantallas grandes
+        alt="Fondo Bienal"
+        className="w-full h-full object-cover opacity-90 hidden md:block"  
+      />
           <div className="absolute inset-0 bg-black bg-opacity-10 md:bg-opacity-0"></div>
         </div>
         <div className="absolute inset-0 flex items-start  md:items-center justify-start md:justify-end px-0 md:px-16 pt-1 text-center md:pt-0">
