@@ -165,8 +165,8 @@ function EventosForm() {
           <label className="text-white block underline pt-2 pb-1">Lugar</label>
 
           <input
-            type="text text"
-            placeholder="Escribe un lugar"
+            type="text"
+            placeholder="Ej: Salón de eventos"
             {...register("lugar", { required: "El lugar es obligatorio" })}
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           />
@@ -179,7 +179,7 @@ function EventosForm() {
           </label>
           <textarea
             rows="3"
-            placeholder="Escribe una descripción"
+            placeholder="Ej: Celebración anual de la empresa"
             {...register("descripcion")}
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           ></textarea>
@@ -190,7 +190,7 @@ function EventosForm() {
 
           <input
             type="text"
-            placeholder="Escribe una temática"
+            placeholder="Ej: Formal, Casual, Temático"
             {...register("tematica")}
             className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
           />
@@ -209,3 +209,4 @@ function EventosForm() {
 }
 
 export default EventosForm;
+
