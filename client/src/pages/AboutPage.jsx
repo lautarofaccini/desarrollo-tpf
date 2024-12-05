@@ -9,22 +9,22 @@ const teamMembers = [
   {
     name: "Fabricio Víctor Kinweiler",
     image:
-      "https://storage.googleapis.com/obrasbienal/escultor_1733318746238.webp",
+      "https://storage.googleapis.com/obrasbienal/escultor_1733424078729.webp",
   },
   {
-    name: "Facundo Miles Fernández",
+    name: "Facundo Fernández",
     image:
-      "https://storage.googleapis.com/obrasbienal/escultor_1733319184180.webp",
+      "https://storage.googleapis.com/obrasbienal/escultor_1733424531501.webp",
   },
   {
     name: "Juan Ignacio Velazco Gez Schegtel",
     image:
-      "https://storage.googleapis.com/obrasbienal/escultor_1733318478824.webp",
+      "https://storage.googleapis.com/obrasbienal/escultor_1733423521931.webp",
   },
   {
     name: "Lautaro Faccini",
     image:
-      "https://storage.googleapis.com/obrasbienal/escultor_1733318260856.webp",
+      "https://storage.googleapis.com/obrasbienal/escultor_1733423714334.webp",
   },
   {
     name: "Mauricio Nicolás Schefer",
@@ -34,7 +34,7 @@ const teamMembers = [
   {
     name: "Yamil Apas Moselli",
     image:
-      "https://storage.googleapis.com/obrasbienal/escultor_12_1733319058340.webp",
+      "https://storage.googleapis.com/obrasbienal/escultor_1733424065208.webp",
   },
 ];
 
