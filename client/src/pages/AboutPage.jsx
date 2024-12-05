@@ -40,10 +40,10 @@ const teamMembers = [
 
 function AboutPage() {
   return (
-    <div className="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-pink-300 via-purple-500 to-indigo-300 py-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <motion.h1
-          className="text-4xl font-bold text-center text-pink-400 mb-12"
+          className="text-5xl font-bold text-center text-black underline mb-12"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
