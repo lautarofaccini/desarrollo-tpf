@@ -14,6 +14,7 @@
 2. Ejecutar npm install tanto en /client como en /server
 3. Crear un .env en /client con la siguiente información:
     VITE_HOST: Tu direccion IP (opcional)
+    VITE_SERVER_PORT: El puerto donde se está ejecutando el servidor (opcional)
     VITE_PORT: El puerto donde se ejecutará el cliente (opcional)
 4. Crear un .env en la carpeta raíz con la siguiente información:
     DB_HOST: Host de la base de datos
