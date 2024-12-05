@@ -103,7 +103,7 @@ function EventosForm() {
           <label className="text-white underline block pb-1">
             Fecha de Inicio
           </label>
-          <div className="flex gap-x-2">
+          <div className="flex gap-x-2 ">
             <input
               type="date"
               {...register("fecha_inicio", {
@@ -168,7 +168,7 @@ function EventosForm() {
             type="text"
             placeholder="Ej: Salón de eventos"
             {...register("lugar", { required: "El lugar es obligatorio" })}
-            className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
           />
           {errors.lugar && (
             <p className="text-red-500 text-sm mt-1">{errors.lugar.message}</p>
@@ -181,7 +181,7 @@ function EventosForm() {
             rows="3"
             placeholder="Ej: Celebración anual de la empresa"
             {...register("descripcion")}
-            className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
           ></textarea>
 
           <label className="text-white block underline pt-2 pb-1">
@@ -192,7 +192,7 @@ function EventosForm() {
             type="text"
             placeholder="Ej: Formal, Casual, Temático"
             {...register("tematica")}
-            className="px-2 py-1 rounded-sm w-full bg-gray-200 text-black"
+            className="px-2 py-1 rounded-sm w-full bg-gray-200 placeholder:text-black text-black"
           />
 
           <button
