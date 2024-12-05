@@ -14,7 +14,7 @@ function EventoHeader({ evento }) {
       className="bg-gray-800 rounded-lg p-6 mb-8 shadow-lg"
     >
       <div className="flex justify-between items-start mb-4">
-        <h1 className="text-4xl font-bold text-pink-400">{evento.lugar}</h1>
+        <h1 className="text-4xl font-bold text-blue-500 underline">{evento.lugar}</h1>
         {isAdmin && <EdDelButtons id={evento.id_evento} />}
       </div>
       <p className="text-xl text-indigo-300 mb-4">{evento.descripcion}</p>
