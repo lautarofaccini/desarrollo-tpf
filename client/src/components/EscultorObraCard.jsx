@@ -100,7 +100,8 @@ function EscultorObraCard({ obra, mostrarCalificacion, blancoYNegro }) {
         )}
 
         <hr className="my-4 border-gray-600" />
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
+        <div>
           <Avatar
             src={escultor.foto_perfil}
             size="lg"
@@ -108,6 +109,7 @@ function EscultorObraCard({ obra, mostrarCalificacion, blancoYNegro }) {
             isBordered
             className="rounded-full h-16 w-16 object-cover"
           />
+        </div>
           <div>
             <h3 className="text-xl font-bold text-purple-300">
               {escultor.nombre} {escultor.apellido}
