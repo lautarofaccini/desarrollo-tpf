@@ -17,8 +17,7 @@ function HomePage() {
   ];
   return (
     <main
-      className="min-h-screen bg-black text-white container-scrollable "
-      style={{ maxHeight: "calc(100vh - 4rem)" }}
+      className="min-h-screen bg-black text-white "
     >
       <section className="relative h-screen">
         <div className="absolute inset-0 ">
@@ -75,9 +74,7 @@ function HomePage() {
       {/* Seccion de como llegar */}
       <section className="py-16 px-4 md:px-8 bg-gray-900">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
-          <div>
-            <GoogleMapComponent />
-          </div>
+          
           <div className="ml-10 text center space-y-6 ">
             <h2 className="text-4xl font-bold text-white underline">
               Cómo Llegar
@@ -100,11 +97,14 @@ function HomePage() {
               </div>
             </div>
           </div>
+          <div>
+            <GoogleMapComponent />
+          </div>
         </div>
       </section>
 
       {/* Seccion de contacto */}
-      <section className="py-16 px-4 md:px-8">
+      <section className="py-16 px-4 md:px-8 md:mb-10">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-12 underline">Contacto</h2>
           <div className="grid md:grid-cols-3 gap-8">
