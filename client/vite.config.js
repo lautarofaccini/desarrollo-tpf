@@ -1,9 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import { VITE_IP } from "../server/config";
+import dotenv from "dotenv";
 
-// https://vitejs.dev/config/
+// Carga el archivo .env
+dotenv.config();
+
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -12,7 +14,7 @@ export default defineConfig({
     },
   },
   server: {
-    host: VITE_IP, // Reemplaza con tu IP local
-    port: "5173", // Cambia el puerto si es necesario
+    host: process.env.VITE_HOST || "localhost", // Usa el valor de .env o un valor predeterminado
+    port: process.env.VITE_PORT || 5173, // Usa el valor de .env o un valor predeterminado
   },
 });
