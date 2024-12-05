@@ -41,7 +41,7 @@ function EscultorPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-500 to-indigo-300 text-white py-12 px-4 sm:px-6 lg:px-8 "
     >
       <div className="max-w-7xl mx-auto">
         {/* Header del escultor */}
@@ -61,28 +61,28 @@ function EscultorPage() {
             />
             <div className="flex-grow">
               <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4">
-                <h1 className="text-3xl sm:text-4xl font-bold text-pink-400">
+                <h1 className="text-3xl sm:text-4xl font-bold underline text-blue-500">
                   {escultor.nombre} {escultor.apellido}
                 </h1>
                 <EdDelButtons id={escultor.id_escultor} />
               </div>
-              <p className="text-lg sm:text-xl text-indigo-300 mb-4">
+              <p className="text-lg sm:text-xl text-white mb-4">
                 {escultor.biografia}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                <div className="flex items-center text-purple-300">
+                <div className="flex items-center text-white">
                   <Cake className="w-5 h-5 mr-2" />
                   <span>Edad: {escultor.edad}</span>
                 </div>
-                <div className="flex items-center text-purple-300">
+                <div className="flex items-center text-white">
                   <Mail className="w-5 h-5 mr-2" />
                   <span>{escultor.email}</span>
                 </div>
-                <div className="flex items-center text-purple-300">
+                <div className="flex items-center text-white">
                   <Phone className="w-5 h-5 mr-2" />
                   <span>{escultor.telefono}</span>
                 </div>
-                <div className="flex items-center text-purple-300">
+                <div className="flex items-center text-white">
                   <Flag className="w-5 h-5 mr-2" />
                   <span>{escultor.nacionalidad}</span>
                 </div>
@@ -98,7 +98,7 @@ function EscultorPage() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="bg-gray-800 rounded-lg p-6 shadow-lg"
         >
-          <h2 className="text-2xl font-bold text-purple-400 mb-6">Obras</h2>
+          <h2 className="text-2xl font-bold text-blue-500 underline mb-6">Obras</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {obras.length > 0 ? (
               obras.map((obra, index) => (
@@ -132,7 +132,7 @@ function EscultorPage() {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="mt-8 bg-gray-800 rounded-lg p-6 shadow-lg"
           >
-            <h2 className="text-2xl font-bold text-purple-400 mb-4">
+            <h2 className="text-2xl font-bold text-blue-500 underline mb-4">
               Agregar Obra
             </h2>
             <Link
