@@ -34,14 +34,14 @@ function EscultoresPage() {
       </div>
       {isAdmin && (
         <motion.button
-          className="fixed bottom-8 right-8 bg-pink-500 hover:bg-pink-600 text-white p-4 rounded-full shadow-lg"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={handleCreateEsc}
-        >
-          <PlusIcon size={24} />
-          <span className="sr-only">Crear nuevo evento</span>
-        </motion.button>
+  className="fixed bottom-24 right-8 bg-indigo-400 border-white border-1 hover:bg-pink-600 text-white p-4 rounded-full shadow-lg md:bg-pink-500 md:bottom-8 md:right-8"
+  whileHover={{ scale: 1.1 }}
+  whileTap={{ scale: 0.9 }}
+  onClick={handleCreateEsc}
+>
+  <PlusIcon size={24} />
+  <span className="sr-only">Crear nuevo evento</span>
+</motion.button>
       )}
     </div>
   );
