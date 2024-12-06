@@ -11,7 +11,7 @@
 
 ## Instrucciones:
 1. Clonar el repositorio de GitHub
-2. Ejecutar npm install tanto en /client como en /server
+2. Ejecutar `npm install` tanto en /client como en /server
 3. Crear un .env en /client con la siguiente información:
     VITE_HOST: Tu direccion IP (opcional)
     VITE_SERVER_PORT: El puerto donde se está ejecutando el servidor (opcional)
