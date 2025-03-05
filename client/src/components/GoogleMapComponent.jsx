@@ -18,7 +18,7 @@ const GoogleMapComponent = () => {
   };
 
   return (
-    <APIProvider apiKey={"AIzaSyDmLdubB5_uwmekbVU4EXzMVJUlJuEklgs"}>
+    <APIProvider apiKey={import.meta.env.API_KEY}>
       <Map
         style={mapContainerStyle}
         defaultCenter={center}
